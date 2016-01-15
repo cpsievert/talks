@@ -1,0 +1,28 @@
+---
+title: "Interactive web graphics in R with plotly and shiny"
+venue: "Twin Cities R Users Group. Minneapolis, MN"
+type: "selected"
+recording: "none"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+    standalone: false
+css:
+  styles.css
+date: "2016-01-21"
+author: "Carson Sievert"
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+
+## Profound things
