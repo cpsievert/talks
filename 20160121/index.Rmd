@@ -209,16 +209,16 @@ economics %>%
 * __htmlwidgets__ does a lot for widget authors, but there is no standard for accessing widget interactions server-side.
 * Thankfully, __shiny__ provides a way to [send data from client to server](https://ryouready.wordpress.com/2013/11/20/sending-data-from-client-to-server-and-back-using-shiny/), but it's on widget authors to provide an interface.
 
-## Accessing plotly click events 
-
-<div align="center">
-  <img src="click.gif" width="1000" height="600" />
-</div>
-
-## Accessing plotly brush events 
+## Accessing plotly events in shiny
 
 <div align="center">
   <img src="brush.gif" width="1000" height="600" />
+</div>
+
+## Linked correlation matrix
+
+<div align="center">
+  <img src="click.gif" width="1000" height="600" />
 </div>
 
 ---
