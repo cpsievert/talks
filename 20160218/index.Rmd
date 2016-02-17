@@ -126,11 +126,8 @@ str(plotly_build(p))
 ## Why represent plots as data?
 
 <div align = "center">
-  <img src = "ggplot2-cheatsheet.png" width="250" height="400">
+  <img src = "ggplot2-cheatsheet.png" width="400" height="575">
 </div>
-
-* Allows us to implement a "data-plot-pipeline": a sequence of data manipulations and mappings.
-
 
 ## Data-plot-pipeline: An Example
 
@@ -181,7 +178,7 @@ economics %>%
   <img src="../20160121/tourbrush.gif" width="900" height="500" />
 </div>
 
-<https://github.com/cpsievert/tourbrush>
+<https://github.com/cpsievert/tourbrush>. Inspired by <http://ggobi.org/demos>.
 
 ## Linked views pipeline
 
@@ -251,6 +248,7 @@ economics %>%
 
 # Thank you!
 
-* <https://twitter.com/cpsievert>
-* <https://github.com/cpsievert>
-* cpsievert1 @ gmail dot com 
+* Slides: <http://bit.ly/wombat16>
+* Twitter: <https://twitter.com/cpsievert>
+* GitHub: <https://github.com/cpsievert>
+* Email: cpsievert1 @ gmail dot com 
