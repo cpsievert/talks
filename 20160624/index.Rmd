@@ -310,6 +310,8 @@ p %>%
   ')
 ```
 
+See [here](https://gist.github.com/cpsievert/772e72b1586ab5e82a877f7173b3313f) for an example of highlighting series over multiple panels.
+
 ## Top 5 cities wrt mean sales
 
 ```{r}
