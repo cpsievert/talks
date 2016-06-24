@@ -354,7 +354,7 @@ See [here](https://gist.github.com/cpsievert/e4922ec494141474fc86c3f2b312303f) f
 txhousing %>%
   semi_join(top5) %>%
   group_by(city) %>%
-  do(p = plot_ly(., x = ~log(sales), name = .$city))
+  do(p = plot_ly(., x = ~log(sales), name = ~city))
 ```
 
 ---
