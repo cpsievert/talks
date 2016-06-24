@@ -34,7 +34,7 @@ install.packages("devtools")
 devtools::install_github("ropensci/plotly#628")
 ```
 
-Code for today's workshop is [here](). Please download it and follow along.
+Code for today's workshop is [here](https://gist.github.com/cpsievert/dc7f1f2c94cca7cdaa5b74132f870acb). Please download it and follow along.
 
 At times, I'll give you an exercise and stop talking to encourage hands-on learning.
 
@@ -441,37 +441,21 @@ plot_ly(dat, x = ~date, xend = ~date, color = ~Close > Open,
 
 See [here](https://plot.ly/~cpsievert/14269.embed) for the plot.
 
-## Accessing plotly events in shiny
+# Accessing plotly events in shiny
+
+* __NOTE__: this enabled the magic at the beginning of the talk...
+
+---
 
 <div align="center">
   <img src="../20160121/brush.gif" width="1000" height="600" />
 </div>
 
----
+## Your Turn 3
 
-```{r, eval = FALSE}
-library(shiny)
-ui <- fluidPage(
-  plotlyOutput("plot"),
-  verbatimTextOutput("click"),
-  verbatimTextOutput("brush")
-)
-server <- function(input, output, session) {
-  output$plot <- renderPlotly({
-    mtcars %>%
-      plot_ly(x = ~mpg, y = ~wt, key = row.names(mtcars)) %>%
-      add_markers() %>%
-      layout(dragmode = "select")
-  })
-  output$click <- renderPrint({
-    event_data("plotly_click")
-  })
-  output$brush <- renderPrint({
-    event_data("plotly_selected")
-  })
-}
-shinyApp(ui, server)
-```
+Take [this code](https://gist.github.com/cpsievert/817cbffaf99222ddf50e90247fd0f818) and modify it so that, brushing points generates another plot.
+
+See [here](https://gist.github.com/cpsievert/70b124897e4286d667f9e601a2f59402) for a solution.
 
 ## Linked correlation matrix
 
@@ -485,10 +469,13 @@ shinyApp(ui, server)
   <img src="../20160121/linkedBrush.gif" width="600" height="600" />
 </div>
 
+## Your Turn 4
+
+Make a shiny app that makes use of `event_data()`.
+
 
 # Thank you!
 
-* Slides: <http://bit.ly/wombat16>
-* Twitter: <https://twitter.com/cpsievert>
 * GitHub: <https://github.com/cpsievert>
+* Twitter: <https://twitter.com/cpsievert>
 * Email: cpsievert1 @ gmail dot com 
