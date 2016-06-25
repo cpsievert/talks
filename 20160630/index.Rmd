@@ -1,0 +1,28 @@
+---
+title: "Practical tools for exploratory web graphics"
+venue: "useR 2016"
+type: "contributed"
+recording: "coming soon"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+    standalone: false
+css:
+  styles.css
+date: "2016-06-30"
+author: "Carson Sievert"
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+
+## Profound things
