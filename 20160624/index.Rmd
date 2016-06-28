@@ -60,13 +60,13 @@ Please ask questions!!!
 ---
 
 <div align="center">
-  <img src="pedestrians.gif" width="1000" height="600" />
+  <img src="../gifs/pedestrians.gif" width="1000" height="600" />
 </div>
 
 ---
 
 <div align="center">
-  <img src="eechidna.gif" width="1000" height="600" />
+  <img src="../gifs/eechidna.gif" width="1000" height="600" />
 </div>
 
 
