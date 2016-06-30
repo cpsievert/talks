@@ -29,19 +29,19 @@ knitr::opts_chunk$set(
 
 ## Why _interactive_ graphics?
 
+* Why should _presentation_ graphics be interactive?
+    * Helps demonstrate your point
+* Why should _exploratory_ graphics be interactive?
+    * Generate insight _faster_ (thus, iteration time is crucial!). 
+
+<div class="build">
+
 | Technique           | Related Question(s)             | Examples
 -----------------     | ----------------------        | ------------
 | Identification      | What is this point/mark?      | Hover for additional info
 | Filter              | How does one group compare to another? <br /> What happened during this time period? | `shiny::selectInput()` <br /> `shiny::sliderInput()` <br /> Click on legend entries
 | Zoom & pan          | Is there local structure?     | Click & drag to alter x/y limits
 | Linked highlighting | How does the marginal/joint compare to a conditional? | Linked brushing on a scatterplot matrix
-
-<div class="build">
-
-* Why should _presentation_ graphics be interactive?
-    * Helps demonstrate your point
-* Why should _exploratory_ graphics be interactive?
-    * Generate insight _faster_ (thus, iteration time is crucial!). 
 
 </div>
 
