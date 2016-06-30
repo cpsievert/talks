@@ -61,6 +61,7 @@ knitr::opts_chunk$set(
 
 # _Web_ graphics usually aren't _practical_ for _exploring_ data
 
+Good for presentation (viz type is _known_), bad for exploration (viz type is _unknown_)
 
 ## Identification, zoom & pan w/ ggplotly
 
@@ -71,7 +72,7 @@ p <- ggplot(diamonds, aes(price, carat, color = cut)) +
 p %>% ggplotly() %>% toWebGL()
 ```
     
-## Extending James' plot
+## Extending James' ggplot
 
 <div align="center">
   <img src="epl.png" width="575" height="650">
