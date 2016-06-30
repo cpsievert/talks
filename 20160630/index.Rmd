@@ -1,6 +1,7 @@
 ---
 title: "Practical tools for exploratory web graphics"
 venue: "useR 2016"
+subtitle: "useR 2016"
 type: "contributed"
 recording: "coming soon"
 output:
@@ -10,7 +11,7 @@ output:
     standalone: false
 css:
   styles.css
-date: "2016-06-30"
+date: "Slides -- <http://bit.ly/user16>"
 author: "Carson Sievert"
 ---
 
@@ -28,22 +29,19 @@ knitr::opts_chunk$set(
 
 ## Why _interactive_ graphics?
 
-| Technique           | Related Questions             | Examples
+| Technique           | Related Question(s)             | Examples
 -----------------     | ----------------------        | ------------
-| Identification      | what is this point/mark?      | display info on hover 
-| Zoom & pan          | is there local structure?     | click & drag to alter x/y limits
-| Categorical filter  | how do I navigate all these levels? | click on legend entries
-| Linked highlighting | how does the marginal/joint compare to a conditional? | linked brushing on a scatterplot matrix
-
-<p></p>
+| Identification      | What is this point/mark?      | Hover for additional info
+| Filter              | How does one group compare to another? <br /> What happened during this time period? | `shiny::selectInput()` <br /> `shiny::sliderInput()` <br /> Click on legend entries
+| Zoom & pan          | Is there local structure?     | Click & drag to alter x/y limits
+| Linked highlighting | How does the marginal/joint compare to a conditional? | Linked brushing on a scatterplot matrix
 
 <div class="build">
 
 * Why should _presentation_ graphics be interactive?
-    * Draw in your audience
-    * Helps get your point across
+    * Helps demonstrate your point
 * Why should _exploratory_ graphics be interactive?
-    * Generate insight _faster_.
+    * Generate insight _faster_ (thus, iteration time is crucial!). 
 
 </div>
 
@@ -60,18 +58,9 @@ knitr::opts_chunk$set(
   <img src="../gifs/pedestrians.gif" width="1000" height="600" />
 </div>
 
----
 
-<div align="center">
-  <img src="no_time.jpg" width="900"  height="550" />
-</div>
+# _Web_ graphics usually aren't _practical_ for _exploring_ data
 
-
-## Say u do have time fo dat
-
-* First off, congratulations!
-* You can now create awesome interactive graphics!
-* Unfortunately, this skill-set is not _practically_ useful for _exploring_ data (where visualization type is unknown).
 
 ## Identification, zoom & pan w/ ggplotly
 
@@ -96,24 +85,23 @@ p %>% ggplotly() %>% toWebGL()
 
 * ggplot2's interface wasn't designed for interactive graphics.
 * ggplot2 requires data frame(s) and can be inefficient (especially for time series).
-* plotly.js supports visualizations that ggplot2 doesn't.
 * `plot_ly()` provides a low-level R interface to [plotly.js](https://github.com/plotly/plotly.js) (now open source!).
-* Smarter defaults, informative warnings/errors, and higher-level functionality are on their way.
+* Smarter defaults, informative warnings/errors, and higher-level functionality are on their way to `plot_ly()`.
 
-## Smart defaults (also, no data frame necessary!)
+## Smart defaults
 
-```{r, message = TRUE, fig.width=5, fig.height=4.5}
+```{r, message = TRUE, fig.width=5, fig.height=4.5, fig.align='center'}
 plot_ly(z = ~volcano)
 ```
 
 ## Informative warnings/errors
 
-```{r, error = TRUE, message = TRUE, fig.width=5, fig.height=4.5}
+```{r, error = TRUE, message = TRUE}
 plot_ly(puppies = rnorm(100)) %>% add_boxplot()
 plot_ly(x = rnorm(100)) %>% add_boxplot(name = "puppies")
 ```
 
-## plot_ly loves dplyr
+## plot_ly loves dplyr verbs
 
 ```{r, eval = FALSE}
 txhousing %>%
@@ -124,7 +112,7 @@ txhousing %>%
 
 ```{r, echo = FALSE}
 txhousing %>%
-  plot_ly(x = ~date, y = ~median, color = ~city, line = list(color = "black"), hoverinfo = "name") %>%
+  plot_ly(x = ~date, y = ~median, color = ~city, line = list(color = "rgb(31, 119, 180)"), hoverinfo = "name") %>%
   layout(showlegend = FALSE, hovermode = "closest") %>%
   htmlwidgets::onRender('
       function(el, x) { 
@@ -146,21 +134,43 @@ txhousing %>%
     ')
 ```
 
-## split-apply-________?
+## data-plot-pipeline
 
 ```{r}
-mpg %>%
-  group_by(drv) %>%
-  do(p = plot_ly(., x = ~cty, name = ~drv))
+txhousing %>%
+  group_by(city) %>%
+  plot_ly(x = ~date, y = ~median) %>%
+  add_lines(name = "Texan Cities") %>%
+### <b>
+  filter(city == "Houston") %>%
+  add_lines(name = "Houston")
+### </b>
 ```
 
-## split-apply-subplot!
+## data-model-plot-pipeline
+
+```{r, fig.height=3}
+library(broom)
+mtcars %>%
+    lm(mpg ~ wt, data = .) %>%
+    augment() %>%
+    mutate(l  = .fitted - 1.96 * .se.fit, u = .fitted + 1.96 * .se.fit) %>%
+    plot_ly(x = ~wt, y = ~mpg) %>%
+    add_markers(fill = "black") %>%
+    add_lines(y = ~.fitted, stroke = "steelblue") %>%
+    add_ribbons(ymin = ~l, ymax = ~u, fill = "gray", alpha = 0.3) 
+```
+
+## split-apply-subplot
 
 ```{r}
-mpg %>%
-  group_by(drv) %>%
-  do(p = plot_ly(., x = ~cty, name = ~drv)) %>%
-  .[["p"]] %>% 
-  subplot(nrows = NROW(.), shareX = TRUE)
+s <- split(mpg, mpg$drv)
+plots <- lapply(s, function(d) plot_ly(d, x = ~cty, name = ~drv))
+subplot(plots, nrows = length(plots), shareX = TRUE)
 ```
 
+# Thank you!
+
+* GitHub: <https://github.com/cpsievert>
+* Twitter: <https://twitter.com/cpsievert>
+* Email: cpsievert1 @ gmail dot com 
