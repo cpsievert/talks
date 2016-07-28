@@ -3,7 +3,7 @@ title: "Practical tools for exploratory web graphics"
 venue: "useR 2016"
 subtitle: "useR 2016"
 type: "contributed"
-recording: "https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Practical-tools-for-exploratory-web-graphics"
+recording: "<a href='https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Practical-tools-for-exploratory-web-graphics'>here</a>"
 output:
   ioslides_presentation:
     transition: default
