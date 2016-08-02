@@ -118,7 +118,7 @@ library(leaflet)
 sd <- SharedData$new(quakes)
 
 p <- plot_ly(sd, x = ~depth, y = ~mag, width = 450) %>% 
-  add_markers(alpha = 0.5) %>%
+  add_markers(color = I("steelblue"), alpha = 0.5) %>%
   layout(showlegend = FALSE)
 
 map <- leaflet(sd, width = 450) %>% 
@@ -150,6 +150,12 @@ ggplotly(p, c("x", "y", "colour"))
 ## Limitations
 
 <div align = "center">
+  <img src="server-client.png" width=900 height=600 />
+</div>
+
+## Identity mapping between plot & data
+
+<div align = "center">
   <a href = "gglink.html">
     <img src="../gifs/ct.gif" width=900 height=600 />
   </a>
@@ -168,7 +174,7 @@ ggplotly(p, originalData = FALSE) %>% plotly_data()
   <img src="server-client.png" width=900 height=600 />
 </div>
 
-## Thank you to sooo many
+## Thank you to sooo many people
 
 * The plotly.js team
 * The RStudio team
