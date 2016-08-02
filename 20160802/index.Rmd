@@ -1,6 +1,6 @@
 ---
-title: "Practical tools for exploratory web graphics"
-venue: "JSM 2016"
+title: "Interactive and Dynamic Web-Based Graphics for Data Analysis"
+venue: "JSM 2016. Chicago, Illinois"
 subtitle: "JSM 2016"
 type: "invited"
 recording: "none"
@@ -9,9 +9,8 @@ output:
     transition: default
     widescreen: true
     standalone: false
-css:
-  styles.css
-date: "Slides -- <http://bit.ly/user16>"
+css: styles.css
+date: "Slides -- <http://bit.ly/JSM_16>"
 author: "Carson Sievert"
 ---
 
@@ -42,15 +41,8 @@ knitr::opts_chunk$set(
 | Filter              | How does one group compare to another? <br /> What happened during this time period? | `shiny::selectInput()` <br /> `shiny::sliderInput()` <br /> Click on legend entries
 | Zoom & pan          | Is there local structure?     | Click & drag to alter x/y limits
 | Linked highlighting | How does the marginal/joint compare to a conditional? | Linked brushing on a scatterplot matrix
-
 </div>
 
-
-## Why _web_ graphics? Portability!
-
-<div align="center">
-  <img src="../gifs/please_work.gif" width="900"  height="550" />
-</div>
 
 ## Why _web_ graphics? Composability!
 
@@ -58,8 +50,7 @@ knitr::opts_chunk$set(
   <img src="../gifs/pedestrians.gif" width="1000" height="600" />
 </div>
 
-
-# _Web_ graphics usually aren't _practical_ for _exploring_ data
+# __Problem__: _Web_ graphics usually aren't _practical_ for _exploring_ data
 
 Good for presentation (viz type is _known_), bad for exploration (viz type is _unknown_)
 
@@ -67,111 +58,129 @@ Good for presentation (viz type is _known_), bad for exploration (viz type is _u
 
 ```{r}
 library(plotly)
-p <- ggplot(diamonds, aes(price, carat, color = cut)) + 
-  geom_point(alpha = 0.05)
-p %>% ggplotly() %>% toWebGL()
+p <- qplot(data = diamonds, x = carat, y = price, color = cut, alpha = I(.05))
+toWebGL(ggplotly(p))
 ```
-    
+
+## Highlighting series
+
+```{r}
+library(crosstalk)
+d <- SharedData$new(txhousing, ~city)
+p <- qplot(data = d, x = date, y = median, group = city, geom = "line")
+o <- ct_opts(on = "plotly_hover", off = "plotly_doubleclick", color = "red")
+ggplotly(p, tooltip = "city", crosstalkOpts = o)
+```
+
 ## Extending James' ggplot
 
 <div align="center">
-  <img src="epl.png" width="575" height="650">
+  <img src="../20160630/epl.png" width="575" height="650">
 </div>
 
 ## Linked highlighting via ggplotly
 
-<iframe src="epl.html" width=400 height=10 frameBorder="0" seamless="seamless"></iframe>
+<iframe src="../20160630/epl.html" width=400 height=10 frameBorder="0" seamless="seamless"></iframe>
 
-## That's great, but...
-
-* ggplot2's interface wasn't designed for interactive graphics.
-* ggplot2 requires data frame(s) and can be inefficient (especially for time series).
-* `plot_ly()` provides a low-level R interface to [plotly.js](https://github.com/plotly/plotly.js) (now open source!).
-* Smarter defaults, informative warnings/errors, and higher-level functionality are on their way to `plot_ly()`.
-
-## Smart defaults
-
-```{r, message = TRUE, fig.width=5, fig.height=4.5, fig.align='center'}
-plot_ly(z = ~volcano)
-```
-
-## Informative warnings/errors
-
-```{r, error = TRUE, message = TRUE}
-plot_ly(puppies = rnorm(100)) %>% add_boxplot()
-plot_ly(x = rnorm(100)) %>% add_boxplot(name = "puppies")
-```
-
-## plot_ly loves dplyr verbs
+## Linked brushing in plotly via crosstalk
 
 ```{r, eval = FALSE}
-txhousing %>%
-  group_by(city) %>%
-  plot_ly(x = ~date, y = ~median) %>%
-  add_lines()
+library(crosstalk)
+d <- SharedData$new(mtcars)
+subplot(
+  qplot(data = d, x = mpg, y = wt),
+  qplot(data = d, x = mpg, y = vs)
+)
 ```
 
 ```{r, echo = FALSE}
-txhousing %>%
-  plot_ly(x = ~date, y = ~median, color = ~city, line = list(color = "rgb(31, 119, 180)"), hoverinfo = "name") %>%
-  layout(showlegend = FALSE, hovermode = "closest") %>%
-  htmlwidgets::onRender('
-      function(el, x) { 
-        var graphDiv = document.getElementById(el.id);
-        // reduce the opacity of every trace except for the hover one
-        el.on("plotly_hover", function(e) { 
-          var traces = [];
-          for (var i = 0; i < x.data.length; i++) {
-            if (i !== e.points[0].curveNumber) traces.push(i);
-          }
-          Plotly.restyle(graphDiv, "opacity", 0.2, traces);
-        })
-       el.on("plotly_unhover", function(e) { 
-         var traces = [];
-         for (var i = 0; i < x.data.length; i++) traces.push(i);
-         Plotly.restyle(graphDiv, "opacity", 1, traces);
-       })
-      } 
-    ')
+library(crosstalk)
+d <- SharedData$new(mtcars)
+subplot(
+  qplot(data = d, x = mpg, y = wt),
+  qplot(data = d, x = mpg, y = disp),
+  titleX = T, titleY = T, margin = 0.03
+)
 ```
 
-## data-plot-pipeline
+## Linked brushing with plotly & leaflet
+
+```{r, eval = FALSE}
+library(leaflet)
+sd <- SharedData$new(quakes)
+p <- plot_ly(sd, x = ~depth, y = ~mag) %>% add_markers(alpha = 0.5)
+map <- leaflet(sd) %>% addTiles() %>% addCircles()
+htmltools::tagList(list(p, map))
+```
+
+```{r, echo=FALSE}
+library(leaflet)
+sd <- SharedData$new(quakes)
+
+p <- plot_ly(sd, x = ~depth, y = ~mag, width = 450) %>% 
+  add_markers(alpha = 0.5) %>%
+  layout(showlegend = FALSE)
+
+map <- leaflet(sd, width = 450) %>% 
+  addTiles() %>% 
+  addCircles()
+
+library(htmltools)
+p <- div(style = "display:inline-block", as.tags(p))
+map <- div(style = "display:inline-block", as.tags(map))
+tagList(list(p, map))
+```
+
+---
+
+```r
+library(GGally)
+iris$id <- seq_len(nrow(iris))
+d <- SharedData$new(iris, ~id)
+p <- ggpairs(d, aes(colour = Species), columns = 1:4)
+ggplotly(p, c("x", "y", "colour"))
+```
+
+<div align = "center">
+  <a href = "gglink.html">
+    <img src="../gifs/gglink.gif" width=700 height=430 />
+  </a>
+</div>
+
+## Limitations
+
+<div align = "center">
+  <a href = "gglink.html">
+    <img src="../gifs/ct.gif" width=900 height=600 />
+  </a>
+</div>
+
+## Limitations continued
 
 ```{r}
-txhousing %>%
-  group_by(city) %>%
-  plot_ly(x = ~date, y = ~median) %>%
-  add_lines(name = "Texan Cities") %>%
-### <b>
-  filter(city == "Houston") %>%
-  add_lines(name = "Houston")
-### </b>
+p <- qplot(data = mtcars, x = mpg)
+ggplotly(p, originalData = FALSE) %>% plotly_data()
 ```
 
-## data-model-plot-pipeline
+## Where should the computation live?
 
-```{r, fig.height=3}
-library(broom)
-mtcars %>%
-    lm(mpg ~ wt, data = .) %>%
-    augment() %>%
-    mutate(l  = .fitted - 1.96 * .se.fit, u = .fitted + 1.96 * .se.fit) %>%
-    plot_ly(x = ~wt, y = ~mpg) %>%
-    add_markers(color = I("black"), showlegend = FALSE) %>%
-    add_lines(y = ~.fitted, color = I("steelblue"), name = "fit") %>%
-    add_ribbons(ymin = ~l, ymax = ~u, color = I("gray70"), name = "standard error") 
-```
+<div align = "center">
+  <img src="server-client.png" width=900 height=600 />
+</div>
 
-## split-apply-subplot
+## Thank you to sooo many
 
-```{r}
-s <- split(mpg, mpg$drv)
-plots <- lapply(s, function(d) plot_ly(d, x = ~cty, name = ~drv))
-subplot(plots, nrows = length(plots), shareX = TRUE)
-```
+* The plotly.js team
+* The RStudio team
+* Heike Hofmann
+* Di Cook
+* Toby Dylan Hocking
+* Barret Schloerke
+* and many more...
 
 # Thank you!
 
+* Slides: <http://bit.ly/JSM_16>
 * GitHub: <https://github.com/cpsievert>
 * Twitter: <https://twitter.com/cpsievert>
 * Email: cpsievert1 @ gmail dot com 

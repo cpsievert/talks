@@ -1,6 +1,6 @@
 ---
 title: "Practical tools for exploratory web graphics"
-venue: "useR 2016"
+venue: "useR 2016. Stanford University."
 subtitle: "useR 2016"
 type: "contributed"
 recording: "<a href='https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Practical-tools-for-exploratory-web-graphics'>here</a>"
