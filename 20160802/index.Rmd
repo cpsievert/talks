@@ -62,6 +62,17 @@ p <- qplot(data = diamonds, x = carat, y = price, color = cut, alpha = I(.05))
 toWebGL(ggplotly(p))
 ```
 
+## Disclaimer
+
+The following examples are _very_ new, may change, and require dev versions of several packages:
+
+```{r eval = FALSE}
+library(devtools)
+install_github("rstudio/crosstalk")
+install_github("ropensci/plotly@joe/feature/crosstalk")
+install_github("rstudio/leaflet@joe/feature/crosstalk-filter")
+```
+
 ## Highlighting series
 
 ```{r}
