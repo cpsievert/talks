@@ -9,7 +9,7 @@ output:
     widescreen: true
     standalone: false
 css: styles.css
-date: "Slides -- <http://bit.ly/>"
+date: "Slides -- <http://bit.ly/IQT16>"
 author: "Carson Sievert"
 ---
 
@@ -98,10 +98,13 @@ Information visualization perspective:
 > 
 > --- Ben Shneiderman
 
+## Zika Exploration App
+
+TODO: make a gif
 
 # Thank you!
 
-* Slides: <http://bit.ly/JSM_16>
+* Slides: <http://bit.ly/IQT16>
 * GitHub: <https://github.com/cpsievert>
 * Twitter: <https://twitter.com/cpsievert>
 * Email: cpsievert1 @ gmail dot com 

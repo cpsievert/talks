@@ -12,5 +12,5 @@ file.copy(t, a[1])
 # fill in the date in the template
 talk <- file.path(a[1], "index.Rmd")
 txt <- readLines(talk)
-txt[txt == 'date: ""'] <- sprintf('date: "%s"', d)
+txt[txt == 'date: ""'] <- sprintf('date: "%s <br /> <br /> This work is released under <a href=\'https://github.com/cpsievert/talks/blob/gh-pages/LICENSE\'>Creative Commons</a>"', d)
 writeLines(txt, talk)
