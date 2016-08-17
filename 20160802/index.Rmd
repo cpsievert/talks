@@ -44,7 +44,7 @@ knitr::opts_chunk$set(
 </div>
 
 
-## Why _web_ graphics? Composability!
+## Why _web_ graphics? Composable! Easy to Share!
 
 <div align="center">
   <img src="../gifs/pedestrians.gif" width="1000" height="600" />

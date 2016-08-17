@@ -1,0 +1,44 @@
+/* Thanks Kevin Ushey -- https://github.com/rstudio/webinars/blob/master/2014-04/styles.css */
+pre.prettyprint {
+  width: inherit;
+  left: 0px !important;
+  padding: 10px !important;
+  box-shadow: 1px 1px 5px #9c9c9c !important;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #ADADAD;
+}
+pre.prettyprint + pre {
+  width: inherit;
+  left: 0px !important;
+  padding: 10px !important;
+  box-shadow: 1px 1px 5px #9c9c9c !important;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: #ADADAD;
+  background-color: #F3F3F3;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: #b55 !important;
+  line-height: 95%;
+}
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
