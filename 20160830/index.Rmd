@@ -9,7 +9,7 @@ output:
     widescreen: true
     standalone: false
 css: styles.css
-date: "Slides -- <http://bit.ly/IQT16>"
+date: "Slides -- <http://bit.ly/IQT16>  <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert"
 ---
 
@@ -67,7 +67,8 @@ library(plotly)
 measles$txt <- with(measles, paste0("Date: ", date, "<br />", "Count: ", count))
 measles %>%
   plot_ly(x = ~date, y = ~count, color = ~district, text = ~txt) %>%
-  add_lines(hoverinfo = "text+name")
+  add_lines(hoverinfo = "text+name") %>%
+  config(displayModeBar = FALSE)
 ```
 
 ## Highlight on hover
@@ -98,9 +99,29 @@ Information visualization perspective:
 > 
 > --- Ben Shneiderman
 
+## zika data
+
+Dania M. Rodriguez et al. (2016). zika: August 1, 2016. Zenodo. [10.5281/zenodo.59231](http://dx.doi.org/10.5281/zenodo.59231)
+
+<div align="center">
+  <img src="cdcepi.jpg" width="600" height="400" />
+</div>
+
+## The zikar package
+
+```{r}
+# install_github("cpsievert/zikar")
+library(zikar)
+zika
+```
+
 ## Zika Exploration App
 
-TODO: make a gif
+<div align="center">
+  <a href = "https://github.com/cpsievert/zikar"> 
+    <img src="app.png" height="400" width="1000" />
+  </a>
+</div>
 
 # Thank you!
 
