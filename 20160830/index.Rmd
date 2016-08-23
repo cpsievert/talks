@@ -24,59 +24,49 @@ knitr::opts_chunk$set(
 )
 ```
 
+---
 
-## About me
+* __About me__
+    * I solely maintain and develop plotly's R package (part time).
+    * PhD in statistics from Iowa State University (ABD).
+    * Expert in the intersection of R, web technologies, and data visualization.
+    * Novice disease outbreak analyst.
+* __Why R?__
+    * R is a __free__ and __open__-source statistical programming language.
+    * A __huge__ community:
+        * Over __9000 user contributed packages currently__ on CRAN (best source for latest statistical methodology)
+        * The package __surveillance__ implements outbreak detection methods from 13 different publications!
+        * Numerous organization support R development ([R Consortium](https://www.r-consortium.org/), [RStudio](https://www.rstudio.com/home/), [rOpenSci](https://ropensci.org/), etc)
 
-* PhD in statistics from Iowa State University (ABD).
-* I solely maintain and develop plotly's R package.
-* Expert in the intersection of R, web technologies, and data visualization.
-* Novice disease outbreak analyst.
+    
+## About plotly
 
-## What is R?
+* R package builds upon [plotly.js](https://github.com/plotly/plotly.js) (open-source JavaScript graphing library)
+* Plotly has other interfaces to plotly.js (Python, Julia, MATLAB, Ruby).
+* Share, collaborate, & modify via web platform (public: free, private: costs)
 
-* __Free__ and __open__-source statistical programming language.
-* A __huge__ community:
-    * Numerous organization support R development ([R Consortium](https://www.r-consortium.org/), [RStudio](https://www.rstudio.com/home/), [rOpenSci](https://ropensci.org/), etc)
-* Over 7500 user contributed packages (e.g., plotly) currently on CRAN
+<div align="center">
+  <img src="../gifs/ggcaption.gif" width="700" height="400" />
+</div>
 
-## An Example: Measles in 15 German Districts
-
-```{r}
-library(surveillance)
-data(measles.weser)
-plot(measles.weser)
-```
-
-```{r, echo = FALSE}
-library(tidyr)
-measles <- data.frame(measles.weser$observed)
-measles$date <- seq(as.Date("2001-01-01"), by = "week", length.out = NROW(measles))
-measles <- gather(measles, district, count, -date)
-measles$district <- sub("^X", "", measles$district)
-```
-
-## Again, but with plotly
+## An example
 
 ```{r, eval = FALSE}
 library(plotly)
 plot_ly(measles, x = ~date, y = ~count, color = ~district, mode = "lines")
 ```
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
+library(surveillance)
 library(plotly)
+data("measles.weser")
+measles <- data.frame(measles.weser$observed)
+measles$date <- seq(as.Date("2001-01-01"), by = "week", length.out = NROW(measles))
+measles <- tidyr::gather(measles, district, count, -date)
+measles$district <- sub("^X", "", measles$district)
 measles$txt <- with(measles, paste0("Date: ", date, "<br />", "Count: ", count))
 measles %>%
-  plot_ly(x = ~date, y = ~count, color = ~district, text = ~txt) %>%
-  add_lines(hoverinfo = "text+name") %>%
-  config(displayModeBar = FALSE)
-```
-
-## Highlight on hover
-
-```{r, echo = FALSE}
-library(crosstalk)
-measles %>%
-  SharedData$new(~district) %>%
+  crosstalk::SharedData$new(~district) %>%
   plot_ly(x = ~date, y = ~count, color = ~district, text = ~txt) %>%
   add_lines(hoverinfo = "text+name") %>%
   crosstalk("plotly_hover")
@@ -99,27 +89,12 @@ Information visualization perspective:
 > 
 > --- Ben Shneiderman
 
-## zika data
-
-Dania M. Rodriguez et al. (2016). zika: August 1, 2016. Zenodo. [10.5281/zenodo.59231](http://dx.doi.org/10.5281/zenodo.59231)
-
-<div align="center">
-  <img src="cdcepi.jpg" width="600" height="400" />
-</div>
-
-## The zikar package
-
-```{r}
-# install_github("cpsievert/zikar")
-library(zikar)
-zika
-```
 
 ## Zika Exploration App
 
 <div align="center">
   <a href = "https://github.com/cpsievert/zikar"> 
-    <img src="app.png" height="400" width="1000" />
+    <img src="../gifs/zikar.gif" height="550" width="1000" />
   </a>
 </div>
 
