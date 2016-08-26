@@ -31,22 +31,26 @@ knitr::opts_chunk$set(
     * PhD in statistics from Iowa State University (ABD).
     * Expert in the intersection of R, web technologies, and data visualization.
     * Novice disease outbreak analyst.
-* __Why R?__
-    * R is a __free__ and __open__-source statistical programming language.
+* __What is R?__
+    * __Free__ and __open__-source statistical programming language.
     * A __huge__ community:
         * Over __9000 user contributed packages currently__ on CRAN (best source for latest statistical methodology)
         * The package __surveillance__ implements outbreak detection methods from 13 different publications!
         * Numerous organization support R development ([R Consortium](https://www.r-consortium.org/), [RStudio](https://www.rstudio.com/home/), [rOpenSci](https://ropensci.org/), etc)
+        
+--- 
 
-    
-## About plotly
+* __What is plotly?__
+    * R package builds on [plotly.js](https://github.com/plotly/plotly.js) (open-source JavaScript graphing library).
+    * Plotly has other interfaces to plotly.js (Python, Julia, MATLAB, Ruby).
+    * Share, collaborate, & edit (public: free, private: costs)
 
-* R package builds upon [plotly.js](https://github.com/plotly/plotly.js) (open-source JavaScript graphing library)
-* Plotly has other interfaces to plotly.js (Python, Julia, MATLAB, Ruby).
-* Share, collaborate, & modify via web platform (public: free, private: costs)
+---
 
 <div align="center">
-  <img src="../gifs/ggcaption.gif" width="700" height="400" />
+  <a href = "../videos/collaborate.mp4">
+    <img src="../gifs/collaborate.gif" width="1000" height="700" />
+  </a>
 </div>
 
 ## An example
@@ -69,6 +73,7 @@ measles %>%
   crosstalk::SharedData$new(~district) %>%
   plot_ly(x = ~date, y = ~count, color = ~district, text = ~txt) %>%
   add_lines(hoverinfo = "text+name") %>%
+  layout(dragmode = "zoom") %>%
   crosstalk("plotly_hover")
 ```
 
@@ -97,6 +102,12 @@ Information visualization perspective:
     <img src="../gifs/zikar.gif" height="550" width="1000" />
   </a>
 </div>
+
+## Summary
+
+* __Create__ exploratory & expository graphics _quickly_.
+* __Collaborate__ on plotly's web platform.
+* __Reproduce__ with confidence.
 
 # Thank you!
 
