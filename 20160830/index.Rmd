@@ -36,14 +36,14 @@ knitr::opts_chunk$set(
     * A __huge__ community:
         * Over __9000 user contributed packages currently__ on CRAN (best source for latest statistical methodology)
         * The package __surveillance__ implements outbreak detection methods from 13 different publications!
-        * Numerous organization support R development ([R Consortium](https://www.r-consortium.org/), [RStudio](https://www.rstudio.com/home/), [rOpenSci](https://ropensci.org/), etc)
-        
---- 
 
-* __What is plotly?__
-    * R package builds on [plotly.js](https://github.com/plotly/plotly.js) (open-source JavaScript graphing library).
-    * Plotly has other interfaces to plotly.js (Python, Julia, MATLAB, Ruby).
-    * Share, collaborate, & edit (public: free, private: costs)
+        
+## What is plotly?
+
+<div align="center">
+  <img src="plotly.png" width="900" height="500" />
+</div>
+
 
 ---
 
@@ -60,7 +60,7 @@ library(plotly)
 plot_ly(measles, x = ~date, y = ~count, color = ~district, mode = "lines")
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.height=5}
 library(surveillance)
 library(plotly)
 data("measles.weser")
@@ -73,7 +73,7 @@ measles %>%
   crosstalk::SharedData$new(~district) %>%
   plot_ly(x = ~date, y = ~count, color = ~district, text = ~txt) %>%
   add_lines(hoverinfo = "text+name") %>%
-  layout(dragmode = "zoom") %>%
+  layout(dragmode = "zoom", hovermode = "compare", xaxis = list(title = "")) %>%
   crosstalk("plotly_hover")
 ```
 
@@ -98,7 +98,7 @@ Information visualization perspective:
 ## Zika Exploration App
 
 <div align="center">
-  <a href = "https://github.com/cpsievert/zikar"> 
+  <a href = "http://104.131.111.111:3838/zikar"> 
     <img src="../gifs/zikar.gif" height="550" width="1000" />
   </a>
 </div>
