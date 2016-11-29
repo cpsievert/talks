@@ -1,0 +1,76 @@
+---
+title: "Interactive data visualization on the web using R"
+venue: "Iowa State University"
+type: "PhD Defense"
+recording: "none"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+    standalone: false
+css:
+  styles.css
+date: "2016-12-12 <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+<!-- Note to self:
+Make sure this builds off the proposal -- http://cpsievert.github.io/slides/web-graphics/proposal/
+-->
+
+## Bio
+
+* B.A. in Math & Economics, __Saint John’s University__ (06-10)
+* Data Analyst, __College Enrollment & Financial Aid Consulting Firm__ (10-11)
+* M.S. in Statistics, __Iowa State University__ (11-13)
+    * __Thesis__: Tools for Collecting and Analyzing MLB PITCHf/x Data (__pitchRx__).
+* Research Intern, __Statistics Research Department at AT&T Labs__ (Summer '13)
+    * Worked with Dr. Kenny Shirley on __LDAvis__ and __LDAtools__.
+* Took PhD courses and passed written qualifying exam (13-14)
+* Student, __Google Summer of Code__ (Summer '14)
+    * Began work on __animint__
+* Teaching Assistant, __Iowa State University__ (11-15)
+* Mentor, __Google Summer of Code__ (Summer '15 & '16)
+* Software Developer, __plotly__ (Summer '15 - Present)
+* Research Assistant, __Monash University__ (Sept '15 - May '16)
+
+## Dissertation chapters
+
+* Problem Statement
+* Overview
+* Taming PITCHf/x Data with XML2R and pitchRx
+* LDAvis: A method for visualizing and interpreting topics 
+* Extending ggplot2’s grammar of graphics implementation for linked and dynamic graphics on the web
+* __Interactive data visualization on the web using R__
+* __plotly for R__
+* Impact and Future Work
+
+## Why interactive graphics?
+
+* Why should _presentation_ graphics be interactive?
+    * Aids communication in some way
+    * Allows audience to test assumptions & explore ideas
+* Why should _exploratory_ graphics be interactive?
+    * Generate insight _faster_ (iteration time is crucial!!!). 
+      * Find Gestalt, pose queries, and make comparisons (Cook, Buja, & Swayne 2007)
+      * Explore, understand, and diagnose statistical model fit(s) (Wickham, Cook, & Hofmann 2015).
+    
+* Why _web_ graphics?
+  * simple to share, portable (web browser)
+  * encourages composability
+
+# _Web_ graphics usually aren't _practical_ for _exploring_ data
+
+Good for presentation (viz type is _known_), bad for exploration (viz type is _unknown_)
+
+
