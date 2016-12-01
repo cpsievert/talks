@@ -1,0 +1,40 @@
+---
+title: "Interactive data visualization on the web using R"
+venue: "Iowa State University"
+type: "PhD Defense"
+recording: "none"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+    standalone: false
+css:
+  styles.css
+date: "2016-12-12 <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+<!-- Note to self:
+Make sure this builds off the proposal -- http://cpsievert.github.io/slides/web-graphics/proposal/
+-->
+
+## Dissertation chapters
+
+* Problem Statement
+* Overview
+* Taming PITCHf/x Data with XML2R and pitchRx
+* LDAvis: A method for visualizing and interpreting topics 
+* Extending ggplot2’s grammar of graphics implementation for linked and dynamic graphics on the web
+* __Interactive data visualization on the web using R__
+* __plotly for R__
+* Impact and Future Work

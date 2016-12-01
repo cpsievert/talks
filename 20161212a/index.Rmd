@@ -1,0 +1,63 @@
+---
+title: "Interactive data visualization on the web using R"
+venue: "Iowa State University"
+type: "PhD Seminar"
+recording: "none"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+    standalone: false
+css:
+  styles.css
+date: "2016-12-12 <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+## Bio
+
+* Teaching Assistant, __Iowa State University__ (2011-2015)
+* M.S. in Statistics, __Iowa State University__ (2013)
+* Internships with AT&T (2013) and Google (2014)
+* Software Developer, __plotly__ (2015 - Present)
+* Research Assistant, __Monash University__ (Sept 2015 - June 2016)
+
+### Future plans: Freelance software developer, data scientist, statistician
+    * Clients already include: plotly, NOAA, Phronesis
+
+---
+
+<div align="center">
+  <img src="me.jpg" width="550" height="600" />
+</div>
+
+## Why interactive/dynamic graphics?
+
+* Why interactive/dynamic graphics for _presentation_?
+    * Aids communication in some way
+        * Test assumptions, alter parameters, and/or explore details
+* Why interactive/dynamic graphics for _exploration_?
+    * Generate insight _faster_ (iteration time is crucial!!!). 
+        * Identify structure that might otherwise go missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
+        * Find Gestalt, pose queries, and make comparisons ([Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754))
+        * Explore, understand, and diagnose statistical model fit(s) ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+    
+* Why _web_ graphics?
+    * simple to share, portable (web browser)
+    * encourages composability
+
+# _Web_ graphics usually aren't _practical_ for _exploring_ data
+
+Good for presentation (viz type is _known_), bad for exploration (viz type is _unknown_)
+
+
