@@ -138,22 +138,35 @@ TODO: gapminder example?
   <img src="plotly.svg" width="830" height="500" />
 </div>
 
-## Interfacing R with web graphics libraries
+## R packages for interactive web graphics
 
-* Many R packages allow you create interactive web graphics 
-    * rCharts (), animint (), ggvis, rBokeh
+* Many R packages allow you create  web graphics 
+    * A few attempt to be general purpose
+        * <b>rCharts</b> (Vaidyanathan et al. 2014), <b>ggvis</b> (Chang and Wickham 2016), <b>rBokeh</b> (Hafen et al. 2016)
+    * More common to see "specialized" graphics
+        * <b>leaflet</b> (Cheng et al. 2016), <b>dygraphs</b> (Allaire et al. 2016), <b>networkD3</b> (Gandrud et. al. 2016), <b>DiagrammeR</b> (Iannone et al. 2016), <b>d3scatter</b> (Cheng 2016)
     
-* Most of these approaches neglect/ignore linking views.
+* Most approaches neglect/ignore linking views and animation.
+    * <b>ggvis</b> has some linking/animation, but requires a shiny server.
+    * <b>animint</b> (Hocking et al. 2016) supports linking/animation by extending <b>ggplot2</b>'s grammar of graphics implementation (Wickham et al. 2017).
+    
+## R packages for interactive web graphics
 
-* <b>plotly</b> builds on ideas and foundations laid in <b>animint</b>
+* <b>plotly</b> (Sievert el al. 2016) borrows ideas/foundations from <b>animint</b>.
+    * Can also make <b>ggplot2</b> graphics interactive.
+    * Also supports linking/animation.
+    * Better support for focusing and arranging views. 
+    * A "non-ggplot2" interface helps support visualizations not supported by ggplot2 (e.g., 3D charts).
+    * More interaction types (mouse hover, click, click & drag).
+    * Dynamic linked brush coloring (useful for making comparisons).
 
-## Diagnosing models
+# Demo
 
-TODO: GGally example? Show implementation? Quote their paper?
+[See here](https://github.com/cpsievert/talks/tree/gh-pages/20161212a) for the demo script.
 
 ## Future work
 
-* Extensions for more popular <b>ggplot2</b> packages such as <b>ggrepel</b>, <b>ggraph</b>.
+* Extensions for more popular <b>ggplot2</b> packages such as <b>ggrepel</b> <b>ggraph</b>.
 
 
 # Thank you
