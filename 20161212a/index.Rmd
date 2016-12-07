@@ -17,6 +17,7 @@ author: "Carson Sievert"
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(
   message = FALSE,
+  echo = FALSE,
   fig.width = 10,
   fig.height = 4,
   comment = "#>",
@@ -107,9 +108,28 @@ knitr::opts_chunk$set(
 
 * Linked brushing helped reveal a strong geographic pattern in counties with no Stein votes. After some Googling, I discovered [Stein was not on the ballot in these states](http://www.jill2016.com/ballot_access). 
 
-* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754) 
-    * Focusing, arranging, and linking views enable comparisons, queries, and finding Gestalt.
-    * "Multiple linked views are the optimal framework for posing queries about data".
+* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754) -- propose a taxonomy of interaction (focusing, arranging, and linking views) motivated by common data analysis tasks (making comparisons, posing queries, and finding Gestalt).
+    
+## Finding Gestalt & posing queries
+
+```{r}
+library(plotly)
+library(crosstalk)
+
+d <- SharedData$new(txhousing, ~city)
+p <- ggplot(d, aes(date, median, group = city)) + geom_line()
+ggplotly(p, tooltip = "city", dynamicTicks = TRUE, height = 550, width = 1000) %>%
+  rangeslider() %>%
+  layout(
+    margin = list(l = 50), 
+    yaxis = list(title = "Median house price")
+    ) %>%
+  highlight("plotly_hover", "plotly_deselect")
+```
+
+## Querying missing values
+
+<iframe src = "missing.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
     
 ## Making comparisons
 
@@ -143,22 +163,25 @@ TODO: gapminder example?
 * Many R packages allow you create  web graphics 
     * A few attempt to be general purpose
         * <b>rCharts</b> (Vaidyanathan et al. 2014), <b>ggvis</b> (Chang and Wickham 2016), <b>rBokeh</b> (Hafen et al. 2016)
-    * More common to see "specialized" graphics
+    * Many more are domain-specific
         * <b>leaflet</b> (Cheng et al. 2016), <b>dygraphs</b> (Allaire et al. 2016), <b>networkD3</b> (Gandrud et. al. 2016), <b>DiagrammeR</b> (Iannone et al. 2016), <b>d3scatter</b> (Cheng 2016)
     
 * Most approaches neglect/ignore linking views and animation.
-    * <b>ggvis</b> has some linking/animation, but requires a shiny server.
+    * <b>ggvis</b> has some linking/animation, but requires a <b>shiny</b> (Chang 2016) server.
     * <b>animint</b> (Hocking et al. 2016) supports linking/animation by extending <b>ggplot2</b>'s grammar of graphics implementation (Wickham et al. 2017).
     
-## R packages for interactive web graphics
+---
 
-* <b>plotly</b> (Sievert el al. 2016) borrows ideas/foundations from <b>animint</b>.
-    * Can also make <b>ggplot2</b> graphics interactive.
-    * Also supports linking/animation.
-    * Better support for focusing and arranging views. 
-    * A "non-ggplot2" interface helps support visualizations not supported by ggplot2 (e.g., 3D charts).
-    * More interaction types (mouse hover, click, click & drag).
-    * Dynamic linked brush coloring (useful for making comparisons).
+* <b>plotly</b> (Sievert el al. 2016) borrows from and improves upon <b>animint</b>.
+    * Also makes <b>ggplot2</b> graphics interactive.
+    * Provides a hook for <b>ggplot2</b> extension packages.
+        * See <b>ggmosaic</b> (Jeppson et al. 2016), <b>geomnet</b> (Tyner et al. 2016), and <b>ggalt</b> (Rudis et al. 2016).
+    * Special support for ggmatrix objects -- an important data structure for the <b>GGally</b> (Schloerke et al. 2016) package.
+    * Better support for focusing (zoom/pan) and arranging views. 
+    * A "non-ggplot2" interface helps support visualizations not supported by <b>ggplot2</b> (e.g., 3D charts).
+    * Supports more complex brushing interactions 
+        * Make selections via mouse hover, click, click & drag.
+        * Dynamically modify brush color (useful for making comparisons).
 
 # Demo
 
@@ -166,7 +189,11 @@ TODO: gapminder example?
 
 ## Future work
 
-* Extensions for more popular <b>ggplot2</b> packages such as <b>ggrepel</b> <b>ggraph</b>.
+* Keep adding documentation and examples in the [plotly for R](https://cpsievert.github.io/plotly_book) book.
+* Further advance <b>plotly</b>'s support for linking views without <b>shiny</b> (obvious limitations are listed [here](https://cpsievert.github.io/plotly_book/linking-views-without-shiny.html#limitations))
+
+* Extensions for more popular <b>ggplot2</b> extension packages such as <b>ggrepel</b> and <b>ggraph</b>.
+  * Integrating <b>plotly</b>'s support for linking tree-structures with <b>ggraph</b> would be particularly interesting.
 
 
 # Thank you
