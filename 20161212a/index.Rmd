@@ -26,14 +26,11 @@ knitr::opts_chunk$set(
 
 ## Bio
 
-* Teaching Assistant, __Iowa State University__ (2011-2015)
-* M.S. in Statistics, __Iowa State University__ (2013)
+* Teaching Assistant, <b>Iowa State University</b> (2011-2015)
+* M.S. in Statistics, <b>Iowa State University</b> (2013)
 * Internships with AT&T (2013) and Google (2014)
-* Software Developer, __plotly__ (2015 - Present)
-* Research Assistant, __Monash University__ (Sept 2015 - June 2016)
-
-### Future plans: Freelance software developer, data scientist, statistician
-    * Clients already include: plotly, NOAA, Phronesis
+* Software Developer, <b>plotly</b> (2015 - Present)
+* Research Assistant, <b>Monash University</b> (Sept 2015 - June 2016)
 
 ---
 
@@ -41,23 +38,124 @@ knitr::opts_chunk$set(
   <img src="me.jpg" width="550" height="600" />
 </div>
 
+## Future plans
+
+#### Freelance software developer & data scientist
+<p></p>
+* My clients already include: plotly, NOAA, Phronesis
+* In addition to developing <b>plotly</b>, I plan on delivering "data products" (e.g. interactive web apps, dynamic reports/documents, etc.)
+* Businesses already building products around <b>plotly</b>: [Omni Analytics](https://omnianalytics.io/), [TCBD Analytics](http://tcbanalytics.com/)
+
+
 ## Why interactive/dynamic graphics?
 
-* Why interactive/dynamic graphics for _presentation_?
-    * Aids communication in some way
-        * Test assumptions, alter parameters, and/or explore details
-* Why interactive/dynamic graphics for _exploration_?
-    * Generate insight _faster_ (iteration time is crucial!!!). 
-        * Identify structure that might otherwise go missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
-        * Find Gestalt, pose queries, and make comparisons ([Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754))
-        * Explore, understand, and diagnose statistical model fit(s) ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+* Why interactive/dynamic graphics for <b>presentation</b>?
+    * Enhances knowledge transfer in some way (see [New York Times](http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html), [USA Today](http://www.usatoday.com/topic/E01C4890-85A2-4E0B-A3DD-58BD88E71251/interactive-graphics/), [538](http://fivethirtyeight.com/features/gun-deaths/), [setosa](http://setosa.io/))
+* Why interactive/dynamic graphics for <b>exploration</b>?
+    * Identify structure that might otherwise go missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
+    * Find Gestalt, pose queries, & make comparisons ([Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754))
+    * Explore, understand, & diagnose statistical model fit(s) ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+    * <b>Generate insights faster (iteration time is crucial!)</b>
     
 * Why _web_ graphics?
     * simple to share, portable (web browser)
     * encourages composability
 
-# _Web_ graphics usually aren't _practical_ for _exploring_ data
+## 2016 Election Outcomes by County ([source](http://rpubs.com/dgrtwo/county-results))
 
-Good for presentation (viz type is _known_), bad for exploration (viz type is _unknown_)
+```
+     County |   State | TotalVotes| Clinton| Johnson| Stein| Trump| Population|    Area
+    --------| --------| ----------|--------|--------|------|------|-----------|--------
+1   autauga | alabama |      24661|   0.240|   0.022| 0.004| 0.734|      54571|  594.44
+2   baldwin | alabama |      94090|   0.196|   0.026| 0.005| 0.774|     182265| 1589.78
+3   barbour | alabama |      10390|   0.467|   0.009| 0.002| 0.523|      27457|  884.88
+4      bibb | alabama |       8748|   0.214|   0.014| 0.002| 0.770|      22915|  622.58
+5    blount | alabama |      25384|   0.085|   0.013| 0.004| 0.899|      57322|  644.78
+6   bullock | alabama |       4701|   0.751|   0.005| 0.002| 0.242|      10914|  622.81
+7    butler | alabama |       8685|   0.428|   0.007| 0.001| 0.563|      20947|  776.83
+8   calhoun | alabama |      47376|   0.279|   0.024| 0.006| 0.692|     118572|  605.87
+9  chambers | alabama |      13778|   0.418|   0.012| 0.003| 0.566|      34215|  596.53
+10 cherokee | alabama |      10503|   0.145|   0.014| 0.002| 0.839|      25989|  553.70
+# ... with 3,101 more rows
+```
+
+* Is there a relationship between population density and voting preference? 
+
+---
+
+<!-- Make movie? Original graph should be wider/shorter? -->
+
+<iframe src = "votes.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
+
+---
+
+<iframe src = "map.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
+
+---
+
+<a href="election.mp4">
+  <img src="election.png" width="1050" height="500" />
+</a>
+
+## Motivating interactivity with data analysis tasks
+
+* Initial scatterplot revealed strange pattern in Stein votes and pop density.
+
+* Interactive focusing (zoom/pan) helped reveal vote proportions are rounded to the thousands.
+
+* Interactive identification (tooltip on mouse hover) helped reveal various details about counties.
+
+* Linked brushing helped reveal a strong geographic pattern in counties with no Stein votes. After some Googling, I discovered [Stein was not on the ballot in these states](http://www.jill2016.com/ballot_access). 
+
+* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754) 
+    * Focusing, arranging, and linking views enable comparisons, queries, and finding Gestalt.
+    * "Multiple linked views are the optimal framework for posing queries about data".
+    
+## Making comparisons
+
+TODO: eechidna?
+
+## Brushing animated views
+
+TODO: gapminder example?
 
 
+## The problem with exploratory web graphics
+
+* Web graphics are useful for conveying information (viz is _known_),  but often impractical for exploration (viz is _unknown_).
+
+<!--
+* Web technologies (HTML, JavaScript, CSS, SVG) lack the computational resources for seamless iteration between data manipulation/visualization/modeling.
+-->
+
+<div align="center">
+  <img src="workflow.svg" width="830" height="300" />
+</div>
+
+## The plotly ecosystem
+
+<div align="center">
+  <img src="plotly.svg" width="830" height="500" />
+</div>
+
+## Interfacing R with web graphics libraries
+
+* Many R packages allow you create interactive web graphics 
+    * rCharts (), animint (), ggvis, rBokeh
+    
+* Most of these approaches neglect/ignore linking views.
+
+* <b>plotly</b> builds on ideas and foundations laid in <b>animint</b>
+
+## Diagnosing models
+
+TODO: GGally example? Show implementation? Quote their paper?
+
+## Future work
+
+* Extensions for more popular <b>ggplot2</b> packages such as <b>ggrepel</b>, <b>ggraph</b>.
+
+
+# Thank you
+
+* Slides -- <http://bit.ly/phd-seminar>

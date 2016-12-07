@@ -38,3 +38,12 @@ Make sure this builds off the proposal -- http://cpsievert.github.io/slides/web-
 * __Interactive data visualization on the web using R__
 * __plotly for R__
 * Impact and Future Work
+
+
+
+
+
+
+* Slides -- <http://bit.ly/phd-defense>
+
+# Thank you
