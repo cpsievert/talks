@@ -10,7 +10,7 @@ output:
     standalone: false
 css:
   styles.css
-date: "2016-12-12 <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+date: "2016-12-12  <br /> <br /> Slides available at <http://bit.ly/phd-seminar> <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert"
 ---
 
@@ -25,37 +25,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Bio
-
-* Teaching Assistant, <b>Iowa State University</b> (2011-2015)
-* M.S. in Statistics, <b>Iowa State University</b> (2013)
-* Internships with AT&T (2013) and Google (2014)
-* Software Developer, <b>plotly</b> (2015 - Present)
-* Research Assistant, <b>Monash University</b> (Sept 2015 - June 2016)
-
----
-
-<div align="center">
-  <img src="me.jpg" width="550" height="600" />
-</div>
-
-## Future plans
-
-#### Freelance software developer & data scientist
-<p></p>
-* My clients already include: plotly, NOAA, Phronesis
-* In addition to developing <b>plotly</b>, I plan on delivering "data products" (e.g. interactive web apps, dynamic reports/documents, etc.)
-* Businesses already building products around <b>plotly</b>: [Omni Analytics](https://omnianalytics.io/), [TCBD Analytics](http://tcbanalytics.com/)
-
-
 ## Why interactive/dynamic graphics?
 
 * Why interactive/dynamic graphics for <b>presentation</b>?
     * Enhances knowledge transfer in some way (see [New York Times](http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html), [USA Today](http://www.usatoday.com/topic/E01C4890-85A2-4E0B-A3DD-58BD88E71251/interactive-graphics/), [538](http://fivethirtyeight.com/features/gun-deaths/), [setosa](http://setosa.io/))
 * Why interactive/dynamic graphics for <b>exploration</b>?
     * Identify structure that might otherwise go missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
+    * Better understand & diagnose statistical model fit(s) ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
     * Find Gestalt, pose queries, & make comparisons ([Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754))
-    * Explore, understand, & diagnose statistical model fit(s) ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
     * <b>Generate insights faster (iteration time is crucial!)</b>
     
 * Why _web_ graphics?
@@ -129,18 +106,61 @@ ggplotly(p, tooltip = "city", dynamicTicks = TRUE, height = 550, width = 1000) %
 
 ## Querying missing values
 
-<iframe src = "missing.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
+<iframe src = "missing.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
+
+## Querying via direct/indirect manipulation
+
+<iframe src = "epl" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
+
+## Finding Gestalt with animation & highlighting
+
+```{r, eval = FALSE, echo = FALSE}
+# whoops, this is currently broken?
+# devtools::install_github("ropensci/plotly@9370c7476f5355ad810ce5e557a08ae33c470746")
+library(gapminder)
+g <- crosstalk::SharedData$new(gapminder, ~continent)
+gg <- ggplot(g, aes(gdpPercap, lifeExp, color = continent, frame = year)) +
+  geom_point(aes(size = pop, ids = country)) +
+  geom_smooth(se = FALSE, method = "lm") +
+  scale_x_log10()
+ggplotly(gg, tooltip = c("continent", "country", "population")) %>% 
+    hide_legend() %>%
+    layout(xaxis = list(title = "GDP per capita"), yaxis = list(title = "Life expectancy")) %>%
+  highlight("plotly_click") %>% animation_opts(easing = "linear")
+```
+
+<a href="gapminder.html">
+ <div align="center">
+   <img src="gapminder.png" width="1000" height="550"/>
+ </div>
+</a>
+
     
 ## Making comparisons
 
-TODO: eechidna?
+<iframe src = "eechidna" style="border: 0; position:absolute; top:100; left:100; right:0; bottom:0; width:80%; height:70%"></iframe>
 
-## Brushing animated views
+## Making comparisons
 
-TODO: gapminder example?
+<div align="center">
+  <img src="eechidna.svg" width="1000" height="550" />
+</div>
 
+## Making comparisons
 
-## The problem with exploratory web graphics
+<div align="center">
+  <img src="eechidna-diff.png" width="1000" height="500" />
+</div>
+
+## Linked Tree Brushing
+
+<a href="USArrests">
+ <div align="center">
+   <img src="USArrests.png" width="600" height="550"/>
+ </div>
+</a>
+
+## The problem with web graphics for data analysis
 
 * Web graphics are useful for conveying information (viz is _known_),  but often impractical for exploration (viz is _unknown_).
 
@@ -149,8 +169,12 @@ TODO: gapminder example?
 -->
 
 <div align="center">
-  <img src="workflow.svg" width="830" height="300" />
+  <img src="workflow.svg" width="700" height="250" />
 </div>
+
+* <b>The reality:</b> analysts have to learn/juggle many technologies
+* <b>My mission:</b> make web graphics practically useful for exploration.
+    * A single programming interface should make 80% of what you want to do <b>easy</b> and the remaining 20% <b>possible</b>.
 
 ## The plotly ecosystem
 
@@ -160,7 +184,7 @@ TODO: gapminder example?
 
 ## R packages for interactive web graphics
 
-* Many R packages allow you create  web graphics 
+* Many R packages allow you create web graphics without HTML/JavaScript/CSS knowledge
     * A few attempt to be general purpose
         * <b>rCharts</b> (Vaidyanathan et al. 2014), <b>ggvis</b> (Chang and Wickham 2016), <b>rBokeh</b> (Hafen et al. 2016)
     * Many more are domain-specific
@@ -190,12 +214,19 @@ TODO: gapminder example?
 ## Future work
 
 * Keep adding documentation and examples in the [plotly for R](https://cpsievert.github.io/plotly_book) book.
-* Further advance <b>plotly</b>'s support for linking views without <b>shiny</b> (obvious limitations are listed [here](https://cpsievert.github.io/plotly_book/linking-views-without-shiny.html#limitations))
-
-* Extensions for more popular <b>ggplot2</b> extension packages such as <b>ggrepel</b> and <b>ggraph</b>.
-  * Integrating <b>plotly</b>'s support for linking tree-structures with <b>ggraph</b> would be particularly interesting.
+* Further advance <b>plotly</b>'s support for linking views without <b>shiny</b>
+    * Add more support for displaying statistical summaries of selections.
+    * Make other (worthwhile) packages aware of <b>plotly</b>'s linking features (there is already some initial support in [leaflet](https://vimeo.com/192710308) and [parcoords]())
+    * Lower hanging fruit is listed [here](https://cpsievert.github.io/plotly_book/linking-views-without-shiny.html#limitations))
+* Support for more popular <b>ggplot2</b> extension packages such as <b>ggrepel</b> and <b>ggraph</b>.
+    * Integrating <b>plotly</b>'s support for linking tree-structures with <b>ggraph</b> would be particularly interesting.
 
 
 # Thank you
 
 * Slides -- <http://bit.ly/phd-seminar>
+
+* Contact
+    * Email -- <cpsievert1@gmail.com>
+    * Twitter -- <http://twitter.com/cpsievert>
+    * GitHub -- <http://github.com/cpsievert>

@@ -28,6 +28,29 @@ knitr::opts_chunk$set(
 Make sure this builds off the proposal -- http://cpsievert.github.io/slides/web-graphics/proposal/
 -->
 
+## Bio
+
+* Teaching Assistant, <b>Iowa State University</b> (2011-2015)
+* M.S. in Statistics, <b>Iowa State University</b> (2013)
+* Internships with AT&T (2013) and Google (2014)
+* Software Developer, <b>plotly</b> (2015 - Present)
+* Research Assistant, <b>Monash University</b> (Sept 2015 - June 2016)
+
+---
+
+<div align="center">
+  <img src="me.jpg" width="550" height="600" />
+</div>
+
+## Future plans
+
+#### Freelance software developer & data scientist
+<p></p>
+* My clients already include: plotly, NOAA, Phronesis
+* In addition to developing <b>plotly</b>, I plan on delivering "data products" (e.g. interactive web apps, dynamic reports/documents, etc.)
+* Businesses already building products around <b>plotly</b>: [Omni Analytics](https://omnianalytics.io/), [TCBD Analytics](http://tcbanalytics.com/)
+
+
 ## Dissertation chapters
 
 * Problem Statement

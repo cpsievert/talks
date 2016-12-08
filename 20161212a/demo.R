@@ -5,9 +5,9 @@ View(flea)
 
 # generalized pair plot 
 # nice for exploratory/descriptive purposes
-ggpairs(flea[2:7])
+p <- ggpairs(flea[2:7])
 # ggplotly() adds zoom/pan, identification, and linked brushing
-ggplotly()
+ggplotly(p)
 
 
 # automatic/manual should be a factor
