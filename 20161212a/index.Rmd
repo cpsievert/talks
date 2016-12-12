@@ -25,21 +25,51 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Why interactive/dynamic graphics?
+## Why interactive graphics?
 
-* Why interactive/dynamic graphics for <b>presentation</b>?
-    * Enhances knowledge transfer in some way (see [New York Times](http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html), [USA Today](http://www.usatoday.com/topic/E01C4890-85A2-4E0B-A3DD-58BD88E71251/interactive-graphics/), [538](http://fivethirtyeight.com/features/gun-deaths/), [setosa](http://setosa.io/))
-* Why interactive/dynamic graphics for <b>exploration</b>?
+* Why interactive graphics for <b>presentation</b>?
+    * Enhances knowledge transfer in some way (see [New York Times](http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html))
+* Why interactive graphics for <b>exploration</b>?
     * Identify structure that might otherwise go missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
-    * Better understand & diagnose statistical model fit(s) ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
-    * Find Gestalt, pose queries, & make comparisons ([Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754))
+    * Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
     * <b>Generate insights faster (iteration time is crucial!)</b>
     
-* Why _web_ graphics?
-    * simple to share, portable (web browser)
-    * encourages composability
+<div align="center">
+  <img src="workflow.svg" width="700" height="250" />
+</div>
+    
+## Why interactive graphics _on the web_?    
 
-## 2016 Election Outcomes by County ([source](http://rpubs.com/dgrtwo/county-results))
+* Portable (i.e., cross-platform)
+* Simple to share
+* Encourages composability (i.e., reports, dashboards, etc)
+* Enables integration of multiple systems (1 + 1 > 2)
+
+<!-- TODO: maybe a graphic of two systems talking to each other? -->
+
+## The problem with web graphics for data analytics
+
+* Great for conveying information (viz is _known_), but impractical for exploration (viz is _unknown_).
+
+<div align="center">
+  <img src="workflow.svg" width="700" height="250" />
+</div>
+
+* <b>The reality:</b> analysts have to learn/juggle many technologies.
+* <b>My goal:</b> An R interface that makes 80% of techniques <b>seamless</b>, <b>quick</b>, and <b>easy</b> (w/o knowledge of web technology).
+* <b>My contribution:</b> Designed and implemented a linked brushing framework.
+
+## Implemented as an R package
+
+<div align="center">
+  <img src="plotly.svg" width="830" height="500" />
+</div>
+
+# A demo of the workflow
+
+[See here](https://github.com/cpsievert/talks/tree/gh-pages/20161212a) for the demo script.
+
+## 2016 Election Outcomes by County ([Politico](http://rpubs.com/dgrtwo/county-results))
 
 ```
      County |   State | TotalVotes| Clinton| Johnson| Stein| Trump| Population|    Area
@@ -61,33 +91,19 @@ knitr::opts_chunk$set(
 
 ---
 
-<!-- Make movie? Original graph should be wider/shorter? -->
-
 <iframe src = "votes.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
 
----
+## Choropleth of voter turnout
 
 <iframe src = "map.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
 
----
+## Linking proportions with geography
 
 <a href="election.mp4">
   <img src="election.png" width="1050" height="500" />
 </a>
-
-## Motivating interactivity with data analysis tasks
-
-* Initial scatterplot revealed strange pattern in Stein votes and pop density.
-
-* Interactive focusing (zoom/pan) helped reveal vote proportions are rounded to the thousands.
-
-* Interactive identification (tooltip on mouse hover) helped reveal various details about counties.
-
-* Linked brushing helped reveal a strong geographic pattern in counties with no Stein votes. After some Googling, I discovered [Stein was not on the ballot in these states](http://www.jill2016.com/ballot_access). 
-
-* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754) -- propose a taxonomy of interaction (focusing, arranging, and linking views) motivated by common data analysis tasks (making comparisons, posing queries, and finding Gestalt).
     
-## Finding Gestalt & posing queries
+## Brushing to combat overplotting
 
 ```{r}
 library(plotly)
@@ -96,23 +112,22 @@ library(crosstalk)
 d <- SharedData$new(txhousing, ~city)
 p <- ggplot(d, aes(date, median, group = city)) + geom_line()
 ggplotly(p, tooltip = "city", dynamicTicks = TRUE, height = 550, width = 1000) %>%
-  rangeslider() %>%
   layout(
     margin = list(l = 50), 
     yaxis = list(title = "Median house price")
     ) %>%
-  highlight("plotly_hover", "plotly_deselect")
+  highlight("plotly_click", "plotly_doubleclick")
 ```
 
 ## Querying missing values
 
 <iframe src = "missing.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
 
-## Querying via direct/indirect manipulation
+## Querying seasons directly/indirectly
 
 <iframe src = "epl" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
 
-## Finding Gestalt with animation & highlighting
+## Brushing plus animation
 
 ```{r, eval = FALSE, echo = FALSE}
 # whoops, this is currently broken?
@@ -160,67 +175,58 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
  </div>
 </a>
 
-## The problem with web graphics for data analysis
+## The bigger picture
 
-* Web graphics are useful for conveying information (viz is _known_),  but often impractical for exploration (viz is _unknown_).
+* All examples could classify as focusing, arranging, and/or linking views.
+* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754): {focusing, arranging, linking} => {find Gestalt, pose queries, make comparisons}
+
+<div align="center">
+  <img src="taxonomy.svg" width="900" height="400" />
+</div>
 
 <!--
-* Web technologies (HTML, JavaScript, CSS, SVG) lack the computational resources for seamless iteration between data manipulation/visualization/modeling.
+## Motivating interactivity with data analysis tasks
+
+* Interactive focusing (zoom/pan) helped reveal vote proportions are rounded to the thousands.
+
+* Interactive identification (tooltip on mouse hover) helped reveal various details about counties.
+
+* Linked brushing helped reveal a strong geographic pattern in counties with no Stein votes. After some Googling, I discovered [Stein was not on the ballot in these states](http://www.jill2016.com/ballot_access). 
+
+* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754) -- propose a taxonomy of interaction (focusing, arranging, and linking views) motivated by common data analysis tasks (making comparisons, posing queries, and finding Gestalt).
 -->
 
-<div align="center">
-  <img src="workflow.svg" width="700" height="250" />
-</div>
+## Similar work
 
-* <b>The reality:</b> analysts have to learn/juggle many technologies
-* <b>My mission:</b> make web graphics practically useful for exploration.
-    * A single programming interface should make 80% of what you want to do <b>easy</b> and the remaining 20% <b>possible</b>.
-
-## The plotly ecosystem
-
-<div align="center">
-  <img src="plotly.svg" width="830" height="500" />
-</div>
-
-## R packages for interactive web graphics
-
-* Many R packages allow you create web graphics without HTML/JavaScript/CSS knowledge
-    * A few attempt to be general purpose
-        * <b>rCharts</b> (Vaidyanathan et al. 2014), <b>ggvis</b> (Chang and Wickham 2016), <b>rBokeh</b> (Hafen et al. 2016)
-    * Many more are domain-specific
-        * <b>leaflet</b> (Cheng et al. 2016), <b>dygraphs</b> (Allaire et al. 2016), <b>networkD3</b> (Gandrud et. al. 2016), <b>DiagrammeR</b> (Iannone et al. 2016), <b>d3scatter</b> (Cheng 2016)
+* General purpose:
+    * <b>rCharts</b> (Vaidyanathan et al. 2014), <b>ggvis</b> (Chang and Wickham 2016), <b>rBokeh</b> (Hafen et al. 2016), <b>plotly</b> (Sievert el al. 2016)
+* Domain specific:
+    * <b>leaflet</b> (Cheng et al. 2016), <b>dygraphs</b> (Allaire et al. 2016), <b>networkD3</b> (Gandrud et. al. 2016), <b>DiagrammeR</b> (Iannone et al. 2016), <b>d3scatter</b> (Cheng 2016)
     
 * Most approaches neglect/ignore linking views and animation.
     * <b>ggvis</b> has some linking/animation, but requires a <b>shiny</b> (Chang 2016) server.
     * <b>animint</b> (Hocking et al. 2016) supports linking/animation by extending <b>ggplot2</b>'s grammar of graphics implementation (Wickham et al. 2017).
-    
+
 ---
 
 * <b>plotly</b> (Sievert el al. 2016) borrows from and improves upon <b>animint</b>.
     * Also makes <b>ggplot2</b> graphics interactive.
     * Provides a hook for <b>ggplot2</b> extension packages.
         * See <b>ggmosaic</b> (Jeppson et al. 2016), <b>geomnet</b> (Tyner et al. 2016), and <b>ggalt</b> (Rudis et al. 2016).
-    * Special support for ggmatrix objects -- an important data structure for the <b>GGally</b> (Schloerke et al. 2016) package.
+    * Special support for ggmatrix objects (from <b>GGally</b> (Schloerke et al. 2016)).
     * Better support for focusing (zoom/pan) and arranging views. 
     * A "non-ggplot2" interface helps support visualizations not supported by <b>ggplot2</b> (e.g., 3D charts).
     * Supports more complex brushing interactions 
         * Make selections via mouse hover, click, click & drag.
         * Dynamically modify brush color (useful for making comparisons).
 
-# Demo
-
-[See here](https://github.com/cpsievert/talks/tree/gh-pages/20161212a) for the demo script.
-
 ## Future work
 
 * Keep adding documentation and examples in the [plotly for R](https://cpsievert.github.io/plotly_book) book.
-* Further advance <b>plotly</b>'s support for linking views without <b>shiny</b>
-    * Add more support for displaying statistical summaries of selections.
-    * Make other (worthwhile) packages aware of <b>plotly</b>'s linking features (there is already some initial support in [leaflet](https://vimeo.com/192710308) and [parcoords]())
-    * Lower hanging fruit is listed [here](https://cpsievert.github.io/plotly_book/linking-views-without-shiny.html#limitations))
+* Further advance <b>plotly</b>'s support for linking views (without <b>shiny</b>).
 * Support for more popular <b>ggplot2</b> extension packages such as <b>ggrepel</b> and <b>ggraph</b>.
     * Integrating <b>plotly</b>'s support for linking tree-structures with <b>ggraph</b> would be particularly interesting.
-
+* Enable _interactive_ arranging of views.
 
 # Thank you
 

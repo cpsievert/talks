@@ -6,12 +6,12 @@ library(tidyr)
 library(readxl)
 
 # download area and population info from Census
-if (!file.exists("LND01.xls")) {
+#if (!file.exists("LND01.xls")) {
   download.file("http://www2.census.gov/prod2/statcomp/usac/excel/LND01.xls", "LND01.xls")
-}
-if (!file.exists("POP01.xls")) {
+#}
+#if (!file.exists("POP01.xls")) {
   download.file("http://www2.census.gov/prod2/statcomp/usac/excel/POP01.xls", "POP01.xls")
-}
+#}
 
 # according to metadata, this is Land Area in 2010 and resident population in 2010
 us_county_area <- read_excel("LND01.xls") %>%
@@ -57,9 +57,9 @@ d1 <- county_data %>%
 sd1 <- SharedData$new(d1, ~ID, group = "A")
 
 p1 <- ggplot(d1, aes(x = log(Population / Area), y = value)) + 
-  geom_point(aes(text = ID, color = TotalVotes / Population), 
+  geom_point(aes(text = ID),# color = TotalVotes / Population), 
              alpha = 0.2, data = sd1) + 
-  geom_smooth() + 
+  geom_smooth(se = FALSE) + 
   facet_wrap(~variable, scales = "free") + 
   labs(x = NULL, y = NULL) +
   theme_bw() +
@@ -68,7 +68,7 @@ p1 <- ggplot(d1, aes(x = log(Population / Area), y = value)) +
         legend.position = "none")
 
 gg1 <- ggplotly(p1, tooltip = "text", dynamicTicks = T, 
-                height = 800, width = 900) %>%
+                height = 650, width = 900) %>%
   add_annotations("log(Population / Area)", font = list(size = 20),
                   x = 0.51, y = -0.07, ax = 10, ay = -50,
                   xref = "paper", yref = "paper", showarrow = FALSE) %>%
