@@ -24,6 +24,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, echo = FALSE}
+library(plotly)
+```
+
 ## Bio
 
 * Teaching Assistant, <b>Iowa State University</b> (2011-2015)
@@ -48,8 +52,6 @@ knitr::opts_chunk$set(
 
 ## Dissertation chapters
 
-* Problem Statement
-* Overview
 * Taming PITCHf/x Data with XML2R and pitchRx
 * LDAvis: A method for visualizing and interpreting topics 
 * Extending ggplot2’s grammar of graphics implementation for linked and dynamic graphics on the web
@@ -58,11 +60,10 @@ knitr::opts_chunk$set(
     * Multiple linked views
         * Linking views with shiny
         * <b>Linking views without shiny</b>
-* Impact and Future Work
 
 ## Why link views without shiny?
 
-> "Multiple linked views are the optimal framework for posing queries about data" ([Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754))
+> "Multiple linked views are the optimal framework for posing queries about data" ([Cook, Buja, & Swayne 1996](https://www.jstor.org/stable/1390754))
 
 <div align="center">
   <img src="server-client.svg" width="900" height="300" />
@@ -73,7 +74,7 @@ knitr::opts_chunk$set(
 ## Linking as a database query
 
 * First described in detail by [Buja, McDonald, Michalak, and Stuetzle 1991](https://www.stat.washington.edu/wxs/Visualization-papers/focusing-and-linking.pdf).
-* Compared to other linking frameworks by [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754).
+* Compared to other linking frameworks by [Cook, Buja, & Swayne 1996](https://www.jstor.org/stable/1390754).
 * Snap-together visualizations (on Windows) [North and Shneiderman 1999](http://www.cs.umd.edu/hcil/snap/snap-avi00.pdf).
 * <b>crosstalk</b> (Cheng et al. 2016) proposes similar standards for linking web graphics from R.
 
@@ -87,23 +88,26 @@ knitr::opts_chunk$set(
   <img src="1-to-1.png" width="1000" height="550" />
 </div>
 
-## 1-to-n linking
+## 1-to-n (i.e., group) linking
 
-<iframe src = "missing.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
+<iframe src = "highlight.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
 
----
-
-<div align="center">
-  <img src="pipeline.svg" width="900" height="600" />
-</div>
-
----
+## 1-to-n (i.e., group) linking
 
 ```{r, eval = FALSE}
 library(plotly)
-library(dplyr)
 library(crosstalk)
 
+d <- SharedData$new(txhousing, ~city)
+p <- ggplot(d, aes(date, median, group = city)) + geom_line()
+ggplotly(p, tooltip = "city")
+```
+
+## 1-to-n (i.e., group) linking
+
+<iframe src = "missing-points.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
+
+```{r, eval = FALSE, echo = FALSE}
 sd <- SharedData$new(txhousing, ~city)
 
 base <- plot_ly(sd, color = I("black")) %>%
@@ -113,18 +117,98 @@ p1 <- base %>%
   summarise(has = sum(is.na(median))) %>%
   filter(has > 0) %>%
   arrange(has) %>%
-  add_bars(x = ~has, y = ~factor(city, levels = city), hoverinfo = "none")
+  add_markers(x = ~has, y = ~factor(city, levels = city)) %>%
+  layout(
+    xaxis = list(title = "Number of months missing"),
+    yaxis = list(title = "")
+  ) 
+
+p2 <- base %>%
+  add_lines(x = ~date, y = ~median, alpha = 0.3) %>%
+  layout(xaxis = list(title = ""))
+
+w <- subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %>% 
+  layout(margin = list(l = 120), dragmode = "select") %>%
+  hide_legend() %>%
+  highlight(off = "plotly_deselect", color = "red")
+htmlwidgets::saveWidget(w, "missing-points.html")
+```
+
+---
+
+<div align="center">
+  <img src="pipeline.svg" width="900" height="600" />
+</div>
+
+## Data-pipeline
+
+```{r}
+library(dplyr)
+
+txhousing %>%
+  group_by(city) %>%
+  summarise(has = sum(is.na(median))) %>%
+  filter(has > 0) %>%
+  arrange(has)
+```
+
+## Data-plot-pipeline
+
+```{r, eval=FALSE, fig.width=3}
+library(plotly)
+
+## <b>
+plot_ly(txhousing, color = I("black")) %>%
+## </b>
+  group_by(city) %>%
+  summarise(has = sum(is.na(median))) %>%
+  filter(has > 0) %>%
+  arrange(has) %>%
+## <b>
+  add_markers(x = ~has, y = ~factor(city, levels = city))
+## </b>
+```
+
+```{r, fig.width=3, fig.height=3, echo = FALSE}
+library(plotly)
+
+plot_ly(txhousing, color = I("black")) %>%
+  group_by(city) %>%
+  summarise(has = sum(is.na(median))) %>%
+  filter(has > 0) %>%
+  arrange(has) %>%
+  add_markers(x = ~has, y = ~factor(city, levels = city)) %>%
+  layout(yaxis = list(title = "")) %>%
+  config(displayModeBar = FALSE)
+```
+
+## SharedData-plot-pipeline
+
+```{r, eval = FALSE}
+library(crosstalk)
+sd <- SharedData$new(txhousing, ~city)
+
+base <- plot_ly(sd, color = I("black")) %>%
+  group_by(city)
+
+p1 <- base %>%
+  summarise(has = sum(is.na(median))) %>%
+  filter(has > 0) %>%
+  arrange(has) %>%
+  add_markers(x = ~has, y = ~factor(city, levels = city))
 
 p2 <- base %>%
   add_lines(x = ~date, y = ~median, alpha = 0.3)
 
 subplot(p1, p2, widths = c(0.3, 0.7)) %>% 
-  highlight(on = "plotly_click", off = "plotly_unhover", color = "red")
+## <b>
+  highlight(persistent = TRUE, dynamic = TRUE)
+## </b>
 ```
 
 ## m-to-n linking
 
-<iframe src = "eechidna" style="border: 0; position:absolute; top:100; left:100; right:0; bottom:0; width:80%; height:70%"></iframe>
+<iframe src = "missing-points" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:80%"></iframe>
 
 ## Displaying aggregated selections
 
@@ -190,7 +274,7 @@ library(crosstalk)
 library(plotly)
 SharedData$new(d, ~key) %>%
   plot_ly(x = ~x, y = ~y, text = ~txt, hoverinfo = "text") %>% 
-  highlight(color = "red")
+  highlight(color = "red") %>% config(displayModeBar = FALSE)
 ```
 
 ## Devil in the details
@@ -325,7 +409,7 @@ p %>% ggplotly() %>% plotly_json(T)
 * Further advance <b>plotly</b>'s support for linking views without <b>shiny</b>
     * Add more support for displaying statistical summaries of selections.
     * Integrate <b>plotly</b>'s linking features with more projects (see <b>leaflet</b> (Cheng et al. 2016) and <b>parcoords</b> (Russell et al. 2016))
-    * Lower hanging fruit is listed [here](https://cpsievert.github.io/plotly_book/linking-views-without-shiny.html#limitations))
+    * Lower hanging fruit is listed [here](https://cpsievert.github.io/plotly_book/linking-views-without-shiny.html#limitations)
 * Support for more popular <b>ggplot2</b> extension packages such as <b>ggrepel</b> and <b>ggraph</b>.
     * Integrating <b>plotly</b>'s support for linking tree/network structures with <b>ggraph</b>/<b>geomnet</b> would be particularly interesting.
 
