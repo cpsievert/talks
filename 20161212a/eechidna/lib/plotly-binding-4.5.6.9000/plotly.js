@@ -529,8 +529,9 @@ haystack is a subset of the needleSet. findNestedMatches() returns
 */
 
 function getMatchFunc(trace) {
+  //return findMatches;
   return (trace._isNestedKey) ? findNestedMatches : 
-    (trace._isSimpleKey) ? findSimpleMatches : findMatches;
+    (trace._isSimpleKey && trace.type !== "box") ? findSimpleMatches : findMatches;
 }
 
 // find matches for "flat" keys

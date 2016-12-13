@@ -1,36 +1,11 @@
 library(plotly)
 library(GGally)
 
-View(mpg)
-
-# generalized pair plot 
-# nice for exploratory/descriptive purposes
-m <- SharedData$new(mpg)
-p <- ggpairs(m, aes(colour = class), c(3, 5, 8, 11))
-ggplotly(p, height = 650, width = 1200)
-ggplotly(p, height = 650, width = 1200) %>% highlight("plotly_click")
-
-
-
-p <- ggpairs(flea, aes(colour = species))
-ggplotly(p, height = 650, width = 1200)
-
-
-names(mpg)
-
-
-
-
-View(flea)
-
-
-
-m <- step(lm(cty ~ ., data = mpg), trace = F)
-
 # generalized pair plot 
 # nice for exploratory/descriptive purposes
 p <- ggpairs(flea[2:7])
-# ggplotly() adds zoom/pan, identification, and linked brushing
+# ggplotly() adds zoom/pan, identification, 
+# and linked brushing
 ggplotly(p, height = 600, width = 1000)
 
 # automatic/manual should be a factor
@@ -59,3 +34,30 @@ ggplotly(p, height = 400, width = 800) %>%
   highlight("plotly_hover")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# # generalized pair plot 
+# # nice for exploratory/descriptive purposes
+# m <- SharedData$new(mpg)
+# p <- ggpairs(m, aes(colour = class), c(3, 5, 8, 11))
+# ggplotly(p, height = 650, width = 1200)
+# ggplotly(p, height = 650, width = 1200) %>% highlight("plotly_click")
+# 
+# 
+# 
+# p <- ggpairs(flea, aes(colour = species))
+# ggplotly(p, height = 650, width = 1200)
+# 
+# 
+# names(mpg)
+# 

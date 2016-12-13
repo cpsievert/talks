@@ -61,7 +61,7 @@ mapRatio <- with(eechidna::nat_map, diff(range(long)) / diff(range(lat)))
 map <- ggMap %>% 
   ggplotly(tooltip = "text", height = 400, width = 400 * mapRatio) %>% 
   style(hoverinfo = "none", traces = 1) %>%
-  highlight(NULL, persistent = TRUE)
+  highlight(persistent = TRUE)
 
 html <- tags$div(
   style = "display: flex; flex-wrap: wrap",

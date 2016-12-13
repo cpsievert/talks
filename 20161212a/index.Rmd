@@ -28,9 +28,9 @@ knitr::opts_chunk$set(
 ## Why interactive graphics?
 
 * Why interactive graphics for <b>presentation</b>?
-    * Enhances knowledge transfer in some way (see [New York Times](http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html))
+    * Enhances knowledge transfer (see [New York Times](http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html))
 * Why interactive graphics for <b>exploration</b>?
-    * Identify structure that might otherwise go missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
+    * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html))
     * Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
     * <b>Generate insights faster (iteration time is crucial!)</b>
     
@@ -91,33 +91,44 @@ knitr::opts_chunk$set(
 
 ---
 
-<iframe src = "votes.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
+<a href="votes.html">
+ <div align="center">
+   <img src="votes.png" width="800" height="550"/>
+ </div>
+</a>
 
-## Choropleth of voter turnout
+## Choropleth map of voter turnout
 
-<iframe src = "map.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%"></iframe>
+<a href="map.html">
+ <div align="center">
+   <img src="map.png" width="1000" height="500"/>
+ </div>
+</a>
 
 ## Linking proportions with geography
 
-<a href="election.mp4">
+<a href="https://vimeo.com/192528320">
   <img src="election.png" width="1050" height="500" />
 </a>
     
 ## Brushing to combat overplotting
 
-```{r}
+```{r, eval = FALSE}
 library(plotly)
 library(crosstalk)
 
 d <- SharedData$new(txhousing, ~city)
 p <- ggplot(d, aes(date, median, group = city)) + geom_line()
-ggplotly(p, tooltip = "city", dynamicTicks = TRUE, height = 550, width = 1000) %>%
+w <- ggplotly(p, tooltip = "city", dynamicTicks = TRUE, height = 550, width = 1000) %>%
   layout(
     margin = list(l = 50), 
     yaxis = list(title = "Median house price")
     ) %>%
   highlight("plotly_click", "plotly_doubleclick")
+htmlwidgets::saveWidget(w, "highlight.html")
 ```
+
+<iframe src = "highlight.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
 
 ## Querying missing values
 
@@ -125,7 +136,11 @@ ggplotly(p, tooltip = "city", dynamicTicks = TRUE, height = 550, width = 1000) %
 
 ## Querying seasons directly/indirectly
 
-<iframe src = "epl" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
+<a href="epl">
+ <div align="center">
+   <img src="epl.png" width="1000" height="550"/>
+ </div>
+</a>
 
 ## Brushing plus animation
 
@@ -178,23 +193,12 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
 ## The bigger picture
 
 * All examples could classify as focusing, arranging, and/or linking views.
-* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754): {focusing, arranging, linking} => {find Gestalt, pose queries, make comparisons}
+* [Cook, Buja, & Swayne 1996](https://www.jstor.org/stable/1390754): {focusing, arranging, linking} => {find Gestalt, pose queries, make comparisons}
 
 <div align="center">
   <img src="taxonomy.svg" width="900" height="400" />
 </div>
 
-<!--
-## Motivating interactivity with data analysis tasks
-
-* Interactive focusing (zoom/pan) helped reveal vote proportions are rounded to the thousands.
-
-* Interactive identification (tooltip on mouse hover) helped reveal various details about counties.
-
-* Linked brushing helped reveal a strong geographic pattern in counties with no Stein votes. After some Googling, I discovered [Stein was not on the ballot in these states](http://www.jill2016.com/ballot_access). 
-
-* [Cook, Buja, & Swayne 2007](https://www.jstor.org/stable/1390754) -- propose a taxonomy of interaction (focusing, arranging, and linking views) motivated by common data analysis tasks (making comparisons, posing queries, and finding Gestalt).
--->
 
 ## Similar work
 
@@ -204,21 +208,21 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
     * <b>leaflet</b> (Cheng et al. 2016), <b>dygraphs</b> (Allaire et al. 2016), <b>networkD3</b> (Gandrud et. al. 2016), <b>DiagrammeR</b> (Iannone et al. 2016), <b>d3scatter</b> (Cheng 2016)
     
 * Most approaches neglect/ignore linking views and animation.
-    * <b>ggvis</b> has some linking/animation, but requires a <b>shiny</b> (Chang 2016) server.
-    * <b>animint</b> (Hocking et al. 2016) supports linking/animation by extending <b>ggplot2</b>'s grammar of graphics implementation (Wickham et al. 2017).
+    * <b>ggvis</b> - limited linking/animation (requires a <b>shiny</b> (Chang 2016) server).
+    * <b>animint</b> (Hocking et al. 2016) limited linking/animation by extending <b>ggplot2</b>'s grammar of graphics implementation (Wickham et al. 2017).
 
 ---
 
 * <b>plotly</b> (Sievert el al. 2016) borrows from and improves upon <b>animint</b>.
-    * Also makes <b>ggplot2</b> graphics interactive.
-    * Provides a hook for <b>ggplot2</b> extension packages.
-        * See <b>ggmosaic</b> (Jeppson et al. 2016), <b>geomnet</b> (Tyner et al. 2016), and <b>ggalt</b> (Rudis et al. 2016).
+    * Makes <b>ggplot2</b> graphics interactive.
+    * Hooks into custom <b>ggplot2</b> geoms.
+        * E.g., <b>ggmosaic</b> (Jeppson et al. 2016), <b>geomnet</b> (Tyner et al. 2016), and <b>ggalt</b> (Rudis et al. 2016).
     * Special support for ggmatrix objects (from <b>GGally</b> (Schloerke et al. 2016)).
     * Better support for focusing (zoom/pan) and arranging views. 
-    * A "non-ggplot2" interface helps support visualizations not supported by <b>ggplot2</b> (e.g., 3D charts).
+    * A "non-ggplot2" interface supports plots not supported by <b>ggplot2</b> (e.g., 3D charts).
     * Supports more complex brushing interactions 
         * Make selections via mouse hover, click, click & drag.
-        * Dynamically modify brush color (useful for making comparisons).
+        * Dynamically modify brush color (making comparisons).
 
 ## Future work
 
