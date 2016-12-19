@@ -46,7 +46,7 @@ library(plotly)
 
 #### Freelance software developer & data scientist
 <p></p>
-* My clients already include: plotly, NOAA, Phronesis
+* My clients already include: plotly, NOAA
 * In addition to developing <b>plotly</b>, I plan on delivering "data products" (e.g. interactive web apps, dynamic reports/documents, etc.)
 * Businesses already building products around <b>plotly</b>: [Omni Analytics](https://omnianalytics.io/), [TCBD Analytics](http://tcbanalytics.com/)
 
