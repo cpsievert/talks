@@ -17,7 +17,8 @@ links <- sprintf("http://cpsievert.github.io/talks/%s", talks)
 d$title <- sprintf('<a href="%s">%s</a>', links, d$title)
 
 d$date <- as.Date(talks, format = "%Y%m%d")
+d <- d[order(d$date, decreasing = TRUE), ]
 
 library(DT)
-dt <- datatable(d, escape = F)
+dt <- datatable(d, escape = F, options = list(pageLength = 50))
 saveWidget(dt, file = "index.html")
