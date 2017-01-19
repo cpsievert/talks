@@ -105,7 +105,7 @@ knitr::opts_chunk$set(
 
 <a href="../20161212a/votes.html">
  <div align="center">
-   <img src="../20161212a/votes.png" width="800" height="550"/>
+   <img src="votes.png" width="800" height="550"/>
  </div>
 </a>
 
@@ -113,14 +113,14 @@ knitr::opts_chunk$set(
 
 <a href="../20161212a/map.html">
  <div align="center">
-   <img src="../20161212a/map.png" width="1000" height="500"/>
+   <img src="map.png" width="1000" height="500"/>
  </div>
 </a>
 
 ## Linking proportions with geography
 
 <a href="https://vimeo.com/192528320">
-  <img src="../20161212a/election.png" width="1050" height="500" />
+  <img src="election.png" width="1050" height="500" />
 </a>
 
 ## Querying missing values
@@ -129,9 +129,9 @@ knitr::opts_chunk$set(
 
 ## Querying seasons directly/indirectly
 
-<a href="../20161212a/epl">
+<a href="../20161212a/epl/index.html">
  <div align="center">
-   <img src="../20161212a/epl.png" width="1000" height="550"/>
+   <img src="epl.png" width="1000" height="550"/>
  </div>
 </a>
 
@@ -158,7 +158,7 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
 
 <a href="../20161212a/gapminder.html">
  <div align="center">
-   <img src="../20161212a/gapminder.png" width="1000" height="550"/>
+   <img src="gapminder.png" width="1000" height="550"/>
  </div>
 </a>
 
