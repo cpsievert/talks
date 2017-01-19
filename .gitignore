@@ -3,5 +3,6 @@
 .RData
 *.DS_Store
 videos/
+*.mp4
 20161212a/election
 20161212a/election.mp4
