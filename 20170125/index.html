@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Practical tools for Exploratory Web Graphics</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Practical tools for Exploratory Web Graphics',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Carson Sievert' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="index_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="index_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="index_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="index_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="index_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="index_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="index_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="index_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="index_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="index_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2017-01-19 <br /> <br /> Slides available at <a href="http://bit.ly/ceid" class="uri">http://bit.ly/ceid</a> <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a></p>
+          </hgroup>
+  </slide>
+
+<slide class=''><hgroup><h2>About me</h2></hgroup><article  id="about-me">
+
+<h3>Past</h3>
+
+<p>
+
+</p>
+
+<ul>
+<li>PhD in statistics from Iowa State University (December, 2016)</li>
+<li>From TC area &#8211; hoping to stay here long term</li>
+</ul>
+
+<h3>Present</h3>
+
+<p>
+
+</p>
+
+<ul>
+<li>Freelance software engineer, data scientist, and educator
+
+<ul>
+<li>Maintaining plotly (~ 2 years!)
+
+<ul>
+<li>Looking for &quot;real-world applications&quot;.</li>
+</ul></li>
+<li>Developing rerddap (interface to NOAA data).</li>
+<li>Authoring <a href='http://www.oreilly.com/oriole/' title=''>O&#39;Reilly Oriole</a> (online tutorial mixing video, text, code).
+
+<ul>
+<li>Looking to run similar live workshops (experience at <a href='http://heike.github.io/R-workshops/' title=''>Iowa State</a>, <a href='http://dicook.github.io/Monash-R/' title=''>Monash</a>, <a href='https://plotcon.plot.ly/workshops' title=''>plotcon</a>)</li>
+</ul></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Why interactive graphics?</h2></hgroup><article  id="why-interactive-graphics">
+
+<ul>
+<li>Why interactive graphics for <b>presentation</b>?
+
+<ul>
+<li>Enhances knowledge transfer (see <a href='http://www.nytimes.com/interactive/2015/us/year-in-interactive-storytelling.html' title=''>New York Times</a>)</li>
+</ul></li>
+<li>Why interactive graphics for <b>exploration</b>?
+
+<ul>
+<li>Identify structure that otherwise goes missing (<a href='http://stat-graphics.org/movies/prim9.html' title=''>Tukey 1972</a>)</li>
+<li>Better understand/diagnose models (<a href='http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract' title=''>Wickham, Cook, &amp; Hofmann 2015</a>).</li>
+<li><a href='http://stat-graphics.org/movies/tour-de-france.html' title=''><b>Generate insights faster (iteration time is crucial!)</b></a></li>
+</ul></li>
+</ul>
+
+<div align="center">
+<p><img src="workflow.svg" width="700" height="250" /></p></div>
+
+</article></slide><slide class=''><hgroup><h2>Why interactive graphics <em>on the web</em>?</h2></hgroup><article  id="why-interactive-graphics-on-the-web">
+
+<ul>
+<li>Portable (i.e., cross-platform)</li>
+<li>Simple to share (especially self-contained HTML)</li>
+<li>Encourages composability (i.e., reports, dashboards, etc)</li>
+<li>Enables integration of multiple systems (1 + 1 &gt; 2)</li>
+</ul>
+
+<!-- TODO: maybe a graphic of two systems talking to each other? -->
+
+</article></slide><slide class=''><hgroup><h2>The problem with web graphics for data analytics</h2></hgroup><article  id="the-problem-with-web-graphics-for-data-analytics">
+
+<ul>
+<li>Great for conveying information (viz is <em>known</em>), but impractical for exploration (viz is <em>unknown</em>).</li>
+</ul>
+
+<div align="center">
+<p><img src="workflow.svg" width="700" height="250" /></p></div>
+
+<ul>
+<li><b>The reality:</b> analysts have to learn/juggle many technologies.</li>
+<li><b>My goal:</b> An R interface that makes 80% of techniques <b>seamless</b>, <b>quick</b>, and <b>easy</b> (w/o knowledge of web technology).</li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>A demo of the workflow</h2></hgroup><article  id="a-demo-of-the-workflow">
+
+<p><a href='https://github.com/cpsievert/talks/tree/gh-pages/20170119' title=''>See here</a> for the demo script.</p>
+
+</article></slide><slide class=''><hgroup><h2>2016 Election Outcomes by County (<a href='http://rpubs.com/dgrtwo/county-results' title=''>Politico</a>)</h2></hgroup><article  id="election-outcomes-by-county-politico">
+
+<pre >     County |   State | TotalVotes| Clinton| Johnson| Stein| Trump| Population|    Area
+    --------| --------| ----------|--------|--------|------|------|-----------|--------
+1   autauga | alabama |      24661|   0.240|   0.022| 0.004| 0.734|      54571|  594.44
+2   baldwin | alabama |      94090|   0.196|   0.026| 0.005| 0.774|     182265| 1589.78
+3   barbour | alabama |      10390|   0.467|   0.009| 0.002| 0.523|      27457|  884.88
+4      bibb | alabama |       8748|   0.214|   0.014| 0.002| 0.770|      22915|  622.58
+5    blount | alabama |      25384|   0.085|   0.013| 0.004| 0.899|      57322|  644.78
+6   bullock | alabama |       4701|   0.751|   0.005| 0.002| 0.242|      10914|  622.81
+7    butler | alabama |       8685|   0.428|   0.007| 0.001| 0.563|      20947|  776.83
+8   calhoun | alabama |      47376|   0.279|   0.024| 0.006| 0.692|     118572|  605.87
+9  chambers | alabama |      13778|   0.418|   0.012| 0.003| 0.566|      34215|  596.53
+10 cherokee | alabama |      10503|   0.145|   0.014| 0.002| 0.839|      25989|  553.70
+# ... with 3,101 more rows</pre>
+
+<ul>
+<li>Is there a relationship between population density and voting preference?</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
+
+<a href="../20161212a/votes.html">
+
+<div align="center">
+<img src="votes.png" width="800" height="550"/></div>
+
+<p></a></p>
+
+</article></slide><slide class=''><hgroup><h2>Choropleth map of voter turnout</h2></hgroup><article  id="choropleth-map-of-voter-turnout">
+
+<a href="../20161212a/map.html">
+
+<div align="center">
+<img src="map.png" width="1000" height="500"/></div>
+
+<p></a></p>
+
+</article></slide><slide class=''><hgroup><h2>Linking proportions with geography</h2></hgroup><article  id="linking-proportions-with-geography">
+
+<p><a href="https://vimeo.com/192528320"> <img src="election.png" width="1050" height="500" /> </a></p>
+
+</article></slide><slide class=''><hgroup><h2>Querying missing values</h2></hgroup><article  id="querying-missing-values">
+
+<iframe src="../20161212a/missing.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%">
+
+</iframe>
+
+</article></slide><slide class=''><hgroup><h2>Querying seasons directly/indirectly</h2></hgroup><article  id="querying-seasons-directlyindirectly">
+
+<a href="../20161212a/epl/index.html">
+
+<div align="center">
+<img src="epl.png" width="1000" height="550"/></div>
+
+<p></a></p>
+
+</article></slide><slide class=''><hgroup><h2>Brushing plus animation</h2></hgroup><article  id="brushing-plus-animation">
+
+<a href="../20161212a/gapminder.html">
+
+<div align="center">
+<img src="gapminder.png" width="1000" height="550"/></div>
+
+<p></a></p>
+
+</article></slide><slide class=''><hgroup><h2>Linked Tree Brushing</h2></hgroup><article  id="linked-tree-brushing">
+
+<iframe src="../20161212b/parcoords/index.html" style="border: 0; position:absolute; top:10; left:0; right:0; bottom:0; width:100%; height:80%">
+
+</iframe>
+
+</article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
+
+<iframe src="../20161212a/USArrests/index.html" style="border: 0; position:absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%">
+
+</iframe>
+
+</article></slide><slide class=''><hgroup><h2>The bigger picture</h2></hgroup><article  id="the-bigger-picture">
+
+<ul>
+<li>All these examples:
+
+<ul>
+<li>Are <em>self-contained</em> HTML (easy to share/deploy/embed!)</li>
+<li>3 types of manipulation: focusing, arranging, and/or linking views.</li>
+</ul></li>
+<li><a href='https://www.jstor.org/stable/1390754' title=''>Cook, Buja, &amp; Swayne 1996</a>: {focusing, arranging, linking} =&gt; {find Gestalt, pose queries, make comparisons}
+
+<ul>
+<li>Linking has different interpretations (database query)</li>
+<li>Focusing is deceivingly general (some things would require <strong>shiny</strong>)</li>
+<li>Arrangment must (currently) be specified at runtime.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Future work</h2></hgroup><article  id="future-work">
+
+<ul>
+<li>Keep adding documentation and examples to <a href='https://cpsievert.github.io/plotly_book' title=''>plotly for R book</a></li>
+<li>Further advance <b>plotly</b>&#39;s support for linking views (without <b>shiny</b>).
+
+<ul>
+<li><a href='https://github.com/plotly/plotly.js/issues/1316' title=''>plotly.js</a> itself may gain some support&#8230;</li>
+</ul></li>
+<li>Support for more popular <b>ggplot2</b> extension packages such as <b>ggrepel</b> and <b>ggraph</b>.
+
+<ul>
+<li>Integrating <b>plotly</b>&#39;s support for linking tree-structures with <b>ggraph</b> would be particularly interesting.</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground level1'><hgroup class = 'auto-fadein'><h2>Thank you</h2></hgroup><article  id="thank-you">
+
+<ul>
+<li><p>Slides &#8211; <a href='http://bit.ly/tcrug' title=''>http://bit.ly/tcrug</a></p></li>
+<li>Contact
+
+<ul>
+<li>Email &#8211; <a href='mailto:cpsievert1@gmail.com' title=''>cpsievert1@gmail.com</a></li>
+<li>Twitter &#8211; <a href='http://twitter.com/cpsievert' title=''>http://twitter.com/cpsievert</a></li>
+<li>GitHub &#8211; <a href='http://github.com/cpsievert' title=''>http://github.com/cpsievert</a></li>
+</ul></li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
