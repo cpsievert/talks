@@ -10,7 +10,7 @@ output:
     self_contained: false
 css:
   styles.css
-date: "2017-01-19  <br /> <br /> Slides available at <http://bit.ly/ceid> <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+date: "2017-01-19  <br /> <br /> Slides available at <http://bit.ly/CEID-UGA> <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert"
 ---
 
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 <p></p>
 
 * PhD in statistics from Iowa State University (December, 2016)
-* From TC area -- hoping to stay here long term
+    * __Dissertation__: Interfacing R with web technologies for interactive statistical graphics ([link](https://github.com/cpsievert/phd-thesis/blob/master/docs/bookdown.pdf))
 
 ### Present
 
@@ -191,7 +191,7 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
 
 # Thank you
 
-* Slides -- <http://bit.ly/tcrug>
+* Slides -- <http://bit.ly/CEID-UGA>
 
 * Contact
     * Email -- <cpsievert1@gmail.com>
