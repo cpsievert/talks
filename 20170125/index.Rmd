@@ -64,8 +64,6 @@ knitr::opts_chunk$set(
 * Encourages composability (i.e., reports, dashboards, etc)
 * Enables integration of multiple systems (1 + 1 > 2)
 
-<!-- TODO: maybe a graphic of two systems talking to each other? -->
-
 ## The problem with web graphics for data analytics
 
 * Great for conveying information (viz is _known_), but impractical for exploration (viz is _unknown_).
@@ -77,9 +75,7 @@ knitr::opts_chunk$set(
 * <b>The reality:</b> analysts have to learn/juggle many technologies.
 * <b>My goal:</b> An R interface that makes 80% of techniques <b>seamless</b>, <b>quick</b>, and <b>easy</b> (w/o knowledge of web technology).
 
-# A demo of the workflow
-
-[See here](https://github.com/cpsievert/talks/tree/gh-pages/20170119) for the demo script.
+# Motivating techniques through common data analysis tasks
 
 ## 2016 Election Outcomes by County ([Politico](http://rpubs.com/dgrtwo/county-results))
 
@@ -123,17 +119,11 @@ knitr::opts_chunk$set(
   <img src="election.png" width="1050" height="500" />
 </a>
 
-## Querying missing values
 
-<iframe src = "../20161212a/missing.html" style="border: 0; position:absolute; top:100; left:0; right:0; bottom:0; width:100%; height:85%"></iframe>
+# Hands-on demo
 
-## Querying seasons directly/indirectly
+[See here](demo.R) for the R script. [See here](demo.html) for the output. 
 
-<a href="../20161212a/epl/index.html">
- <div align="center">
-   <img src="epl.png" width="1000" height="550"/>
- </div>
-</a>
 
 ## Brushing plus animation
 
@@ -152,13 +142,21 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
       xaxis = list(title = "GDP per capita"), 
       yaxis = list(title = "Life expectancy")
     ) %>%
-  highlight("plotly_click") %>% 
-  animation_opts(easing = "linear")
+  animation_opts(easing = "linear") %>%
+  highlight("plotly_click")
 ```
 
 <a href="../20161212a/gapminder.html">
  <div align="center">
-   <img src="gapminder.png" width="1000" height="550"/>
+   <img src="gapminder.gif" width="1000" height="550"/>
+ </div>
+</a>
+
+## Brushing plus animation
+
+<a href="gapminder2.html">
+ <div align="center">
+   <img src="gapminder2.gif" width="1000" height="550"/>
  </div>
 </a>
 
@@ -178,8 +176,56 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
     * 3 types of manipulation: focusing, arranging, and/or linking views.
 * [Cook, Buja, & Swayne 1996](https://www.jstor.org/stable/1390754): {focusing, arranging, linking} => {find Gestalt, pose queries, make comparisons}
     * Linking has different interpretations (database query)
-    * Focusing is deceivingly general (some things would require __shiny__)
+    * Focusing is deceivingly general.
     * Arrangment must (currently) be specified at runtime.
+* We can only go so far _without_ shiny
+    * What if we want to display a statistical summary of a selecton?
+
+## Dynamically aggregate selections
+
+
+```{r echo = FALSE, fig.height = 5, fig.width = 10}
+library(plotly)
+d <- crosstalk::SharedData$new(mpg)
+dots <- plot_ly(d, color = ~class, x = ~displ, y = ~cyl)
+boxs <- plot_ly(d, color = ~class, x = ~class, y = ~cty) %>% add_boxplot()
+bars <- plot_ly(d, x = ~class, color = ~class)
+
+subplot(dots, boxs, titleX = TRUE, titleY = TRUE) %>%
+  subplot(bars, nrows = 2, titleX = TRUE, titleY = TRUE) %>%
+  layout(
+    dragmode = "select",
+    barmode = "overlay",
+    showlegend = FALSE
+  )
+```
+
+---
+
+```{r fake, eval = FALSE}
+d <- SharedData$new(mpg)
+dots <- plot_ly(d, color = ~class, x = ~displ, y = ~cyl)
+boxs <- plot_ly(d, color = ~class, x = ~class, y = ~cty) %>% add_boxplot()
+bars <- plot_ly(d, x = ~class, color = ~class)
+
+subplot(dots, boxs) %>%
+  subplot(bars, nrows = 2) %>%
+  layout(
+    dragmode = "select",
+    barmode = "overlay",
+    showlegend = FALSE
+  )
+```
+
+* plotly.js "natively" supports a few statistical graphics (e.g., bar charts, histograms, and boxplots)
+    
+* Dynamically updating other statistical graphics (e.g., densities, fitted lines, violins, etc) currently requires [linking views <b>with shiny</b>](https://cpsievert.github.io/plotly_book/linking-views-with-shiny.html)
+
+## For example...
+
+<div align="center">
+  <img src="zikar.gif" width="1000" height="500" />
+</div>
 
 ## Future work
 
