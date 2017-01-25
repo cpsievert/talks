@@ -177,7 +177,7 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
 * [Cook, Buja, & Swayne 1996](https://www.jstor.org/stable/1390754): {focusing, arranging, linking} => {find Gestalt, pose queries, make comparisons}
     * Linking has different interpretations (database query)
     * Focusing is deceivingly general.
-    * Arrangment must (currently) be specified at runtime.
+    * Arrangement must (currently) be specified at runtime.
     
 <p></p>
 
@@ -230,6 +230,8 @@ subplot(dots, boxs) %>%
 <div align="center">
   <img src="zikar.gif" width="1000" height="500" />
 </div>
+
+<http://github.com/cpsievert/zikar>
 
 ## Future work
 

@@ -23,7 +23,8 @@ ggplotly(p)
 
 #' As a side-note, using `%>%` (aka, the pipe operator) allows humans to read 
 #' your code from left-to-right rather than inside-out. It does this
-#' by inserting the object on left-hand side into a function on the right-hand side.
+#' by inserting the object on left-hand side into a function on the right-hand 
+#' side.
 
 #+ eval = FALSE
 # this code is equivalent to ggplotly(p)
@@ -124,10 +125,9 @@ txhousing %>%
   add_lines(frame = ~year, ids = ~month) %>%
   hide_legend()
 
-
 #' <p></p><span style="color:red"> 
-#'  **Your turn**: 
-#'  1. Use the animation_opts() function to alter the speed and easing of the 
-#'  animation above.
-#'  2. Modify our first faceted plot to animate through the years
+#' **Your turn**: 
+#' 1. Use the animation_opts() function to alter the speed and easing of the 
+#' animation above.
+#' 2. Modify our first faceted plot to animate through the years
 #' </span><p></p>
