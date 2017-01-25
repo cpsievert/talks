@@ -227,9 +227,9 @@ subplot(dots, boxs) %>%
 
 ## For example...
 
-<div align="center">
-  <img src="zikar.gif" width="1000" height="500" />
-</div>
+<a href="https://vimeo.com/190610577">
+    <img src="zikar.png" width="1000" height="500" />
+</a>
 
 <http://github.com/cpsievert/zikar>
 
