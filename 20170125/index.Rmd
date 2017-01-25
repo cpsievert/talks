@@ -1,5 +1,5 @@
 ---
-title: "Practical tools for Exploratory Web Graphics"
+title: "Practical tools for exploratory web graphics"
 venue: "Center for the Ecology of Infectious Diseases (CEID), University of Georgia"
 type: "invited"
 recording: "none"
@@ -10,7 +10,7 @@ output:
     self_contained: false
 css:
   styles.css
-date: "2017-01-19  <br /> <br /> Slides available at <http://bit.ly/CEID-UGA> <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+date: "2017-01-25  <br /> <br /> Slides available at <http://bit.ly/CEID-UGA> <br /> <br /> This work is released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert"
 ---
 
@@ -178,7 +178,11 @@ ggplotly(gg, tooltip = c("continent", "country", "population")) %>%
     * Linking has different interpretations (database query)
     * Focusing is deceivingly general.
     * Arrangment must (currently) be specified at runtime.
-* We can only go so far _without_ shiny
+    
+<p></p>
+
+#### We can only go so far _without_ shiny
+
     * What if we want to display a statistical summary of a selecton?
 
 ## Dynamically aggregate selections

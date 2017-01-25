@@ -10,7 +10,7 @@ knitr::opts_chunk$set(message = FALSE)
 #' housing sales in various Texan cities.
 
 library(plotly)
-if (interactive()) View(txhousing) else txhousing
+txhousing
 
 #' The `ggplotly()` function converts a ggplot object to a plotly object.
 #' If you already use ggplot2, this makes it easy to leverage 
@@ -35,7 +35,7 @@ p %>% ggplotly()
 #' To read more about this interface, see 
 #' [this section](https://cpsievert.github.io/plotly_book/a-case-study-of-housing-sales-in-texas.html) 
 #' of the plotly for R book.
-#' 
+
 txhousing %>%
   group_by(city) %>%
   plot_ly(x = ~date, y = ~median) %>%
