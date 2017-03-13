@@ -4,10 +4,10 @@ d <- tryCatch(
   error = function(e) "first argument must be a date in form YYYYMMDD"
 )
 dir.create(a[1])
-# default to ioslides
-from <- if (length(a) == 1) "templates/ioslides" else sprintf("templates/%s", a[2])
+# default to remarkjs
+from <- if (length(a) == 1) "templates/remarkjs" else sprintf("templates/%s", a[2])
 t <- dir(from, full.names = T)
-file.copy(t, a[1])
+file.copy(t, a[1], recursive = TRUE)
 
 # fill in the date in the template
 talk <- file.path(a[1], "index.Rmd")
