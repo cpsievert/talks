@@ -14,11 +14,13 @@ get_yaml <- function(talk, fields = c("title", "venue", "type", "recording")) {
   yml <- yaml::yaml.load(paste(front, collapse = "\n"))
   yml[names(yml) %in% fields]
 }
-d <- bind_rows(lapply(talks, get_yaml))
-
-# add links to talks in title column
-links <- sprintf("http://cpsievert.github.io/talks/%s", talks)
-d$title <- sprintf('<a href="%s">%s</a>', links, d$title)
+dauto <- talks %>%
+  lapply(get_yaml) %>%
+  bind_rows() %>%
+  mutate(date = talks) %>%
+  mutate(title = sprintf(
+    '<a href="%s">%s</a>', sprintf("http://cpsievert.github.io/talks/%s", date), title
+  ))
 
 # other talks that are located elsewhere
 dalt <- tibble(
@@ -29,7 +31,7 @@ dalt <- tibble(
   date = "20170412"
 )
 
-d <- bind_rows(d, dalt)
+d <- bind_rows(dauto, dalt)
 
 d %>%
   mutate(date = as.Date(date, format = "%Y%m%d")) %>%
