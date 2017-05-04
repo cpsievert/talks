@@ -24,11 +24,36 @@ dauto <- talks %>%
 
 # other talks that are located elsewhere
 dalt <- tibble(
-  title = "<a href='https://bit.ly/plotcon17-webinar'> News and updates surrounding plotly for R </a>",
-  venue = "The internet",
-  type = "webinar",
-  recording = "TBA",
-  date = "20170412"
+  title = c(
+    "<a href='https://bit.ly/plotcon17-webinar'> News and updates surrounding plotly for R </a>",
+    "<a href='http://bit.ly/plotcon17-talk'> Practical tools for exploratory visualization</a>",
+    "<a href='https://cpsievert.github.io/plotcon17/workshop/day1'> Getting (re)-acquainted with R, RStudio, data wrangling, ggplot2, and plotly</a>",
+    "<a href='https://cpsievert.github.io/plotcon17/workshop/day2'> Advanced plotly</a>"
+  ),
+  venue = c(
+    "The internet",
+    "Plotcon 2017",
+    "Plotcon 2017",
+    "Plotcon 2017"
+  ),
+  type = c(
+    "webinar",
+    "invited talk",
+    "workshop",
+    "workshop"
+  ),
+  recording = c(
+    "TBA",
+    "<a href='https://vimeo.com/214301880'>here</a>",
+    "none",
+    "none"
+  ),
+  date = c(
+    "20170412",
+    "20170502",
+    "20170504",
+    "20170505"
+  )
 )
 
 d <- bind_rows(dauto, dalt)
