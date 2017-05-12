@@ -5,12 +5,16 @@ type: "invited"
 recording: "none"
 output:
   xaringan::moon_reader:
-    lib_dir: libs
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
     nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-date: ""
+      navigation:
+        scroll: false
+date: "Slides: https://cpsievert.github.io/talks <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert"
 ---
 

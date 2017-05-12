@@ -1,0 +1,201 @@
+---
+title: "Interactive visualization of multiple time series with plotly"
+venue: "The internet"
+type: "invited"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    chakra: "remark-latest.min.js"
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+date: "Slides: https://cpsievert.github.io/talks <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+GitHub: <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+Email: <cpsievert1@gmail.com> <br />
+Web: <http://cpsievert.github.io/>"
+author: "Carson Sievert"
+---
+
+
+
+
+### plotly `r emo::ji("heart")`'s time series
+
+```r
+library(quantmod)
+getSymbols("AAPL", src = 'yahoo')
+d <- data.frame(date = index(AAPL), coredata(AAPL))
+p1 <- plot_ly(x = d$date, y = d$AAPL.Volume, mode = "lines", name = "volume")
+p2 <- plot_ly(x = d$date, y = d$AAPL.Adjusted, mode = "lines", name = "adjusted")
+subplot(p1, p2, nrows = 2, shareX = TRUE)
+```
+
+```{r setup, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE,
+  echo = FALSE
+)
+library(plotly)
+library(widgetframe)
+```
+
+```{r}
+library(quantmod)
+AAPL <- getSymbols("AAPL", src = 'yahoo', auto.assign = FALSE)
+d <- data.frame(date = index(AAPL), coredata(AAPL))
+p1 <- plot_ly(x = d$date, y = d$AAPL.Volume, mode = "lines", name = "volume")
+p2 <- plot_ly(x = d$date, y = d$AAPL.Adjusted, mode = "lines", name = "adjusted")
+subplot(p1, p2, nrows = 2, shareX = TRUE) %>% frameWidget(height = 350)
+```
+
+
+---
+
+```r
+rangeslider(
+  subplot(p1, p2, nrows = 2, shareX = TRUE)
+)
+```
+
+```{r}
+subplot(p1, p2, nrows = 2, shareX = TRUE) %>% rangeslider() %>% frameWidget(height = 500)
+```
+
+---
+### Have lots of data? Use WebGL!
+
+```r
+toWebGL(
+  subplot(p1, p2, nrows = 2, shareX = TRUE)
+)
+```
+
+```{r}
+# workaround for https://github.com/plotly/plotly.js/issues/1680
+p1 <- plot_ly(x = d$date, y = d$AAPL.Volume, mode = "lines", name = "volume", line = list(color = "#1f77b4"))
+p2 <- plot_ly(x = d$date, y = d$AAPL.Adjusted, mode = "lines", name = "adjusted", line = list(color = "#ff7f0e"))
+subplot(p2, p1, nrows = 2, shareX = TRUE) %>%  toWebGL() %>%
+  layout(yaxis = list(domain = c(0, 0.45)), yaxis2 = list(domain = c(0.55, 1))) %>%
+  frameWidget(height = 400)
+```
+
+---
+### Candlestick charts!
+
+```r
+plot_ly(
+  d, x = ~date, open = ~AAPL.Open, close = ~AAPL.Close, high = ~AAPL.High, low = ~AAPL.Low, type = "candlestick"
+) 
+```
+
+```{r}
+plot_ly(
+  d, x = ~date, open = ~AAPL.Open, close = ~AAPL.Close, high = ~AAPL.High, low = ~AAPL.Low, type = "candlestick"
+) %>% 
+  layout(xaxis = list(title = "")) %>%
+  frameWidget(height = 400)
+```
+
+---
+### Small multiples via ggplot2
+
+```r
+tx <- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+p <- ggplot(tx, aes(month, median)) + 
+  geom_line(aes(group = year)) +
+  facet_wrap(~city, ncol = 2)
+ggplotly(p, tooltip = "year")
+```
+
+```{r}
+tx <- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+p <- ggplot(tx, aes(month, median)) + 
+  geom_line(aes(group = year)) +
+  facet_wrap(~city, ncol = 2)
+ggplotly(p, tooltip = "year", height = 380) %>% frameWidget(height = 380)
+```
+
+---
+### Animate via frame aesthetic
+
+```r
+tx <- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+p <- ggplot(tx, aes(month, median)) + 
+  geom_line(aes(group = year), alpha = 0.2) +
+  geom_line(aes(frame = year), color = "red") +
+  facet_wrap(~city, ncol = 2)
+ggplotly(p, tooltip = "year")
+```
+
+```{r}
+tx <- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+p <- ggplot(tx, aes(month, median)) + 
+  geom_line(aes(group = year), alpha = 0.2) +
+  geom_line(aes(frame = year), color = "red") +
+  facet_wrap(~city, ncol = 2)
+ggplotly(p, tooltip = "year", height = 380) %>% frameWidget(height = 380)
+```
+
+---
+### Linked 'brushing' in small multiples
+
+```r
+sd <- crosstalk::SharedData$new(tx, ~year)
+p <- ggplot(sd, aes(month, median)) + geom_line(aes(group = year)) + facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), persistent = TRUE, dynamic = TRUE, selectize = TRUE)
+```
+
+```{r}
+library(crosstalk)
+sd <- SharedData$new(tx, ~year, " ")
+p <- ggplot(sd, aes(month, median)) + 
+  geom_line(aes(group = year)) +
+  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p, tooltip = "year", height = 380), persistent = TRUE, dynamic = TRUE, selectize = TRUE) %>% frameWidget(height = 380)
+```
+
+
+
+---
+class: bottom
+background-image: url(bcviz.gif)
+background-size: contain
+
+### https://github.com/cpsievert/bcviz
+
+
+---
+background-image: url(plotly.svg)
+background-size: 100px
+background-position: 90% 8%
+class: center, middle
+
+# Thanks!
+
+Resources for more learning:
+
+https://cpsievert.github.io/plotly_book/ <br />
+https://plot.ly/r/ <br />
+https://cpsievert.github.io/talks/ <br />
+https://github.com/cpsievert/phd-thesis <br />
+https://github.com/cpsievert/pedestrians <br />
+https://github.com/cpsievert/bcviz <br />
+https://github.com/cpsievert/shiny_apps <br />
+
+Reach out to me
+
+Twitter: [@cpsievert](https://twitter.com/cpsievert) <br />
+GitHub: [@cpsievert](https://github.com/cpsievert) <br />
+Email: <cpsievert1@gmail.com> <br />
+Web: <http://cpsievert.github.io/>
+
