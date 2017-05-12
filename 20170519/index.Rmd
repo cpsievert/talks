@@ -1,7 +1,7 @@
 ---
 title: "Interactive visualization of multiple time series with plotly"
-venue: "The internet"
-type: "invited"
+venue: "R Finance"
+type: "lightning"
 recording: "none"
 output:
   xaringan::moon_reader:
