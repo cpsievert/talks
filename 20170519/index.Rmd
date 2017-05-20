@@ -14,15 +14,12 @@ output:
       countIncrementalSlides: false
       navigation:
         scroll: false
-date: "Slides: https://cpsievert.github.io/talks <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+date: "Slides: https://bit.ly/r-finance <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
 GitHub: <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
 Email: <cpsievert1@gmail.com> <br />
 Web: <http://cpsievert.github.io/>"
 author: "Carson Sievert"
 ---
-
-
-
 
 ### plotly `r emo::ji("heart")`'s time series
 
@@ -112,7 +109,7 @@ plot_ly(
 ```r
 tx <- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
 p <- ggplot(tx, aes(month, median)) + 
-  geom_line(aes(group = year)) +
+*  geom_line(aes(group = year)) +
   facet_wrap(~city, ncol = 2)
 ggplotly(p, tooltip = "year")
 ```
@@ -131,8 +128,8 @@ ggplotly(p, tooltip = "year", height = 380) %>% frameWidget(height = 380)
 ```r
 tx <- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
 p <- ggplot(tx, aes(month, median)) + 
-  geom_line(aes(group = year), alpha = 0.2) +
-  geom_line(aes(frame = year), color = "red") +
+*  geom_line(aes(group = year), alpha = 0.2) +
+*  geom_line(aes(frame = year), color = "red") +
   facet_wrap(~city, ncol = 2)
 ggplotly(p, tooltip = "year")
 ```
@@ -171,31 +168,34 @@ class: bottom
 background-image: url(bcviz.gif)
 background-size: contain
 
-### https://github.com/cpsievert/bcviz
+#### https://github.com/cpsievert/bcviz
 
 
 ---
 background-image: url(plotly.svg)
 background-size: 100px
 background-position: 90% 8%
-class: center, middle
+class: center, middle, inverse
 
 # Thanks!
 
-Resources for more learning:
+#### Want to sponsor/consult plotly?
 
-https://cpsievert.github.io/plotly_book/ <br />
-https://plot.ly/r/ <br />
-https://cpsievert.github.io/talks/ <br />
-https://github.com/cpsievert/phd-thesis <br />
-https://github.com/cpsievert/pedestrians <br />
-https://github.com/cpsievert/bcviz <br />
-https://github.com/cpsievert/shiny_apps <br />
+https://plot.ly/products/consulting-and-oem/
 
-Reach out to me
+#### Contact me directly
 
 Twitter: [@cpsievert](https://twitter.com/cpsievert) <br />
 GitHub: [@cpsievert](https://github.com/cpsievert) <br />
 Email: <cpsievert1@gmail.com> <br />
 Web: <http://cpsievert.github.io/>
+
+#### Learn more
+
+https://plot.ly/r/ <br />
+https://github.com/ropensci/plotly <br />
+https://cpsievert.github.io/plotly_book/ <br />
+https://cpsievert.github.io/talks/
+
+
 

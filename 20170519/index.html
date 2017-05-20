@@ -15,12 +15,9 @@ class: center, middle, inverse, title-slide
 
 # Interactive visualization of multiple time series with plotly
 ### Carson Sievert
-### Slides: <a href="https://cpsievert.github.io/talks" class="uri">https://cpsievert.github.io/talks</a> <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> GitHub: <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> Email: <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> Web: <a href="http://cpsievert.github.io/" class="uri">http://cpsievert.github.io/</a>
+### Slides: <a href="https://bit.ly/r-finance" class="uri">https://bit.ly/r-finance</a> <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> GitHub: <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> Email: <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> Web: <a href="http://cpsievert.github.io/" class="uri">http://cpsievert.github.io/</a>
 
 ---
-
-
-
 
 
 ### plotly ❤️'s time series
@@ -36,8 +33,8 @@ subplot(p1, p2, nrows = 2, shareX = TRUE)
 
 
 
-<div id="htmlwidget-8a3e84ec8760019b7be2" style="width:100%;height:350px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8a3e84ec8760019b7be2">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-1.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0c139e34cde6a809950f" style="width:100%;height:350px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0c139e34cde6a809950f">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-1.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -48,8 +45,8 @@ rangeslider(
 )
 ```
 
-<div id="htmlwidget-5be57bad6cbd151db423" style="width:100%;height:500px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5be57bad6cbd151db423">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-2.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7de6bc23e402f9a855c6" style="width:100%;height:500px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7de6bc23e402f9a855c6">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-2.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 ---
 ### Have lots of data? Use WebGL!
@@ -60,8 +57,8 @@ toWebGL(
 )
 ```
 
-<div id="htmlwidget-e782e9dd2e42b6d014b4" style="width:100%;height:400px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e782e9dd2e42b6d014b4">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-3.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ef10bab139db60d1df6f" style="width:100%;height:400px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ef10bab139db60d1df6f">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-3.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 ---
 ### Candlestick charts!
@@ -72,8 +69,8 @@ plot_ly(
 ) 
 ```
 
-<div id="htmlwidget-4b5292df872750d35b1f" style="width:100%;height:400px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4b5292df872750d35b1f">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-4.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-13b658930cfed61a3392" style="width:100%;height:400px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-13b658930cfed61a3392">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-4.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 ---
 ### Small multiples via ggplot2
@@ -81,13 +78,13 @@ plot_ly(
 ```r
 tx &lt;- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
 p &lt;- ggplot(tx, aes(month, median)) + 
-  geom_line(aes(group = year)) +
+*  geom_line(aes(group = year)) +
   facet_wrap(~city, ncol = 2)
 ggplotly(p, tooltip = "year")
 ```
 
-<div id="htmlwidget-de7a2780b43a3b812b76" style="width:100%;height:380px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-de7a2780b43a3b812b76">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-5.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-123da6601ed8bb9b15d7" style="width:100%;height:380px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-123da6601ed8bb9b15d7">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-5.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 ---
 ### Animate via frame aesthetic
@@ -95,14 +92,14 @@ ggplotly(p, tooltip = "year")
 ```r
 tx &lt;- subset(txhousing, city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
 p &lt;- ggplot(tx, aes(month, median)) + 
-  geom_line(aes(group = year), alpha = 0.2) +
-  geom_line(aes(frame = year), color = "red") +
+*  geom_line(aes(group = year), alpha = 0.2) +
+*  geom_line(aes(frame = year), color = "red") +
   facet_wrap(~city, ncol = 2)
 ggplotly(p, tooltip = "year")
 ```
 
-<div id="htmlwidget-e26b7f48a6669278edd7" style="width:100%;height:380px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e26b7f48a6669278edd7">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-6.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c5af28f6c75ad4174d43" style="width:100%;height:380px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c5af28f6c75ad4174d43">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-6.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 ---
 ### Linked 'brushing' in small multiples
@@ -113,8 +110,8 @@ p &lt;- ggplot(sd, aes(month, median)) + geom_line(aes(group = year)) + facet_wr
 highlight(ggplotly(p), persistent = TRUE, dynamic = TRUE, selectize = TRUE)
 ```
 
-<div id="htmlwidget-a37691145ca73fdf301d" style="width:100%;height:380px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a37691145ca73fdf301d">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-7.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9fd279a2af7554f7b429" style="width:100%;height:380px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9fd279a2af7554f7b429">{"x":{"url":"index_files/widgets/widget_unnamed-chunk-7.html","options":{"xdomain":"*","allowfullscreen":false}},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -123,33 +120,34 @@ class: bottom
 background-image: url(bcviz.gif)
 background-size: contain
 
-### https://github.com/cpsievert/bcviz
+#### https://github.com/cpsievert/bcviz
 
 
 ---
 background-image: url(plotly.svg)
 background-size: 100px
 background-position: 90% 8%
-class: center, middle
+class: center, middle, inverse
 
 # Thanks!
 
-Resources for more learning:
+#### Want to sponsor/consult plotly?
 
-https://cpsievert.github.io/plotly_book/ &lt;br /&gt;
-https://plot.ly/r/ &lt;br /&gt;
-https://cpsievert.github.io/talks/ &lt;br /&gt;
-https://github.com/cpsievert/phd-thesis &lt;br /&gt;
-https://github.com/cpsievert/pedestrians &lt;br /&gt;
-https://github.com/cpsievert/bcviz &lt;br /&gt;
-https://github.com/cpsievert/shiny_apps &lt;br /&gt;
+https://plot.ly/products/consulting-and-oem/
 
-Reach out to me
+#### Contact me directly
 
 Twitter: [@cpsievert](https://twitter.com/cpsievert) &lt;br /&gt;
 GitHub: [@cpsievert](https://github.com/cpsievert) &lt;br /&gt;
 Email: &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
 Web: &lt;http://cpsievert.github.io/&gt;
+
+#### Learn more
+
+https://plot.ly/r/ &lt;br /&gt;
+https://github.com/ropensci/plotly &lt;br /&gt;
+https://cpsievert.github.io/plotly_book/ &lt;br /&gt;
+https://cpsievert.github.io/talks/
     </textarea>
 <script src="remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
