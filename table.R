@@ -43,8 +43,8 @@ dalt <- tibble(
     "workshop"
   ),
   recording = c(
-    "TBA",
-    "<a href='https://vimeo.com/214301880'>here</a>",
+    "<a href='https://vimeo.com/214301880' target='_blank'>here</a>",
+    "<a href='https://www.youtube.com/watch?v=mZd9eWt7moE' target='_blank'>here</a>",
     "none",
     "none"
   ),
