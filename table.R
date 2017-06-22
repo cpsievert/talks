@@ -25,34 +25,19 @@ dauto <- talks %>%
 # other talks that are located elsewhere
 dalt <- tibble(
   title = c(
-    "<a href='https://bit.ly/plotcon17-webinar' target='_blank'> News and updates surrounding plotly for R </a>",
-    "<a href='http://bit.ly/plotcon17-talk' target='_blank'> Practical tools for exploratory visualization</a>",
-    "<a href='https://cpsievert.github.io/plotcon17/workshop/day1' target='_blank'> Getting (re)-acquainted with R, RStudio, data wrangling, ggplot2, and plotly</a>",
-    "<a href='https://cpsievert.github.io/plotcon17/workshop/day2' target='_blank'> Advanced plotly</a>"
+    "<a href='http://bit.ly/plotcon17-talk' target='_blank'> Practical tools for exploratory visualization</a>"
   ),
   venue = c(
-    "The internet",
-    "Plotcon 2017",
-    "Plotcon 2017",
     "Plotcon 2017"
   ),
   type = c(
-    "webinar",
-    "invited talk",
-    "workshop",
-    "workshop"
+    "invited talk"
   ),
   recording = c(
-    "<a href='https://vimeo.com/214301880' target='_blank'>here</a>",
-    "<a href='https://www.youtube.com/watch?v=mZd9eWt7moE' target='_blank'>here</a>",
-    "none",
-    "none"
+    "<a href='https://www.youtube.com/watch?v=mZd9eWt7moE' target='_blank'>here</a>"
   ),
   date = c(
-    "20170412",
-    "20170502",
-    "20170504",
-    "20170505"
+    "20170502"
   )
 )
 
@@ -61,6 +46,7 @@ d <- bind_rows(dauto, dalt)
 d %>%
   mutate(date = as.Date(date, format = "%Y%m%d")) %>%
   arrange(desc(date)) %>%
+  select(date, title, venue, type, recording) %>%
   datatable(escape = F, options = list(pageLength = 50)) %>%
   saveWidget(file = "index.html")
 
