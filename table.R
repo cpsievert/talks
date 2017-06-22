@@ -19,16 +19,16 @@ dauto <- talks %>%
   bind_rows() %>%
   mutate(date = talks) %>%
   mutate(title = sprintf(
-    '<a href="%s">%s</a>', sprintf("http://cpsievert.github.io/talks/%s", date), title
+    '<a href="%s" target="_blank">%s</a>', sprintf("http://cpsievert.github.io/talks/%s", date), title
   ))
 
 # other talks that are located elsewhere
 dalt <- tibble(
   title = c(
-    "<a href='https://bit.ly/plotcon17-webinar'> News and updates surrounding plotly for R </a>",
-    "<a href='http://bit.ly/plotcon17-talk'> Practical tools for exploratory visualization</a>",
-    "<a href='https://cpsievert.github.io/plotcon17/workshop/day1'> Getting (re)-acquainted with R, RStudio, data wrangling, ggplot2, and plotly</a>",
-    "<a href='https://cpsievert.github.io/plotcon17/workshop/day2'> Advanced plotly</a>"
+    "<a href='https://bit.ly/plotcon17-webinar' target='_blank'> News and updates surrounding plotly for R </a>",
+    "<a href='http://bit.ly/plotcon17-talk' target='_blank'> Practical tools for exploratory visualization</a>",
+    "<a href='https://cpsievert.github.io/plotcon17/workshop/day1' target='_blank'> Getting (re)-acquainted with R, RStudio, data wrangling, ggplot2, and plotly</a>",
+    "<a href='https://cpsievert.github.io/plotcon17/workshop/day2' target='_blank'> Advanced plotly</a>"
   ),
   venue = c(
     "The internet",
