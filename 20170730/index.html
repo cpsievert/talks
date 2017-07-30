@@ -12,53 +12,117 @@ class: center, middle, inverse, title-slide
 
 # The 2017 John M. Chambers Award
 ### Carson Sievert
-### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> GitHub: <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> Email: <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> Web: <a href="http://cpsievert.me/" class="uri">http://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
+### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> GitHub: <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> Email: <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> Web: <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
 
 ---
 
-background-image: url(excited_beyond_belief.gif)
+background-image: url(excited.gif)
 background-size: contain
 class: center, middle, inverse
 
-# !!!!!!!!!!!!!
-
----
-## What did I do get here?
-
-&lt;div align="center"&gt;
-  &lt;img src="plotly4R.gif" width="800" height="500" /&gt;
-&lt;/div&gt;
-
----
-## The plotly ecosystem
-
-&lt;div align="center"&gt;
-  &lt;img src="plotly-org.svg" width="700" height="400" /&gt;
-&lt;/div&gt;
-
-
----
-## My contributions
-
-&lt;div align="center"&gt;
-  &lt;img src="contributions.png" width="700" height="400" /&gt;
-&lt;/div&gt;
-
+# OMG!!!
 
 &lt;!--
-## Why am I here?
+* So excited to be here! Also incredibly humbled.
 
-* My contributions to R package __plotly__.
-    * Maintainer since Dec 2015.
-    * Implemented a [linked views framework](http://plotly-book.cpsievert.me/linking-views-without-shiny.html), [animation API](http://plotly-book.cpsievert.me/key-frame-animations.html), the `plot_ly()` interface, improved `ggplotly()`.
---&gt;
+* Not used to winning awards
+
+* Struggled putting this talk together
+---&gt;
+
+---
+background-image: url(tour.gif)
+background-size: contain
+class: bottom
+
+## What won this award? Linked views _without __shiny___ via **plotly**
+
+---
+class: inverse, middle, center
+
+# What do mean _without shiny_? Why does it matter?
+
+.footnote[
+Of course, you can link views _with shiny_!
+]
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+  
+---
+background-image: url(crosstalk.svg)
+background-size: contain
+
+## What's happening under-the-hood?
+
+---
+background-image: url(crosstalk.svg)
+background-size: contain
+class: bottom
+
+Joe Cheng (**crosstalk** author) envisioned _1-to-1 linking_ with _transient selection_ (e.g., scatterplot-matrix brushing)
+
+**plotly** supports m-to-n linking, transient &amp; persistent selection, dynamic coloring, dynamic aggregation, direct/indirect manipulation, and more!
+
+---
+
+
+
+```r
+library(plotly)
+*library(crosstalk)
+*sd &lt;- SharedData$new(txhousing, ~year)
+p &lt;- ggplot(sd, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+(gg &lt;- ggplotly(p, tooltip = "year"))
+```
+
+&lt;iframe src="09.html" width="100%" height="500" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+## Making comparisons with dynamic brush
+
+
+```r
+highlight(
+  gg, dynamic = TRUE, persistent = TRUE, selectize = TRUE
+)
+```
+
+&lt;iframe src="10.html" width="100%" height="420" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+## Customize selection rendering
+
+
+```r
+highlight(
+  gg, dynamic = TRUE, persistent = TRUE, 
+  selected = attrs_selected(mode = "markers+lines", marker = list(symbol = "x"))
+)
+```
+
+&lt;iframe src="11.html" width="100%" height="420" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+## Link different chart types (+ dynamic aggregates!)
+
+&lt;iframe src="11d.html" width="100%" height="580" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+background-image: url(quakes.gif)
+background-size: contain
+
+## Link different chart types (+ dynamic aggregates!)
+
     
 ---
-## How did I get here?
+background-image: url(headshots.png)
+background-size: contain
+class: inverse, center, bottom
 
-&lt;div align="center"&gt;
-  &lt;img src="headshots.png" width="700" height="500" /&gt;
-&lt;/div&gt;
+## Many people made this possible, THANK YOU!!!
 
 ---
 ## Key moments/people
@@ -67,44 +131,68 @@ class: center, middle, inverse
     * Learned about reproducibility &amp; collaboration (e.g., knitr, git, GitHub)&lt;sup&gt;1&lt;/sup&gt;
     
 * __May 2013:__ Internship with Kenny Shirley at AT&amp;T
-    * Learned about lack of tools for _exploratory_ web graphics.
+    * Learned about lack of tools for _exploratory_ web graphics
     
 * __May 2014:__ Google Summer of Code with Toby Dylan Hocking&lt;sup&gt;2&lt;/sup&gt;
-    * Learned about converting __ggplot2__ from static to interactive.
+    * Learned about converting __ggplot2__ from static to interactive
 
-* __2015:__ Consultant for plotly&lt;sup&gt;2&lt;/sup&gt;
-    * 
+* __2015:__ Part-time consultant for plotly&lt;sup&gt;2&lt;/sup&gt;
+    * Learned how to get paid for doing "research" 
 
-* __2017:__ Defended PhD. 
+* __2017:__ Defended PhD. Started consulting full-time.
+    * Clients: NOAA, O'Reilly, BC Gov, Univ of Helsinki, and NYC Data Science
 
-.footnote[ 
-[1]: Want your students to be more employable? Teach them git/GitHub!!!
 
+&lt;small&gt;
+[1]: Want your students to be more employable? Teach them git/GitHub!!! &lt;br /&gt;
 [2]: Wouldn't have been possible without git/GitHub knowledge!
-]
-
-
+&lt;/small&gt;
 
 ---
-background-image: url(finished.gif)
-background-size: contain
-class: bottom, inverse
+## Go forth, impact open-source!
 
-## Neat story! Is it over?
-
-
----
-## In Summary
-
-
-* To the community:
-    * 
+* To students:
+    * Learn by reading (source code), building, and _making mistakes_ (publically!)
+    * Leverage your community (mailing lists, Twitter, etc). Develop online presence.
+    * Learn how to collaborate remotely (git/GitHub)
+    * Works towards tomorrow, not today
+        * Learn a little about many areas -- pay-off is exponential!
+        * Fail quickly, be ready for the next big thing
 
 * To mentors:
-    * Be wary of "do everything yourself" projects.
-    * 
-      * To implement something of academic interest, you need 
-    *
+    * Be a good role-model: _use open-source!_
+    * Hold working groups: _demand presentations_!
+    * Help students refine scope/focus _without telling them what to do_
+        * General-purpose tools are hard to maintain
+
+* To the academic community:
+    * Valuable contribution takes time, _account for that when hiring_
+    * Publications aren't everything!
+        * Consider other metrics (e.g., downloads, page views, etc)
+        * Helping others get pubs often isn't rewarded, we _suck_ at citing open source!
+    
+---
+class: inverse, middle, center
+
+## Thanks!
+
+Slides: &lt;https://talks.cpsievert.me&gt; &lt;br /&gt;
+
+#### Hear more
+
+Thursday @ 8:30am in room CC-323  &lt;br /&gt;
+
+#### Learn more
+
+Plotly book: &lt;https://plotly-book.cpsievert.me&gt; &lt;br /&gt;
+PhD thesis: &lt;https://github.com/cpsievert/phd-thesis&gt; &lt;br /&gt;
+
+#### Contact
+
+Twitter: &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+GitHub: &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+Email: &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
+Web: &lt;https://cpsievert.me/&gt;
     </textarea>
 <script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

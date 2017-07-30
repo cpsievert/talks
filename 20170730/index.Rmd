@@ -5,6 +5,7 @@ type: "invited"
 recording: "none"
 output:
   xaringan::moon_reader:
+    self_contained: false
     chakra: "../templates/remarkjs/libs/remark-latest.min.js"
     nature:
       # approx the golden ratio
@@ -17,52 +18,123 @@ output:
 date: "Slides: https://talks.cpsievert.me <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
 GitHub: <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
 Email: <cpsievert1@gmail.com> <br />
-Web: <http://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+Web: <https://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert"
 ---
-background-image: url(excited_beyond_belief.gif)
+background-image: url(excited.gif)
 background-size: contain
 class: center, middle, inverse
 
-# !!!!!!!!!!!!!
-
----
-## What did I do get here?
-
-<div align="center">
-  <img src="plotly4R.gif" width="800" height="500" />
-</div>
-
----
-## The plotly ecosystem
-
-<div align="center">
-  <img src="plotly-org.svg" width="700" height="400" />
-</div>
-
-
----
-## My contributions
-
-<div align="center">
-  <img src="contributions.png" width="700" height="400" />
-</div>
-
+# OMG!!!
 
 <!--
-## Why am I here?
+* So excited to be here! Also incredibly humbled.
 
-* My contributions to R package __plotly__.
-    * Maintainer since Dec 2015.
-    * Implemented a [linked views framework](http://plotly-book.cpsievert.me/linking-views-without-shiny.html), [animation API](http://plotly-book.cpsievert.me/key-frame-animations.html), the `plot_ly()` interface, improved `ggplotly()`.
--->
+* Not used to winning awards
+
+* Struggled putting this talk together
+--->
+
+---
+background-image: url(tour.gif)
+background-size: contain
+class: bottom
+
+## What won this award? Linked views _without __shiny___ via **plotly**
+
+---
+class: inverse, middle, center
+
+# What do mean _without shiny_? Why does it matter?
+
+.footnote[
+Of course, you can link views _with shiny_!
+]
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+  
+---
+background-image: url(crosstalk.svg)
+background-size: contain
+
+## What's happening under-the-hood?
+
+---
+background-image: url(crosstalk.svg)
+background-size: contain
+class: bottom
+
+Joe Cheng (**crosstalk** author) envisioned _1-to-1 linking_ with _transient selection_ (e.g., scatterplot-matrix brushing)
+
+**plotly** supports m-to-n linking, transient & persistent selection, dynamic coloring, dynamic aggregation, direct/indirect manipulation, and more!
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE,
+  eval = FALSE
+)
+```
+
+```r
+library(plotly)
+*library(crosstalk)
+*sd <- SharedData$new(txhousing, ~year)
+p <- ggplot(sd, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+(gg <- ggplotly(p, tooltip = "year"))
+```
+
+<iframe src="09.html" width="100%" height="500" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+## Making comparisons with dynamic brush
+
+```{r}
+highlight(
+  gg, dynamic = TRUE, persistent = TRUE, selectize = TRUE
+)
+```
+
+<iframe src="10.html" width="100%" height="420" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+## Customize selection rendering
+
+```{r}
+highlight(
+  gg, dynamic = TRUE, persistent = TRUE, 
+  selected = attrs_selected(mode = "markers+lines", marker = list(symbol = "x"))
+)
+```
+
+<iframe src="11.html" width="100%" height="420" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+## Link different chart types (+ dynamic aggregates!)
+
+<iframe src="11d.html" width="100%" height="580" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+background-image: url(quakes.gif)
+background-size: contain
+
+## Link different chart types (+ dynamic aggregates!)
+
     
 ---
-## How did I get here?
+background-image: url(headshots.png)
+background-size: contain
+class: inverse, center, bottom
 
-<div align="center">
-  <img src="headshots.png" width="700" height="500" />
-</div>
+## Many people made this possible, THANK YOU!!!
 
 ---
 ## Key moments/people
@@ -71,41 +143,66 @@ class: center, middle, inverse
     * Learned about reproducibility & collaboration (e.g., knitr, git, GitHub)<sup>1</sup>
     
 * __May 2013:__ Internship with Kenny Shirley at AT&T
-    * Learned about lack of tools for _exploratory_ web graphics.
+    * Learned about lack of tools for _exploratory_ web graphics
     
 * __May 2014:__ Google Summer of Code with Toby Dylan Hocking<sup>2</sup>
-    * Learned about converting __ggplot2__ from static to interactive.
+    * Learned about converting __ggplot2__ from static to interactive
 
-* __2015:__ Consultant for plotly<sup>2</sup>
-    * 
+* __2015:__ Part-time consultant for plotly<sup>2</sup>
+    * Learned how to get paid for doing "research" 
 
-* __2017:__ Defended PhD. 
+* __2017:__ Defended PhD. Started consulting full-time.
+    * Clients: NOAA, O'Reilly, BC Gov, Univ of Helsinki, and NYC Data Science
 
-.footnote[ 
-[1]: Want your students to be more employable? Teach them git/GitHub!!!
 
+<small>
+[1]: Want your students to be more employable? Teach them git/GitHub!!! <br />
 [2]: Wouldn't have been possible without git/GitHub knowledge!
-]
-
-
+</small>
 
 ---
-background-image: url(finished.gif)
-background-size: contain
-class: bottom, inverse
+## Go forth, impact open-source!
 
-## Neat story! Is it over?
-
-
----
-## In Summary
-
-
-* To the community:
-    * 
+* To students:
+    * Learn by reading (source code), building, and _making mistakes_ (publically!)
+    * Leverage your community (mailing lists, Twitter, etc). Develop online presence.
+    * Learn how to collaborate remotely (git/GitHub)
+    * Works towards tomorrow, not today
+        * Learn a little about many areas -- pay-off is exponential!
+        * Fail quickly, be ready for the next big thing
 
 * To mentors:
-    * Be wary of "do everything yourself" projects.
-    * 
-      * To implement something of academic interest, you need 
-    * 
+    * Be a good role-model: _use open-source!_
+    * Hold working groups: _demand presentations_!
+    * Help students refine scope/focus _without telling them what to do_
+        * General-purpose tools are hard to maintain
+
+* To the academic community:
+    * Valuable contribution takes time, _account for that when hiring_
+    * Publications aren't everything!
+        * Consider other metrics (e.g., downloads, page views, etc)
+        * Helping others get pubs often isn't rewarded, we _suck_ at citing open source!
+    
+---
+class: inverse, middle, center
+
+## Thanks!
+
+Slides: <https://talks.cpsievert.me> <br />
+
+#### Hear more
+
+Thursday @ 8:30am in room CC-323  <br />
+
+#### Learn more
+
+Plotly book: <https://plotly-book.cpsievert.me> <br />
+PhD thesis: <https://github.com/cpsievert/phd-thesis> <br />
+
+#### Contact
+
+Twitter: <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+GitHub: <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+Email: <cpsievert1@gmail.com> <br />
+Web: <https://cpsievert.me/>
+
