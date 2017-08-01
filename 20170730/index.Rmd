@@ -152,7 +152,7 @@ class: inverse, center, bottom
     * Learned how to get paid for doing "research" 
 
 * __2017:__ Defended PhD. Started consulting full-time.
-    * Clients: NOAA, O'Reilly, BC Gov, Univ of Helsinki, and NYC Data Science
+    * Clients: plotly, NOAA, O'Reilly, BC Gov, Univ of Helsinki, and NYC Data Science
 
 
 <small>
@@ -172,7 +172,7 @@ class: inverse, center, bottom
         * Fail quickly, be ready for the next big thing
 
 * To mentors:
-    * Be a good role-model: _use open-source!_
+    * Be a good role-model: _use & contribute to open-source!_
     * Hold working groups: _demand presentations_!
     * Help students refine scope/focus _without telling them what to do_
         * General-purpose tools are hard to maintain
@@ -184,7 +184,7 @@ class: inverse, center, bottom
         * Helping others get pubs often isn't rewarded, we _suck_ at citing open source!
     
 ---
-class: inverse, middle, center
+class: middle, center
 
 ## Thanks!
 
