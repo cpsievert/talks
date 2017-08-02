@@ -459,9 +459,11 @@ class: inverse
 ---
 ## In summary
 
-* There are a lack of _exploratory_ data visualization on the web.
-* JavaScript is not designed to do statistical computing.
-* Lets create R interfaces that leverage the computing resources of R with the interactivity of JavaScript
+* There is a lack of tools for _exploratory_ data visualization on the web.
+
+* Web technologies are not designed for statistical computing.
+
+* Lets create R interfaces that leverage the computing resources of R with the interactivity of JavaScript!
 
 ---
 class: middle, center
