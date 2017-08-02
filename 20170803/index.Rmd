@@ -40,15 +40,26 @@ class: inverse
 
 # <font color="#cc1f29"> Expository vis </font>
 
-.footnote[
-Assuming you know _exactly_ what you want to visualize, many good JavaScript frameworks exist (e.g., d3js, Vega, plotly.js, bokeh, etc)!
-]
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-???
 
-The web has become the preferred medium for communicating results.
+### The web is the preferred medium for communicating results.
 
-Once you know what you want to show, plotly.js is a great choice!!
+### Assuming you know _exactly_ what you want to visualize, many good JavaScript frameworks exist!
 
 ---
 background-image: url(workflow2.svg)
@@ -57,9 +68,24 @@ class: inverse
 
 # <font color="#cc1f29"> Exploratory vis </font>
 
-.footnote[
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### JavaScript lacks tools for modeling/transformation
 ### Too often, analysts juggle several technolgies (R, Python, JavaScript)
-]
 
 ???
 
@@ -90,82 +116,73 @@ class: inverse, center
 
 # `r emo::ji("point_up")` `r emo::ji("tangerine")` 
 
+---
+class: middle
+
+# How to drain the swamp?
+
+R package(s) for creating interactive web graphics which:
+
+1. Don't require knowledge of web technologies (**start-up cost**)
+2. Produce standalone HTML whenever possible (**hosting/maintenance cost**)
+3. Work well with other "tidy" tools in R (**iteration cost**)
+4. Link to external vis libraries (**startover cost**) 
+5. Easy to use int. techniques that <i>support data analysis tasks</i> (**discovery cost**)
 
 ---
 class: middle
-background-image: url(plotly.svg)
-background-size: 100px
-background-position: 90% 8%
 
-# My mission
+# How to drain the swamp?
 
-A single (R) interface that:
+R package(s) for creating interactive web graphics which:
 
-1. Doesn't require knowledge of web technologies.
-2. Works seamlessly with other "tidy" tools in R.
-3. Easy<sup>1</sup> to declare interactive *techniques that support common data analysis tasks*<sup>2</sup>.
-
-.footnote[ 
-[1]: 80% should be easy (i.e., don't require extra knowledge), but the remaining 20% should be possible. <br />
-[2]: Analysts usually have different needs from the terminal audience.
-]
-  
----
-background-image: url(plotly.svg)
-background-size: 100px
-background-position: 90% 8%
-## Interactivity augments data exploration!
-
-* Identify structure that otherwise goes missing ([Tukey 1972]()).
-* Interactive techniques foster data analysis tasks ([Cook et al 1996]()).
-    * Finding Gestalt, posing queries, and making comparisons.
-* Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015]()).
-
-???
-
-* Let's not forget -- statisticians have been thinking about the problem for 50 years!
-* Easy to get lost in a sea of techniques -- easier if you motivate via data analysis tasks.
-* Not everyone has a need to diagnose models, but everyone has a need to get stuff done
-
----
-background-image: url(plotly.svg)
-background-size: 100px
-background-position: 90% 8%
-
-## Interactivity augments data exploration!
-
-* Identify structure that otherwise goes missing ([Tukey 1972]()).
-* Interactive techniques foster data analysis tasks ([Cook et al 1996]()).
-    * Finding Gestalt, posing queries, and making comparisons.
-* Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015]()).
-* Generate insights faster ([Hofmann & Unwin 1999]()).
-
-<div align="center">
-  <img src="../gifs/look.gif" width="800" height="375" />
-</div>
-
-???
-
-
----
-background-image: url(workflow2.svg)
-background-size: 250px
-background-position: 90% 8%
-class: inverse, center, middle
-
-### No matter how complex and polished the individual operations are, it is often 
-
-# the quality of the glue that most directly determines the power of the system.
+1. <font color="#cc1f29">Don't require knowledge of web technologies</font> (**start-up cost**)
+2. Produce standalone HTML whenever possible (**hosting/maintenance cost**)
+3. Work well with other "tidy" tools in R (**iteration cost**)
+4. Link to external vis libraries (**startover cost**) 
+5. Easy to use int. techniques that <i>support data analysis tasks</i> (**discovery cost**)
 
 .footnote[
-Quote from Hal Abelson & part of the [tidyverse manifesto](https://cran.r-project.org/package=tidyverse)
+<font color="#cc1f29"> We can all get behind this, right?</font>
 ]
 
-???
+---
+class: middle
 
-Generating faster insights requires good glue. This comes in two parts:
-  * Works seamlessly with other programming interfaces (iteration time!)
-  * Works seamlessly with other graphical interfaces (i.e., can link components from independent systems).
+# How to drain the swamp?
+
+R package(s) for creating interactive web graphics which:
+
+1. Don't require knowledge of web technologies (**start-up cost**)
+2. <font color="#cc1f29">Produce standalone HTML whenever possible</font> (**hosting/maintenance cost**)
+3. Work well with other "tidy" tools in R (**iteration cost**)
+4. Link to external vis libraries (**startover cost**) 
+5. Easy to use int. techniques that <i>support data analysis tasks</i> (**discovery cost**)
+
+.footnote[
+<font color="#cc1f29"> As opposed to a client-server framework</font>
+]
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+
+---
+class: middle
+
+# How to drain the swamp?
+
+R package(s) for creating interactive web graphics which:
+
+1. Don't require knowledge of web technologies (**start-up cost**)
+2. Produce standalone HTML whenever possible (**hosting/maintenance cost**)
+3. <font color="#cc1f29">Work well with other "tidy" tools in R</font> (**iteration cost**)
+4. Link to external vis libraries (**startover cost**) 
+5. Easy to use int. techniques that <i>support data analysis tasks</i> (**discovery cost**)
+
+.footnote[
+<font color="#cc1f29"> Let me give you an example with plotly</font>
+]
 
 ---
 background-image: url(europe.png)
@@ -241,97 +258,210 @@ ggplot(sd, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
 <iframe src="europe.html" width="100%" height="750" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 ---
-## Linking small multiples
+class: middle
+
+# How to drain the swamp?
+
+R package(s) for creating interactive web graphics which:
+
+1. Don't require knowledge of web technologies (**start-up cost**)
+2. Produce standalone HTML whenever possible (**hosting/maintenance cost**)
+3. Work well with other "tidy" tools in R (**iteration cost**)
+4. <font color="#cc1f29"> Link to external vis libraries </font> (**startover cost**) 
+5. Easy to use int. techniques that <i>support data analysis tasks</i> (**discovery cost**)
+
+.footnote[
+<font color="#cc1f29"> Let's see an example with plotly and leaflet</font>
+]
+
+---
+background-image: url(plotlyLeaflet.gif)
+background-size: contain
+
+## plotly & leaflet
+
+---
 
 ```r
 library(plotly)
-*library(crosstalk)
-*sd <- SharedData$new(txhousing, ~year)
-p <- ggplot(sd, aes(month, median, group = year)) + geom_line() +
-  facet_wrap(~city, ncol = 2)
-(gg <- ggplotly(p, tooltip = "year"))
+library(leaflet)
+library(crosstalk)
+
+*# use uniform/standard data structures!
+*sd <- SharedData$new(quakes)
+
+p <- plot_ly(sd, x = ~depth, y = ~mag) %>% 
+  add_markers(alpha = 0.5) %>%
+  highlight("plotly_selected", dynamic = TRUE)
+
+map <- leaflet(sd) %>% 
+  addTiles() %>% 
+  addCircles()
+
+bscols(widths = c(6, 6), p, map)
 ```
 
-<iframe src="../20170730/09.html" width="100%" height="400" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+---
+class: middle
 
+# How to drain the swamp?
+
+R package(s) for creating interactive web graphics which:
+
+1. Don't require knowledge of web technologies (**start-up cost**)
+2. Produce standalone HTML whenever possible (**hosting/maintenance cost**)
+3. Work well with other "tidy" tools in R (**iteration cost**)
+4. Link to external vis libraries (**startover cost**) 
+5. <font color="#cc1f29">Easy to use int. techniques that <i>support data analysis tasks</i></font> (**discovery cost**)
+
+.footnote[
+<font color="#cc1f29">Hard problem -- statisticians should be more involved here!</font>
+]
 
 ---
-## Linking multiple views
+class: inverse, middle, center
+
+# Interactive graphics software must be opiniated
+
+## Not enough statisticians influence design/implementation
+
+## We used to be better at this!!! <http://stat-graphics.org/movies/>
+
+---
+class: inverse, middle, center
+
+# Interactive graphics software must be opiniated
+
+## Not enough statisticians influence design/implementation
+
+## We used to be better at this!!! <http://stat-graphics.org/movies/>
+
+.footnote[
+## Should we be teaching more JavaScript and less C? `r emo::ji("scream_cat")`
+]
+
+---
+background-image: url(taxonomy.svg)
+background-size: contain
+class: bottom, inverse
+
+## Techniques that support data analysis [Cook et al 1996](https://www.jstor.org/stable/1390754)
+
+---
+## Finding Gestalt & posing queries
 
 <iframe src="https://player.vimeo.com/video/192528320" width="100%" height="550" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ---
+## Making comparisons
 
-## Linking animated views
-
-
----
-
-## Link with other widgets
-
-<iframe src="leaflet2/index.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
-
+<iframe src="compare.html" width="100%" height="500" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 ---
-
-```r
-library(leaflet)
-library(crosstalk)
-library(plotly)
-
-sd <- SharedData$new(quakes)
-stations <- filter_slider("station", "Number of Stations", sd, ~stations)
-
-p <- plot_ly(sd, x = ~depth, y = ~mag) %>% 
-  add_markers(alpha = 0.5) %>% 
-  highlight("plotly_selected", dynamic = TRUE)
-
-map <- leaflet(sd) %>% 
-  addTiles() %>% 
-  addCircles()
-
-bscols(p, map, stations)
-```
-
-
----
-
-```r
-library(leaflet)
-library(crosstalk)
-library(plotly)
-
-*# Input data for every view!
-*sd <- SharedData$new(quakes)
-stations <- filter_slider("station", "Number of Stations", sd, ~stations)
-
-p <- plot_ly(sd, x = ~depth, y = ~mag) %>% 
-  add_markers(alpha = 0.5) %>% 
-  highlight("plotly_selected", dynamic = TRUE)
-
-map <- leaflet(sd) %>% 
-  addTiles() %>% 
-  addCircles()
-
-bscols(p, map, stations)
-```
-
-
-### TAKE HOME MESSAGE: Build upon uniform data structures!
-
----
-class: inverse, middle, center
-background-image: url(headshots.png)
+background-image: url(tour.gif)
 background-size: contain
+class: bottom
 
-## Standing on the shoulders of giants
+## Finding Gestalt & "making comparisons"
+
 
 ---
+background-image: url(taxonomy2.svg)
+background-size: contain
+class: inverse
 
+## Important design questions
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+### <font color="#cc1f29">What kind of visualizations should be possible/easy?</font>
+
+
+---
+background-image: url(taxonomy3.svg)
+background-size: contain
+class: inverse
+
+## Important design questions
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+### <font color="#cc1f29">How do we help users find the right view?</font>
+
+---
+background-image: url(taxonomy4.svg)
+background-size: contain
+class: inverse
+
+## Important design questions
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+### <font color="#cc1f29">How to best enable dynamic answers to (statistical) questions via interactivity?</font>
+
+---
 ## In summary
 
-
-
+* There are a lack of _exploratory_ data visualization on the web.
+* JavaScript is not designed to do statistical computing.
+* Lets create R interfaces that leverage the computing resources of R with the interactivity of JavaScript
 
 ---
 class: middle, center
