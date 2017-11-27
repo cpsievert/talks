@@ -113,5 +113,5 @@ d %>%
   arrange(desc(date)) %>%
   select(date, title, venue, type, recording) %>%
   datatable(escape = F, options = list(pageLength = 50), rownames = FALSE) %>%
-  saveWidget(file = "index.html")
+  saveWidget(file = "index.html", title = "Carson's talks")
 
