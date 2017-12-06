@@ -1,0 +1,769 @@
+---
+title: "Costs and benefits of exploratory web graphics"
+venue: "Iowa State University"
+type: "invited"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    self_contained: false
+    css: [main.css, default]
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+date: "Slides: https://talks.cpsievert.me <br /> <br />  `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+background-image: url(workflow.svg)
+background-size: contain
+class: inverse
+
+# Data Science Workflow
+
+???
+
+I love this diagram from the R for Data Science book.
+
+Concisely captures the main components.
+
+---
+background-image: url(workflow1.svg)
+background-size: contain
+class: inverse
+
+# <font color="#cc1f29"> Expository vis </font>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+### The web is the preferred medium for communicating results.
+
+### Assuming you know _exactly_ what you want to visualize, many good JavaScript frameworks exist!
+
+---
+background-image: url(workflow2.svg)
+background-size: contain
+class: inverse
+
+# <font color="#cc1f29"> Exploratory vis </font>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### JavaScript lacks tools for modeling/transformation
+### Too often, analysts juggle several technolgies (R, Python, JavaScript)
+
+???
+
+JavaScript lacks tools for iteration (necessary for exploration/discovery!)
+
+
+---
+background-image: url(../gifs/swamp.gif)
+background-size: contain
+class: inverse, center, bottom
+
+## It is all too easy for statistical thinking to be **swamped by programming tasks.** -- Brian D. Ripley
+
+
+???
+
+So, this is me, in my 2nd year of grad school, deciding to learn D3 & JavaScript.
+
+It took me 6+ months to implement a single interactive visualization.
+
+And let me tell you, you guys, no joke, believe me, I arose from the swamp, and decide I alone will...
+
+
+---
+background-image: url(../gifs/drain-the-swamp.gif)
+background-size: contain
+class: inverse, center
+
+# `r emo::ji("point_up")` `r emo::ji("tangerine")` 
+
+---
+
+## What's in the swamp?
+
+.pull-left[
+## Exploratory quicksand
+
+<div class="principles">
+• Start-up <br/>
+• Iteration <br/>
+• Dead-end
+</div>
+]
+
+.pull-right[
+## Expository quicksand
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
+
+---
+class: inverse, middle, center
+
+## *How* to drain the swamp?
+
+.footnote[
+### What follows are some details & my suggestions about how one might go about it
+]
+
+---
+
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+<div class="highlight"> • Start-up quicksand</div> <br/>
+• Iteration <br/>
+• Dead-end
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+* Getting started should be easy!
+  * Easy install (CRAN) & copy/paste examples
+  * Build upon existing knowledge and tools
+<div>
+
+---
+background-image: url(europe.png)
+background-size: contain
+class: inverse
+
+---
+background-image: url(europe.png)
+background-size: contain
+class: middle
+
+.pull-left[
+# Neat, but I can't: 
+
+<div class="principles">
+• Query populations <br />
+• Zoom/pan <br />
+• Compare population at given lat
+</div>
+]
+
+---
+
+```r
+library(tidyverse)
+
+*# read and clean data
+d <- read_csv('GEOSTAT_grid_POP_1K_2011_V2_0_1.csv') %>%
+  rbind(read_csv('JRC-GHSL_AIT-grid-POP_1K_2011.csv') %>%
+          mutate(TOT_P_CON_DT = '')) %>%
+  mutate(
+    lat = as.numeric(gsub('.*N([0-9]+)[EW].*', '\\1', GRD_ID))/100,
+    lng = as.numeric(gsub('.*[EW]([0-9]+)', '\\1', GRD_ID)) * ifelse(gsub('.*([EW]).*', '\\1', GRD_ID) == 'W', -1, 1) / 100
+  ) %>%
+  filter(lng > 25, lng < 60) %>%
+  group_by(lat = round(lat, 1), lng = round(lng, 1)) %>%
+  summarize(value = sum(TOT_P, na.rm = T))  %>%
+  ungroup() %>%
+  tidyr::complete(lat, lng)
+
+*# visualize
+ggplot(d, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
+  geom_line(
+    aes(group = lat, text = paste("Population:", value)),
+    size = 0.4, alpha = 0.8, color = '#5A3E37', na.rm = T
+  )
+```
+
+---
+
+```r
+library(tidyverse)
+*library(crosstalk)
+*library(plotly)
+
+d <- read_csv('GEOSTAT_grid_POP_1K_2011_V2_0_1.csv') %>%
+  rbind(read_csv('JRC-GHSL_AIT-grid-POP_1K_2011.csv') %>%
+          mutate(TOT_P_CON_DT = '')) %>%
+  mutate(
+    lat = as.numeric(gsub('.*N([0-9]+)[EW].*', '\\1', GRD_ID))/100,
+    lng = as.numeric(gsub('.*[EW]([0-9]+)', '\\1', GRD_ID)) * ifelse(gsub('.*([EW]).*', '\\1', GRD_ID) == 'W', -1, 1) / 100
+  ) %>%
+  filter(lng > 25, lng < 60) %>%
+  group_by(lat = round(lat, 1), lng = round(lng, 1)) %>%
+  summarize(value = sum(TOT_P, na.rm = T))  %>%
+  ungroup() %>%
+  tidyr::complete(lat, lng)
+
+*# define latitude as "interaction unit"
+*sd <- SharedData$new(d, ~lat)
+
+ggplot(sd, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
+  geom_line(
+    aes(group = lat, text = paste("Population:", value)),
+    size = 0.4, alpha = 0.8, color = '#5A3E37', na.rm = T
+  )
+  
+*ggplotly()
+```
+
+---
+
+<iframe src="../20170803/europe.html" width="100%" height="750" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+background-image: url(epl.png)
+background-size: contain
+class: inverse
+
+---
+background-image: url(epl.png)
+background-size: contain
+class: middle
+
+.pull-left[
+# Neat, but I can't: 
+
+<div class="principles">
+• Query different years <br />
+• Zoom/pan
+</div>
+]
+
+---
+background-image: url(epl.gif)
+background-size: contain
+class: middle, center 
+
+---
+background-image: url(epl.gif)
+background-size: contain
+
+# Generally useful for comparing within & across panel
+
+
+---
+## An example with Texas housing prices
+
+```r
+library(dplyr)
+tx <- txhousing %>%
+  select(city, year, month, median) %>%
+  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+tx
+```
+
+```r
+#> # A tibble: 748 x 4
+#>         city  year month median
+#>        <chr> <int> <int>  <dbl>
+#>  1 Galveston  2000     1  95000
+#>  2 Galveston  2000     2 100000
+#>  3 Galveston  2000     3  98300
+#>  4 Galveston  2000     4 111100
+#>  5 Galveston  2000     5  89200
+#>  6 Galveston  2000     6 108600
+#>  7 Galveston  2000     7  99000
+#>  8 Galveston  2000     8  96200
+#>  9 Galveston  2000     9 104000
+#> 10 Galveston  2000    10 118800
+#> # ... with 738 more rows
+```
+
+---
+### Compare within and across cities
+
+```r
+*TX <- SharedData$new(tx, ~year)
+p <- ggplot(TX, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
+```
+
+<iframe src="txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+• Start-up <br/>
+• <div class="highlight">Iteration quicksand</div> <br/>
+• Dead-end
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+* Reduce distance between data and visuals
+  * Leverage [grammar of graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448) (e.g. **ggplot2**, **vega**, etc)
+  * Leverage tidy data principles (e.g., **dplyr**, **tidyr**, **broom**, etc)
+<div>
+
+---
+## Some motivation: query missing values by city
+
+<iframe src="txhousing-missing.html" width="100%" height="500" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+class: bottom, left 
+background-image: url(pipeline.svg)
+background-size: contain
+
+## The 'data pipeline'
+
+---
+
+## The implementation
+
+```r
+library(plotly)
+library(crosstalk)
+
+# define city as 'unit of interaction'
+sd <- SharedData$new(txhousing, ~city)
+
+# initiate plot object, ensuring one mark per group
+base <- plot_ly(sd, color = I("black")) %>%
+  group_by(city)
+
+# transform plot object as if it's a data frame
+p1 <- base %>%
+  summarise(miss = sum(is.na(median))) %>%
+  filter(miss > 0) %>%
+  arrange(miss) %>%
+  add_bars(x = ~miss, y = ~factor(city, levels = city)) %>%
+  layout(barmode = "overlay")
+
+p2 <- add_lines(base, x = ~date, y = ~median, alpha = 0.3)
+
+ subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %>% 
+  highlight(dynamic = TRUE, persistent = TRUE, selectize = TRUE)
+```
+
+
+---
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+• Start-up <br/>
+• Iteration<br/>
+• Dead-end
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+<div class="highlight"> • Deployment quicksand </div> <br/>
+• Latency
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+Produce a standalone web page whenever possible
+<div>
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+class: middle, center
+
+# Standalone web pages are **much** easier to share, deploy, scale, and maintain.
+
+---
+class: middle, bottom
+background-image: url(pipeline.svg)
+background-size: contain
+
+# Where is the pipeline?
+
+---
+background-image: url(crosstalk.svg)
+background-size: contain
+
+## The general model
+
+.footnote[
+### Links are specified in R, but the "updating logic" is JavaScript -- no server required!
+]
+
+
+
+---
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+• Start-up <br/>
+• Iteration <br/>
+• Dead-end
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+• Deployment <br/>
+<div class="highlight">• Latency quicksand</div>
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+* User activity drops w/ delay of 500ms (<a href="https://idl.cs.washington.edu/papers/latency/">Liu & Heer 2014</a>)
+  * Support canvas-based (e.g. WebGL) as well as vector (e.g. SVG)
+  * Provide API for modifying plots in R (& JavaScript!)
+<div>
+
+---
+
+## Base map layer does not require a redraw with a new fillcolor!
+
+<img src="http://i.imgur.com/PzDMqZ0.gif" />
+
+---
+
+### Leverage any [plotly.js function](https://plot.ly/javascript/plotlyjs-function-reference/) to *modify* a plot via `plotlyProxy()`
+
+```r
+library(shiny)
+library(plotly)
+
+ui <- fluidPage(
+  selectInput("color", "Canada's fillcolor", colors()),
+  plotlyOutput("map")
+)
+
+server <- function(input, output, session) {
+  
+  output$map <- renderPlotly({
+    map_data("world", "canada") %>%
+      group_by(group) %>%
+      plot_mapbox(x = ~long, y = ~lat, color = I("black")) %>%
+      add_polygons()
+  })
+  
+  observeEvent(input$color, {
+    plotlyProxy("map", session) %>%
+      plotlyProxyInvoke("restyle", list(fillcolor = toRGB(input$color)))
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+---
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+• Start-up <br/>
+• Iteration <br/>
+<div class="highlight">• Dead-end quicksand</div>
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+* Integrate with other libraries that complement yours
+<div>
+
+
+---
+background-image: url(../20170803/plotlyLeaflet.gif)
+background-size: contain
+
+## plotly & leaflet
+
+---
+background-image: url(workflow2.svg)
+background-size: 250px
+background-position: 90% 8%
+class: inverse, center, middle
+
+### No matter how complex and polished the individual operations are, it is often 
+
+# the quality of the glue that most directly determines the power of the system.
+
+.footnote[
+Quote from Hal Abelson -- part of the [tidyverse manifesto](https://cran.r-project.org/package=tidyverse)
+]
+
+---
+
+```r
+library(plotly)
+library(leaflet)
+library(crosstalk)
+
+*# good glue requires uniform data structures
+*sd <- SharedData$new(quakes)
+
+p <- plot_ly(sd, x = ~depth, y = ~mag) %>% 
+  add_markers(alpha = 0.5) %>%
+  highlight("plotly_selected", dynamic = TRUE)
+
+map <- leaflet(sd) %>% 
+  addTiles() %>% 
+  addCircles()
+
+bscols(widths = c(6, 6), p, map)
+```
+
+
+---
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+• Start-up <br/>
+• Iteration <br/>
+<div class="highlight">• Dead-end quicksand</div>
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+* Every `r emo::ji("package")` that reduces start-up/iteration will *always* have dead ends. 
+* What you leave out is just as important as what you put in!
+  * Ask yourself: can others do powerful things _quickly_? 
+* Strive for 80/20 rule: 80% easy, other 20% possible
+<div>
+
+---
+
+#### Provide tools for "power users"
+
+```
+plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
+  add_markers(text = ~paste0("http://google.com/#q=", rownames(mtcars))) %>%
+  htmlwidgets::onRender("function(el, x) {
+    el.on('plotly_click', function(d) {
+      var pt = d.points[0];
+      var url = pt.data.text[pt.pointNumber];
+      window.open(url);
+    });
+  }")
+```
+
+<iframe src="onrender.html" width="100%" height="350" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+
+---
+## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
+
+.pull-left[
+## Exploratory
+
+<div class="principles">
+• Start-up <br/>
+• Iteration <br/>
+<div class="highlight">• Dead-end quicksand</div>
+</div>
+]
+
+.pull-right[
+## Expository
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
+
+<br/>
+
+<div class="highlight">
+* Interactive graphics software must be opinionated
+  * Techniques should empower data analysis tasks ([Cook et al 1996](https://www.jstor.org/stable/1390754))
+* Not enough statisticians influence design nowadays
+  * We used to be more involved! <http://stat-graphics.org/movies/>
+  * Tech landscape shifted from C/Java to JavaScript 
+<div>
+
+---
+background-image: url(taxonomy.svg)
+background-size: contain
+class: bottom, inverse
+
+## Techniques that support data analysis [Cook et al 1996](https://www.jstor.org/stable/1390754)
+
+---
+background-image: url(taxonomy2.svg)
+background-size: contain
+class: inverse
+
+<h3>
+<div class="highlight"> 
+  What kind of visualizations should be possible/easy?
+</div>
+</h3>
+
+---
+background-image: url(taxonomy3.svg)
+background-size: contain
+class: inverse
+
+<h3>
+<div class="highlight"> 
+  How do we help users find the right view?
+</div>
+</h3>
+
+---
+background-image: url(taxonomy4.svg)
+background-size: contain
+class: inverse
+
+<h3>
+<div class="highlight"> 
+  How to best enable dynamic answers to (statistical) questions?
+</div>
+</h3>
+
+---
+
+## In summary
+
+.pull-left[
+## Exploratory quicksand
+
+* Start-up
+  * Build upon existing knowledge and tools
+* Iteration
+  * Reduce distance between data and visuals
+  * Leverage grammar of graphics and tidy-data principles
+* Dead-end
+  * Integrate with other libraries that complement yours
+  * Strive for 80/20 rule: 80% easy, other 20% possible
+  * Interactive techniques should empower data analysis tasks
+]
+
+.pull-right[
+## Expository quicksand
+
+* Deployment
+  * Use standalone web pages whenever possible
+* Latency
+  * User activity drops w/ delay of 500ms
+]
+
+---
+class: middle, center
+
+## Thanks! Questions?
+
+Slides: <https://talks.cpsievert.me> <br />
+
+#### Contact
+
+`r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/>
+
