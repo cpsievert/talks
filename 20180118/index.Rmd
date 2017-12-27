@@ -1,0 +1,105 @@
+---
+title: "Fitting interactive web graphics into a data science workflow"
+abstract: Interactive web graphics are great for communication, but are more difficult to leverage during the exploratory phase of a data science workflow. Even before the web, interactive graphics helped data analysts quickly gather insight from data, discover the unexpected, and develop better model diagnostics. Web technologies, however, are not designed to fit inside an exploratory data analysis workflow where rapid iteration between data manipulation, modeling, and visualization must occur. Fortunately, we are starting to see more and better bridges between statistical computing environments and web graphics that reduce the amount of friction involved when using interactive techniques to accomplish data analysis tasks (e.g., the R packages shiny, htmlwidgets, plotly, etc). This talk demonstrates the power these modern tools through a series of examples, identifies common sources of pain involved with using them, and discusses ways to reduce the pain.
+venue: "Carnegie Mellon"
+type: "invited"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    self_contained: false
+    css: [main.css, default]
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+date: "Slides: https://talks.cpsievert.me <br /> <br />  `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+background-image: url(workflow.svg)
+background-size: contain
+class: inverse
+
+# Data Science Workflow
+
+
+---
+background-image: url(workflow1.svg)
+background-size: contain
+class: inverse
+
+# <font color="#cc1f29"> Expository vis </font>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+### The web is the preferred medium for communicating results.
+
+### Assuming you know _exactly_ what you want to visualize, many good JavaScript frameworks exist!
+
+---
+background-image: url(workflow2.svg)
+background-size: contain
+class: inverse
+
+# <font color="#cc1f29"> Exploratory vis </font>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### JavaScript lacks tools for modeling/transformation
+### Too often, analysts juggle several technolgies (R, Python, JavaScript)
+
+???
+
+JavaScript lacks tools for iteration (necessary for exploration/discovery!)
+
+
+---
+class: middle, center
+
+## Thanks! Questions?
+
+Slides: <https://talks.cpsievert.me> <br />
+
+#### Contact
+
+`r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/>
+
