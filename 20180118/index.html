@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fitting interactive web graphics into a data science workflow</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Carson Sievert" />
+    <link href="index_files/remark-css/example.css" rel="stylesheet" />
+    <link href="index_files/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Fitting interactive web graphics into a data science workflow
+### Carson Sievert
+### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> <i class="fa  fa-twitter "></i> <a href='https://twitter.com/cpsievert'><span class="citation" data-cites="cpsievert">@cpsievert</span></a> <br /> <i class="fa  fa-github "></i> <a href='https://github.com/cpsievert'><span class="citation" data-cites="cpsievert">@cpsievert</span></a> <br /> <i class="fa  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> <i class="fa  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
+
+---
+
+background-image: url(workflow.svg)
+background-size: contain
+class: inverse
+
+# Data Science Workflow
+
+
+---
+background-image: url(workflow1.svg)
+background-size: contain
+class: inverse
+
+# &lt;font color="#cc1f29"&gt; Expository vis &lt;/font&gt;
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+
+
+### The web is the preferred medium for communicating results.
+
+### Assuming you know _exactly_ what you want to visualize, many good JavaScript frameworks exist!
+
+---
+background-image: url(workflow2.svg)
+background-size: contain
+class: inverse
+
+# &lt;font color="#cc1f29"&gt; Exploratory vis &lt;/font&gt;
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+
+### JavaScript lacks tools for modeling/transformation
+### Too often, analysts juggle several technolgies (R, Python, JavaScript)
+
+???
+
+JavaScript lacks tools for iteration (necessary for exploration/discovery!)
+
+
+---
+background-image: url(../gifs/swamp.gif)
+background-size: contain
+class: inverse, center, bottom
+
+## It is all too easy for statistical thinking to be **swamped by programming tasks.** -- Brian D. Ripley
+
+
+???
+
+So, this is me, in my 2nd year of grad school, deciding to learn D3 &amp; JavaScript.
+
+It took me 6+ months to implement a single interactive visualization.
+
+And let me tell you, you guys, no joke, believe me, I arose from the swamp, and decide I alone will...
+
+
+---
+background-image: url(../gifs/drain-the-swamp.gif)
+background-size: contain
+class: inverse, center
+
+# ☝ 🍊 
+
+---
+
+## What's in the swamp?
+
+.pull-left[
+## Exploratory quicksand
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• Iteration &lt;br/&gt;
+• Dead-end
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository quicksand
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+---
+class: inverse, middle, center
+
+## *How* to drain the swamp?
+
+.footnote[
+### What follows are some details &amp; my suggestions about how one might go about it
+]
+
+---
+
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+&lt;div class="highlight"&gt; • Start-up quicksand&lt;/div&gt; &lt;br/&gt;
+• Iteration &lt;br/&gt;
+• Dead-end
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+* Getting started should be easy!
+  * Easy install (CRAN) &amp; copy/paste examples
+  * Build upon existing knowledge and tools
+&lt;div&gt;
+
+---
+background-image: url(../20171207/europe.png)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../20171207/europe.png)
+background-size: contain
+class: middle
+
+.pull-left[
+# Neat, but I can't: 
+
+&lt;div class="principles"&gt;
+• Query populations &lt;br /&gt;
+• Zoom/pan &lt;br /&gt;
+• Compare population at given lat
+&lt;/div&gt;
+]
+
+---
+
+```r
+library(tidyverse)
+
+*# read and clean data
+d &lt;- read_csv('GEOSTAT_grid_POP_1K_2011_V2_0_1.csv') %&gt;%
+  rbind(read_csv('JRC-GHSL_AIT-grid-POP_1K_2011.csv') %&gt;%
+          mutate(TOT_P_CON_DT = '')) %&gt;%
+  mutate(
+    lat = as.numeric(gsub('.*N([0-9]+)[EW].*', '\\1', GRD_ID))/100,
+    lng = as.numeric(gsub('.*[EW]([0-9]+)', '\\1', GRD_ID)) * ifelse(gsub('.*([EW]).*', '\\1', GRD_ID) == 'W', -1, 1) / 100
+  ) %&gt;%
+  filter(lng &gt; 25, lng &lt; 60) %&gt;%
+  group_by(lat = round(lat, 1), lng = round(lng, 1)) %&gt;%
+  summarize(value = sum(TOT_P, na.rm = T))  %&gt;%
+  ungroup() %&gt;%
+  tidyr::complete(lat, lng)
+
+*# visualize
+ggplot(d, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
+  geom_line(
+    aes(group = lat, text = paste("Population:", value)),
+    size = 0.4, alpha = 0.8, color = '#5A3E37', na.rm = T
+  )
+```
+
+---
+
+```r
+library(tidyverse)
+*library(crosstalk)
+*library(plotly)
+
+d &lt;- read_csv('GEOSTAT_grid_POP_1K_2011_V2_0_1.csv') %&gt;%
+  rbind(read_csv('JRC-GHSL_AIT-grid-POP_1K_2011.csv') %&gt;%
+          mutate(TOT_P_CON_DT = '')) %&gt;%
+  mutate(
+    lat = as.numeric(gsub('.*N([0-9]+)[EW].*', '\\1', GRD_ID))/100,
+    lng = as.numeric(gsub('.*[EW]([0-9]+)', '\\1', GRD_ID)) * ifelse(gsub('.*([EW]).*', '\\1', GRD_ID) == 'W', -1, 1) / 100
+  ) %&gt;%
+  filter(lng &gt; 25, lng &lt; 60) %&gt;%
+  group_by(lat = round(lat, 1), lng = round(lng, 1)) %&gt;%
+  summarize(value = sum(TOT_P, na.rm = T))  %&gt;%
+  ungroup() %&gt;%
+  tidyr::complete(lat, lng)
+
+*# define latitude as "interaction unit"
+*sd &lt;- SharedData$new(d, ~lat)
+
+ggplot(sd, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
+  geom_line(
+    aes(group = lat, text = paste("Population:", value)),
+    size = 0.4, alpha = 0.8, color = '#5A3E37', na.rm = T
+  )
+  
+*ggplotly()
+```
+
+---
+
+&lt;iframe src="../20170803/europe.html" width="100%" height="750" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+background-image: url(../20171207/epl.png)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../20171207/epl.png)
+background-size: contain
+class: middle
+
+.pull-left[
+# Neat, but I can't: 
+
+&lt;div class="principles"&gt;
+• Query different years &lt;br /&gt;
+• Zoom/pan
+&lt;/div&gt;
+]
+
+---
+background-image: url(../20171207/epl.gif)
+background-size: contain
+class: middle, center 
+
+---
+background-image: url(../20171207/epl.gif)
+background-size: contain
+
+# Generally useful for comparing within &amp; across panel
+
+
+---
+## An example with Texas housing prices
+
+```r
+library(dplyr)
+tx &lt;- txhousing %&gt;%
+  select(city, year, month, median) %&gt;%
+  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+tx
+```
+
+```r
+#&gt; # A tibble: 748 x 4
+#&gt;         city  year month median
+#&gt;        &lt;chr&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1 Galveston  2000     1  95000
+#&gt;  2 Galveston  2000     2 100000
+#&gt;  3 Galveston  2000     3  98300
+#&gt;  4 Galveston  2000     4 111100
+#&gt;  5 Galveston  2000     5  89200
+#&gt;  6 Galveston  2000     6 108600
+#&gt;  7 Galveston  2000     7  99000
+#&gt;  8 Galveston  2000     8  96200
+#&gt;  9 Galveston  2000     9 104000
+#&gt; 10 Galveston  2000    10 118800
+#&gt; # ... with 738 more rows
+```
+
+---
+### Compare within and across cities
+
+```r
+*TX &lt;- SharedData$new(tx, ~year)
+p &lt;- ggplot(TX, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
+```
+
+&lt;iframe src="../20171207/txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• &lt;div class="highlight"&gt;Iteration quicksand&lt;/div&gt; &lt;br/&gt;
+• Dead-end
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+* Reduce distance between data and visuals
+  * Leverage [grammar of graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448) (e.g. **ggplot2**, **vega**, etc)
+  * Leverage tidy data principles (e.g., **dplyr**, **tidyr**, **broom**, etc)
+&lt;div&gt;
+
+---
+## Some motivation: query missing values by city
+
+&lt;iframe src="../20171207/txhousing-missing.html" width="100%" height="500" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+class: bottom, left 
+background-image: url(pipeline.svg)
+background-size: contain
+
+## The 'data pipeline'
+
+---
+
+## The implementation
+
+```r
+library(plotly)
+library(crosstalk)
+
+# define city as 'unit of interaction'
+sd &lt;- SharedData$new(txhousing, ~city)
+
+# initiate plot object, ensuring one mark per group
+base &lt;- plot_ly(sd, color = I("black")) %&gt;%
+  group_by(city)
+
+# transform plot object as if it's a data frame
+p1 &lt;- base %&gt;%
+  summarise(miss = sum(is.na(median))) %&gt;%
+  filter(miss &gt; 0) %&gt;%
+  arrange(miss) %&gt;%
+  add_bars(x = ~miss, y = ~factor(city, levels = city)) %&gt;%
+  layout(barmode = "overlay")
+
+p2 &lt;- add_lines(base, x = ~date, y = ~median, alpha = 0.3)
+
+ subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %&gt;% 
+  highlight(dynamic = TRUE, persistent = TRUE, selectize = TRUE)
+```
+
+
+---
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• Iteration&lt;br/&gt;
+• Dead-end
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+&lt;div class="highlight"&gt; • Deployment quicksand &lt;/div&gt; &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+Produce a standalone web page whenever possible
+&lt;div&gt;
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+class: middle, center
+
+# Standalone web pages are **much** easier to share, deploy, scale, and maintain.
+
+---
+class: middle, bottom
+background-image: url(pipeline.svg)
+background-size: contain
+
+# Where is the pipeline?
+
+---
+background-image: url(crosstalk.svg)
+background-size: contain
+
+## The general model
+
+.footnote[
+### Links are specified in R, but the "updating logic" is JavaScript -- no server required!
+]
+
+
+
+---
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• Iteration &lt;br/&gt;
+• Dead-end
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+&lt;div class="highlight"&gt;• Latency quicksand&lt;/div&gt;
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+* User activity drops w/ delay of 500ms (&lt;a href="https://idl.cs.washington.edu/papers/latency/"&gt;Liu &amp; Heer 2014&lt;/a&gt;)
+  * Support canvas-based (e.g. WebGL) as well as vector (e.g. SVG)
+  * Provide API for modifying plots in R (&amp; JavaScript!)
+&lt;div&gt;
+
+---
+
+## Base map layer does not require a redraw with a new fillcolor!
+
+&lt;img src="http://i.imgur.com/PzDMqZ0.gif" /&gt;
+
+---
+
+### Leverage any [plotly.js function](https://plot.ly/javascript/plotlyjs-function-reference/) to *modify* a plot via `plotlyProxy()`
+
+```r
+library(shiny)
+library(plotly)
+
+ui &lt;- fluidPage(
+  selectInput("color", "Canada's fillcolor", colors()),
+  plotlyOutput("map")
+)
+
+server &lt;- function(input, output, session) {
+  
+  output$map &lt;- renderPlotly({
+    map_data("world", "canada") %&gt;%
+      group_by(group) %&gt;%
+      plot_mapbox(x = ~long, y = ~lat, color = I("black")) %&gt;%
+      add_polygons()
+  })
+  
+  observeEvent(input$color, {
+    plotlyProxy("map", session) %&gt;%
+      plotlyProxyInvoke("restyle", list(fillcolor = toRGB(input$color)))
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+---
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• Iteration &lt;br/&gt;
+&lt;div class="highlight"&gt;• Dead-end quicksand&lt;/div&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+* Integrate with other libraries that complement yours
+&lt;div&gt;
+
+
+---
+background-image: url(../20170803/plotlyLeaflet.gif)
+background-size: contain
+
+## plotly &amp; leaflet
+
+---
+background-image: url(workflow2.svg)
+background-size: 250px
+background-position: 90% 8%
+class: inverse, center, middle
+
+### No matter how complex and polished the individual operations are, it is often 
+
+# the quality of the glue that most directly determines the power of the system.
+
+.footnote[
+Quote from Hal Abelson -- part of the [tidyverse manifesto](https://cran.r-project.org/package=tidyverse)
+]
+
+---
+
+```r
+library(plotly)
+library(leaflet)
+library(crosstalk)
+
+*# good glue requires uniform data structures
+*sd &lt;- SharedData$new(quakes)
+
+p &lt;- plot_ly(sd, x = ~depth, y = ~mag) %&gt;% 
+  add_markers(alpha = 0.5) %&gt;%
+  highlight("plotly_selected", dynamic = TRUE)
+
+map &lt;- leaflet(sd) %&gt;% 
+  addTiles() %&gt;% 
+  addCircles()
+
+bscols(widths = c(6, 6), p, map)
+```
+
+
+---
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• Iteration &lt;br/&gt;
+&lt;div class="highlight"&gt;• Dead-end quicksand&lt;/div&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+* Every 📦 that reduces start-up/iteration will *always* have dead ends. 
+* What you leave out is just as important as what you put in!
+  * Ask yourself: can others do powerful things _quickly_? 
+* Strive for 80/20 rule: 80% easy, other 20% possible
+&lt;div&gt;
+
+---
+
+#### Provide tools for "power users"
+
+```
+plot_ly(mtcars, x = ~wt, y = ~mpg) %&gt;%
+  add_markers(text = ~paste0("http://google.com/#q=", rownames(mtcars))) %&gt;%
+  htmlwidgets::onRender("function(el, x) {
+    el.on('plotly_click', function(d) {
+      var pt = d.points[0];
+      var url = pt.data.text[pt.pointNumber];
+      window.open(url);
+    });
+  }")
+```
+
+&lt;iframe src="../20171207/onrender.html" width="100%" height="350" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+
+---
+## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
+
+.pull-left[
+## Exploratory
+
+&lt;div class="principles"&gt;
+• Start-up &lt;br/&gt;
+• Iteration &lt;br/&gt;
+&lt;div class="highlight"&gt;• Dead-end quicksand&lt;/div&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+## Expository
+
+&lt;div class="principles"&gt;
+• Deployment &lt;br/&gt;
+• Latency
+&lt;/div&gt;
+]
+
+&lt;br/&gt;
+
+&lt;div class="highlight"&gt;
+* Interactive graphics software must be opinionated
+  * Techniques should empower data analysis tasks ([Cook et al 1996](https://www.jstor.org/stable/1390754))
+* Not enough statisticians influence design nowadays
+  * We used to be more involved! &lt;http://stat-graphics.org/movies/&gt;
+  * Tech landscape shifted from C/Java to JavaScript 
+&lt;div&gt;
+
+---
+background-image: url(taxonomy.svg)
+background-size: contain
+class: bottom, inverse
+
+## Techniques that support data analysis [Cook et al 1996](https://www.jstor.org/stable/1390754)
+
+---
+background-image: url(taxonomy2.svg)
+background-size: contain
+class: inverse
+
+&lt;h3&gt;
+&lt;div class="highlight"&gt; 
+  What kind of visualizations should be possible/easy?
+&lt;/div&gt;
+&lt;/h3&gt;
+
+---
+background-image: url(taxonomy3.svg)
+background-size: contain
+class: inverse
+
+&lt;h3&gt;
+&lt;div class="highlight"&gt; 
+  How do we help users find the right view?
+&lt;/div&gt;
+&lt;/h3&gt;
+
+---
+background-image: url(taxonomy4.svg)
+background-size: contain
+class: inverse
+
+&lt;h3&gt;
+&lt;div class="highlight"&gt; 
+  How to best enable dynamic answers to (statistical) questions?
+&lt;/div&gt;
+&lt;/h3&gt;
+
+---
+
+## In summary
+
+.pull-left[
+## Exploratory quicksand
+
+* Start-up
+  * Build upon existing knowledge and tools
+* Iteration
+  * Reduce distance between data and visuals
+  * Leverage grammar of graphics and tidy-data principles
+* Dead-end
+  * Integrate with other libraries that complement yours
+  * Strive for 80/20 rule: 80% easy, other 20% possible
+  * Interactive techniques should empower data analysis tasks
+]
+
+.pull-right[
+## Expository quicksand
+
+* Deployment
+  * Use standalone web pages whenever possible
+* Latency
+  * User activity drops w/ delay of 500ms
+]
+
+---
+class: middle, center
+
+## Thanks! Questions?
+
+Slides: &lt;https://talks.cpsievert.me&gt; &lt;br /&gt;
+
+#### Contact
+
+<i class="fa  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fa  fa-github "></i> &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fa  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
+<i class="fa  fa-globe "></i> &lt;https://cpsievert.me/&gt;
+    </textarea>
+<script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "14.6:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
