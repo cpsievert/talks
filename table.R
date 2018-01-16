@@ -31,6 +31,7 @@ dauto <- talks %>%
 dalt <- tibble(
   title = c(
     "<a href='http://bit.ly/plotcon17-talk' target='_blank'> Practical tools for exploratory visualization</a>",
+    "<a href='https://slides.cpsievert.me/web-graphics/proposal' target='_blank'> PhD oral prelim </a>",
     "<a href='https://slides.cpsievert.me/web-graphics/murdoch/' target='_blank'> Dynamic Interactive Web Graphics for Data Analysis</a>",
     "<a href='https://slides.cpsievert.me/web-graphics/wehi' target='_blank'> Interactive and Dynamic Web-Based Statistical Graphics</a>",
     "<a href='https://slides.cpsievert.me/pitchrx/jsm15' target='_blank'> Acquiring, Visualizing, and Modeling MLB Umpire Strike/Ball Decisions with PITCHf/x Data</a>",
@@ -46,6 +47,7 @@ dalt <- tibble(
   ),
   venue = c(
     "Plotcon 2017",
+    "Iowa State University",
     "Murdoch Childrens Research Institute",
     "Walter and Eliza Hall Institute for Medical Research",
     "Joint Statistical Meetings",
@@ -61,6 +63,7 @@ dalt <- tibble(
   ),
   type = c(
     "invited",
+    "selected",
     "invited",
     "invited",
     "invited",
@@ -83,6 +86,7 @@ dalt <- tibble(
     "none",
     "none",
     "none",
+    "none",
     "<a href='https://www.dropbox.com/s/datl8sshpp859sh/LDAviz.mov' target='_blank'> here</a>",
     "none",
     "none",
@@ -91,6 +95,7 @@ dalt <- tibble(
   ),
   date = c(
     "20170502",
+    "20151217",
     "20151201",
     "20150901",
     "20150801",

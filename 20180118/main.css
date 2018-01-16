@@ -9,3 +9,8 @@
   /* color: #119dff; */
   display: inline;
 }
+
+
+a {
+  color: #119dff !important;
+}
