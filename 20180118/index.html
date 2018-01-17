@@ -34,7 +34,7 @@ class: principles
   
 * The majority of my work is in interactive data visualization
   
-  * Primilarily work in R, dabble in JavaScript and python.
+  * Primarily work in R, dabble in JavaScript and python.
   
   * Maintain numerous R packages including: plotly, LDAvis, pitchRx
 
@@ -108,7 +108,7 @@ class: principles
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
     
 * "Search for information quickly without fully specified questions" ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * "[Mutiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+    * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
     
     * Check out visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
     
@@ -128,7 +128,7 @@ class: principles
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
 
 * "Search for information quickly without fully specified questions" ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * "[Mutiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+    * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
     
     * Check out visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
     
@@ -177,7 +177,7 @@ background-image: url(../20170803/tour.gif)
 background-size: contain
 class: middle
 
-### Interactively [plot models in data space](tour.html)
+### Interactively [plot models in data space](tour.html) ([code](https://github.com/ropensci/plotly/blob/master/demo/animation-tour-USArrests.R))
 
 ---
 class: middle, inverse
@@ -186,125 +186,15 @@ class: middle, inverse
 
 ### Grad students: make your life easier...design a *domain specific* tool
 
-
 ---
-class: middle, inverse
+background-image: url(LDAvis.svg)
+background-size: contain
 
-# Designing, building, maintaining, and publishing a *general purpose* vis library (e.g. plotly) is very hard!
-
-### Grad students: make your life easier...design a *domain specific* tool
+## LDAvis: interactive vis tools for interpreting topic models
 
 .footnote[
-#### For example: the [R package LDAvis](https://github.com/cpsievert/LDAvis) for topic model interpretation (joint work with [Kenny Shirley](http://www.kennyshirley.com/)).
+### &lt;https://github.com/cpsievert/LDAvis&gt;
 ]
-
----
-class: principles
-
-## An Example: LDA Topic models
-
-* _Topic models_ are a collection of statistical models with the common goal of finding hidden structure in a collection of text documents.
-
-* __Basic example__: Given a document discussing 'sports', you're more likely to see the word 'baseball' in that document compared to a document discussing 'music' (and vice-versa for 'guitar').
-
-* Documents usually don't have a clear "topic", but we can develop models with latent RV to "discover topics". 
-
-* Latent Dirichlet Allocation (LDA) is a topic model which allows documents to be mixtures of topics (Blei, Ng, Jordan; 2003). 
-
----
-class: principles
-
-### The Generative Model
-1. Choose # of topics `\(K\)`. Let `\(V\)` be # of unique words (vocabulary).
-2. For each document `\(d \in \{1,...,D\}\)`, draw `\(\Theta_d \sim Dir(\alpha)\)` where `\(\Theta_d = (\theta_1, ..., \theta_K) &gt; 0\)` and `\(\sum_{i=1}^K \theta_i = 1\)`
-3. For each topic `\(k \in \{1,...,K\}\)`, draw `\(\Phi_k \sim Dir(\beta)\)` where `\(\Phi_k = (\phi_1, ..., \phi_V) &gt; 0\)` and `\(\sum_{i=1}^K \phi_i = 1\)`
-4. Let `\(N_d\)` be # of words in doc `\(d\)` and `\(n \in \{1, \dots, N_d\}\)`. For each word `\(w_{d, n}\)`:
-    * Draw a (latent) topic, `\(z_{d, n} \sim Mult(1, \Theta_d)\)`
-    * Draw a word given topic, `\(w_{d, n} \sim Mult(1, \Phi_{z_{d, n}})\)`
-    
-### Model fitting
-* Griffiths &amp; Steyvers (2004) derive a collapsed Gibbs sampler. Implemented in R packages __LDAtools__ (Shirley &amp; Sievert, 2013) and __lda__ (Chang, 2015).
-* Wide array of fitting algorithms available in __topicmodels__ (Grun &amp; Hornik, 2011) and __mallet__ (Mimno, 2013).
-
----
-## Model Output
-
-&lt;div align="center"&gt;
-  &lt;img src="lda.png" width="800" height="380" /&gt;
-&lt;/div&gt;
-
-* In the digital humanities (&amp; elsewhere), LDA is often used to "discover topics" in a large collection of text documents. 
-* How are researchers supposed to interpret topics? We can't possibly examine each pmf.
-* "Overview first, then zoom &amp; filter, then detail on demand" (Schneiderman, 1996)
-
----
-class: principles
-## Towards topic interpretation
-
-* Numerous interactive systems allow users to select a topic `\(z\)`, then list top ~30 words based on `\(p(w | z)\)` (Gardner et al., 2010; Chaney and Blei, 2012; Snyder et al., 2013).
-
-* But, words likely to occur overall are also likely to occur for a given topic!
-
-* Taddy (2011) proposed to rank terms by `\(lift = p(w | z)/p(w)\)`
-
-* But if `\(p(w)\)` is small, `\(lift\)` is large!
-
-* Bischof and Airoldi (2012) propose a new model to directly estimate an average frequency and exclusivity to a given topic.
-
-* Sievert &amp; Shirley (2014) propose choosing `\(0 &lt; \lambda &lt; 1\)`, for:
-
-`\(\text{relevance}(\lambda) = \lambda * p(w|z) + (1 - \lambda) * \text{lift}\)`
-
----
-## Choosing lambda
-
-&lt;div align="center"&gt;
-  &lt;img src="lambda.png" width="500" height="400" /&gt;
-&lt;/div&gt;
-
-* We expect the optimal value of `\(\lambda\)` to vary across data.
-* __LDAvis__ allows users to interactively alter rankings by changing `\(\lambda\)`
-
----
-## An example: Internet discussion forums ([20 Newsgroup data](https://ldavis.cpsievert.me/newsgroup/newsgroup.html))
-
-&lt;div align="center"&gt;
-  &lt;a href="LDAvis/#topic=4&amp;lambda=1&amp;term="&gt;
-    &lt;img src="LDAvis1.png" width="900" height="550" /&gt;
-  &lt;/a&gt;
-&lt;/div&gt;
-
-
----
-
-&lt;div align="center"&gt;
-  &lt;a href="LDAvis/#topic=4"&gt; 
-    &lt;img src="LDAvis1.gif" width="900" height="550" /&gt;
-  &lt;/a&gt;
-&lt;/div&gt;
-
----
-
-&lt;div align="center"&gt;
-  &lt;a href="LDAvis/#topic=4"&gt; 
-    &lt;img src="LDAvis2.gif" width="900" height="550" /&gt;
-  &lt;/a&gt;
-&lt;/div&gt;
-
-
----
-
-&lt;div align="center"&gt;
-  &lt;a href="LDAvis/#topic=15&amp;lambda=0.56&amp;term=win"&gt; 
-    &lt;img src="LDAvis3.gif" width="900" height="550" /&gt;
-  &lt;/a&gt;
-&lt;/div&gt;
-
-???
-http://localhost:8000/#topic=15&amp;lambda=0.56&amp;term=win
-
-The word "win" is probably an abbreviation for "windows" in topic 15. By hovering over "win", we reveal its conditional topic distribution, which is useful finding different uses of that word. Topics 9 and 26 seems to be discussing baseball and hockey, so win is probably referring to "winning games". Topic 39 also seems to be related to sports, but many of the releavnt terms are abbreviations, so "win" may be a team code.
-
 
 ---
 class: principles
@@ -314,38 +204,135 @@ class: principles
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
     
 * Search for information quickly without fully specified questions ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * &lt;div class="highlight"&gt;[Mutiple linked views] are the optimal framework for posing queries about data&lt;/div&gt; ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+    * &lt;div class="highlight"&gt;[Multiple linked views] are the optimal framework for posing queries about data&lt;/div&gt; ([Buja et al 1996](https://www.jstor.org/stable/1390754))
     
     * Check out visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
     
 * Better understand/diagnose models ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
 ---
-
-## 2016 Election Outcomes by County ([Politico](http://rpubs.com/dgrtwo/county-results))
-
-```
-     County |   State | TotalVotes| Clinton| Johnson| Stein| Trump| Population|    Area
-    --------| --------| ----------|--------|--------|------|------|-----------|--------
-1   autauga | alabama |      24661|   0.240|   0.022| 0.004| 0.734|      54571|  594.44
-2   baldwin | alabama |      94090|   0.196|   0.026| 0.005| 0.774|     182265| 1589.78
-3   barbour | alabama |      10390|   0.467|   0.009| 0.002| 0.523|      27457|  884.88
-4      bibb | alabama |       8748|   0.214|   0.014| 0.002| 0.770|      22915|  622.58
-5    blount | alabama |      25384|   0.085|   0.013| 0.004| 0.899|      57322|  644.78
-6   bullock | alabama |       4701|   0.751|   0.005| 0.002| 0.242|      10914|  622.81
-7    butler | alabama |       8685|   0.428|   0.007| 0.001| 0.563|      20947|  776.83
-8   calhoun | alabama |      47376|   0.279|   0.024| 0.006| 0.692|     118572|  605.87
-9  chambers | alabama |      13778|   0.418|   0.012| 0.003| 0.566|      34215|  596.53
-10 cherokee | alabama |      10503|   0.145|   0.014| 0.002| 0.839|      25989|  553.70
-# ... with 3,101 more rows
-```
-
-* Is there a relationship between population density and voting preference? 
+background-image: url(../20171207/epl.png)
+background-size: contain
+class: inverse
 
 ---
-class: middle, center
+background-image: url(../20171207/epl.png)
+background-size: contain
+class: middle
 
-&lt;iframe src="https://player.vimeo.com/video/202650161" width="800" height="500" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+.pull-left[
+# Neat, but I can't: 
+
+&lt;div class="principles"&gt;
+• Query different years &lt;br /&gt;
+• Zoom/pan
+&lt;/div&gt;
+]
+
+---
+background-image: url(../20171207/epl.gif)
+background-size: contain
+class: principles
+
+&lt;div align="right"&gt;
+  &lt;a href="epl.html" target="_blank"&gt;Live demo (&lt;a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl.R"&gt;code&lt;/a&gt;)&lt;/a&gt;
+&lt;/div&gt;
+
+
+---
+background-image: url(../20171207/epl.gif)
+background-size: contain
+
+# Nice for comparing across seasons within teams
+
+.footnote[
+### What about comparing across teams with seasons?
+]
+
+
+---
+background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-size: contain
+
+&lt;div align="right"&gt;
+  &lt;a href="epl2.html" target="_blank"&gt;Live demo (&lt;a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R"&gt;code&lt;/a&gt;)&lt;/a&gt;
+&lt;/div&gt;
+
+---
+background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-size: contain
+
+# Generally seful for comparing within/across panels!
+
+
+---
+## An example with Texas housing prices
+
+```r
+library(dplyr)
+tx &lt;- txhousing %&gt;%
+  select(city, year, month, median) %&gt;%
+  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+tx
+```
+
+```r
+#&gt; # A tibble: 748 x 4
+#&gt;         city  year month median
+#&gt;        &lt;chr&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1 Galveston  2000     1  95000
+#&gt;  2 Galveston  2000     2 100000
+#&gt;  3 Galveston  2000     3  98300
+#&gt;  4 Galveston  2000     4 111100
+#&gt;  5 Galveston  2000     5  89200
+#&gt;  6 Galveston  2000     6 108600
+#&gt;  7 Galveston  2000     7  99000
+#&gt;  8 Galveston  2000     8  96200
+#&gt;  9 Galveston  2000     9 104000
+#&gt; 10 Galveston  2000    10 118800
+#&gt; # ... with 738 more rows
+```
+
+---
+### Compare within and across cities
+
+```r
+*TX &lt;- crosstalk::SharedData$new(tx, ~year)
+p &lt;- ggplot(TX, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
+```
+
+&lt;iframe src="../20171207/txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+class: inverse, middle, center
+
+# Note: 'crosstalk highlighting' works _without shiny_ (more later). Here are some examples _with shiny_
+
+
+---
+background-image: url(https://i.imgur.com/T7GSpv9.gif)
+background-size: contain
+class: principles
+
+&lt;https://github.com/cpsievert/zikar&gt;
+
+---
+background-image: url(https://i.imgur.com/MGbR5AI.gif)
+background-size: contain
+class: principles
+
+&lt;div align="right"&gt;
+&lt;a href='https://github.com/cpsievert/bcviz'&gt;https://github.com/cpsievert/bcviz&lt;/a&gt;
+&lt;/div&gt;
+
+---
+background-image: url(https://i.imgur.com/csIUJX0.gif)
+background-size: contain
+class: principles
+
+&lt;https://github.com/cpsievert/apps&gt;
 
 ---
 
@@ -372,21 +359,15 @@ class: center, middle
 # Should an interactive graphics system be purely graphical (from a user perspective)?
 
 .footnote[
-### Over one where users have to write code?
+### Over a system where users have to write code?
 ]
-
-??? 
-
-The answer, of course, is that it depends, right?
 
 ---
 class: inverse, center, middle
 
-# "Statistical software should be expressive, powerful, fast and reliable, but it should also be intuitive, easy to use, flexible, forgiving and consistent"
-
-.footnote[
 ### From Hofmann &amp; Unwin, [*GUI and Command-line - Conflict or Synergy?*](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy)
-]
+
+# "Statistical software should be expressive, powerful, fast and reliable, but it should also be intuitive, easy to use, flexible, forgiving and consistent"
 
 ---
 class: inverse, center, middle
@@ -491,8 +472,8 @@ class: inverse, middle, center
 
 &lt;div class="highlight"&gt;
 * Getting started should be easy!
-  * Easy install (CRAN) &amp; copy/paste examples
-  * Build upon other work
+  * Easy install (CRAN) and good documentation (e.g., [pkgdown](http://pkgdown.r-lib.org/) site)
+  * Build upon existing work!
 &lt;div&gt;
 
 ---
@@ -578,76 +559,6 @@ ggplot(sd, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
 
 &lt;iframe src="../20170803/europe.html" width="100%" height="750" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
 
----
-background-image: url(../20171207/epl.png)
-background-size: contain
-class: inverse
-
----
-background-image: url(../20171207/epl.png)
-background-size: contain
-class: middle
-
-.pull-left[
-# Neat, but I can't: 
-
-&lt;div class="principles"&gt;
-• Query different years &lt;br /&gt;
-• Zoom/pan
-&lt;/div&gt;
-]
-
----
-background-image: url(../20171207/epl.gif)
-background-size: contain
-class: middle, center 
-
----
-background-image: url(../20171207/epl.gif)
-background-size: contain
-
-# Generally useful for comparing within &amp; across panel
-
-
----
-## An example with Texas housing prices
-
-```r
-library(dplyr)
-tx &lt;- txhousing %&gt;%
-  select(city, year, month, median) %&gt;%
-  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
-tx
-```
-
-```r
-#&gt; # A tibble: 748 x 4
-#&gt;         city  year month median
-#&gt;        &lt;chr&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
-#&gt;  1 Galveston  2000     1  95000
-#&gt;  2 Galveston  2000     2 100000
-#&gt;  3 Galveston  2000     3  98300
-#&gt;  4 Galveston  2000     4 111100
-#&gt;  5 Galveston  2000     5  89200
-#&gt;  6 Galveston  2000     6 108600
-#&gt;  7 Galveston  2000     7  99000
-#&gt;  8 Galveston  2000     8  96200
-#&gt;  9 Galveston  2000     9 104000
-#&gt; 10 Galveston  2000    10 118800
-#&gt; # ... with 738 more rows
-```
-
----
-### Compare within and across cities
-
-```r
-*TX &lt;- SharedData$new(tx, ~year)
-p &lt;- ggplot(TX, aes(month, median, group = year)) + geom_line() +
-  facet_wrap(~city, ncol = 2)
-highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
-```
-
-&lt;iframe src="../20171207/txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
 
 ---
 ## How to drain the swamp? &lt;div class="highlight"&gt; R 📦s that avoid &lt;/div&gt;
