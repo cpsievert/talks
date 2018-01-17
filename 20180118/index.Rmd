@@ -145,7 +145,14 @@ class: principles
 ```r
 # choose a model by AIC stepping backwards 
 mod <- step(lm(mpg ~ ., data = mtcars), trace = FALSE)
+formula(mod)
+```
 
+```r
+mpg ~ wt + qsec + am
+```
+
+```r
 # produce (static ggplot2) diagnostic plot
 library(GGally)
 pm <- ggnostic(mod, mapping = aes(color = am))
@@ -157,23 +164,25 @@ ggplotly(pm)
 
 ---
 
-<iframe src="ggnostic.html" width="100%" height="750" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+<iframe src="ggnostic.html" width="100%" height="650" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 ???
 
 The noticeably high value of cooksd suggests a large influence on the fitted model. Highlighting this point makes it obvious that it is influential since it has a unusually high response/residual in a fairly sparse region of the design space (i.e., it has a pretty high value of wt) and removing it would significantly reduce the estimated standard deviation (sigma). By comparison, the other two observations with similar values of wt have a response value very close to the overall mean, so even though their value of hat is high, their value of sigma is low.
 
 ---
-background-image: url(../20170803/tour.gif )
-background-size: contain
-class: inverse
+### See relationships evolve over time ([made via ggplot2](https://plotly-book.cpsievert.me/linking-animated-views.html))
+
+<a href="gapminder.html" target="_blank">
+  <img src="https://plotly-book.cpsievert.me/images/gapminder-highlight-animation.gif" width = "100%" />
+</a>
 
 ---
-background-image: url(../20170803/tour.gif )
+background-image: url(../20170803/tour.gif)
 background-size: contain
 class: middle
 
-## Cute idea: plot model in the data space!
+### Interactively [plot models in data space](tour.html)
 
 ---
 class: middle, inverse
@@ -208,6 +217,7 @@ class: principles
 * Latent Dirichlet Allocation (LDA) is a topic model which allows documents to be mixtures of topics (Blei, Ng, Jordan; 2003). 
 
 ---
+class: principles
 
 ### The Generative Model
 1. Choose # of topics $K$. Let $V$ be # of unique words (vocabulary).
@@ -261,9 +271,10 @@ $\text{relevance}(\lambda) = \lambda * p(w|z) + (1 - \lambda) * \text{lift}$
 * __LDAvis__ allows users to interactively alter rankings by changing $\lambda$
 
 ---
+## An example: Internet discussion forums ([20 Newsgroup data](https://ldavis.cpsievert.me/newsgroup/newsgroup.html))
 
 <div align="center">
-  <a href="LDAvis/#topic=4">
+  <a href="LDAvis/#topic=4&lambda=1&term=">
     <img src="LDAvis1.png" width="900" height="550" />
   </a>
 </div>
@@ -350,7 +361,7 @@ class: middle, center
 .pull-right[
 # Lost in a sea of interactive techniques?
 
-### Find your footing by grouping techniques under the data analysis tasks they help accomplish
+### Helps to group techniques into categories based on data analysis tasks
 ]
 
 ---
@@ -358,8 +369,20 @@ background-image: url(../20171207/taxonomy.svg)
 background-size: contain
 class: bottom, inverse
 
-## Techniques that support data analysis [Buja et al 1996](https://www.jstor.org/stable/1390754)
+### From _Interactive High-Dimensional Data Visualization_, [Buja et al 1996](https://www.jstor.org/stable/1390754)
 
+---
+class: center, middle
+
+# Should an interactive graphics system be purely graphical (from a user perspective)?
+
+.footnote[
+### Over one where users have to write code?
+]
+
+??? 
+
+The answer, of course, is that it depends, right?
 
 ---
 class: inverse, center, middle
@@ -388,7 +411,7 @@ background-image: url(https://i.imgur.com/c7NJRa2.gif)
 background-size: contain
 class: inverse
 
-# The ideal system leverages the benefits of both worlds
+# The ideal 'power' system has best of both worlds
 
 ---
 background-image: url(../gifs/swamp.gif)
@@ -474,7 +497,7 @@ class: inverse, middle, center
 <div class="highlight">
 * Getting started should be easy!
   * Easy install (CRAN) & copy/paste examples
-  * Build upon existing knowledge and tools
+  * Build upon other work
 <div>
 
 ---
@@ -701,13 +724,6 @@ p2 <- add_lines(base, x = ~date, y = ~median, alpha = 0.3)
  subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %>% 
   highlight(dynamic = TRUE, persistent = TRUE, selectize = TRUE)
 ```
-
----
-## More motivation
-
-1. US elections example
-2. 
-
 
 ---
 ## How to drain the swamp? <div class="highlight"> R `r emo::ji("package")`s that avoid </div>
@@ -983,51 +999,18 @@ plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
 
 <div class="highlight">
 * Interactive graphics software must be opinionated
-  * Techniques should empower data analysis tasks ([Cook et al 1996](https://www.jstor.org/stable/1390754))
 * Not enough statisticians influence design nowadays
-  * We used to be more involved! <http://stat-graphics.org/movies/>
   * Tech landscape shifted from C/Java to JavaScript 
+  * We need more focus on techniques for data analysis tasks!
 <div>
 
 ---
-background-image: url(../20171207/taxonomy.svg)
+background-image: url(../20161212a/plotly.svg)
 background-size: contain
-class: bottom, inverse
 
-## Techniques that support data analysis [Cook et al 1996](https://www.jstor.org/stable/1390754)
+???
 
----
-background-image: url(../20171207/taxonomy2.svg)
-background-size: contain
-class: inverse
-
-<h3>
-<div class="highlight"> 
-  What kind of visualizations should be possible/easy?
-</div>
-</h3>
-
----
-background-image: url(../20171207/taxonomy3.svg)
-background-size: contain
-class: inverse
-
-<h3>
-<div class="highlight"> 
-  How do we help users find the right view?
-</div>
-</h3>
-
----
-background-image: url(../20171207/taxonomy4.svg)
-background-size: contain
-class: inverse
-
-<h3>
-<div class="highlight"> 
-  How to best enable dynamic answers to (statistical) questions?
-</div>
-</h3>
+Know enough JS to be dangerous
 
 ---
 
