@@ -103,7 +103,7 @@ class: inverse
 <br />
 
 ### Web technologies weren't designed for data exploration
-### People [seem to have forgotten](http://flowingdata.com/2016/03/08/what-i-use-to-visualize-data/) how interative graphics augment exploration
+### People [seem to have forgotten](http://flowingdata.com/2016/03/08/what-i-use-to-visualize-data/) how interative graphics can augment exploration
 
 ---
 class: principles
@@ -115,7 +115,7 @@ class: principles
 * "Search for information quickly without fully specified questions" ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
     * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
     
-    * Check out visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
+    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
     
 * Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
@@ -135,7 +135,7 @@ class: principles
 * "Search for information quickly without fully specified questions" ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
     * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
     
-    * Check out visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
+    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
     
 * <div class="highlight">Better understand/diagnose models</div> ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
@@ -211,7 +211,7 @@ class: principles
 * Search for information quickly without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
     * <div class="highlight">[Multiple linked views] are the optimal framework for posing queries about data</div> ([Buja et al 1996](https://www.jstor.org/stable/1390754))
     
-    * Check out visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
+    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
     
 * Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
@@ -240,7 +240,8 @@ background-size: contain
 class: principles
 
 <div align="right">
-  <a href="epl.html" target="_blank">Live demo (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl.R">code</a>)</a>
+  <a href="epl.html" target="_blank">Live demo </a>
+  (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl.R">code</a>)
 </div>
 
 
@@ -260,7 +261,8 @@ background-image: url(https://i.imgur.com/Id2nVFG.gif)
 background-size: contain
 
 <div align="right">
-  <a href="epl2.html" target="_blank">Live demo (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R">code</a>)</a>
+  <a href="epl2.html" target="_blank">Live demo </a>
+  (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R">code</a>)
 </div>
 
 ---
@@ -348,7 +350,9 @@ class: principles
 .pull-right[
 # Lost in a sea of interactive techniques?
 
-### Helps to group techniques into categories based on data analysis tasks
+### Focus on the analysis task/question first
+
+### Often many different ways to do the same thing!
 ]
 
 ---
@@ -356,7 +360,7 @@ background-image: url(../20171207/taxonomy.svg)
 background-size: contain
 class: bottom, inverse
 
-### From _Interactive High-Dimensional Data Visualization_, [Buja et al 1996](https://www.jstor.org/stable/1390754)
+### _Interactive High-Dimensional Data Visualization_, [Buja et al 1996](https://www.jstor.org/stable/1390754); authors of [GGobi](http://ggobi.org)
 
 ---
 class: center, middle
@@ -401,29 +405,11 @@ class: inverse, center, bottom
 
 ## It is all too easy for statistical thinking to be **swamped by programming tasks.** -- Brian D. Ripley
 
-
-???
-
-So, this is me, in my 2nd year of grad school, deciding to learn D3 & JavaScript.
-
-It took me 6+ months to implement a single interactive visualization.
-
-And let me tell you, you guys, no joke, believe me, I arose from the swamp, and decide I alone will...
-
-
 ---
-background-image: url(../gifs/drain-the-swamp.gif)
-background-size: contain
-class: inverse, center
-
-# `r emo::ji("point_up")` `r emo::ji("tangerine")` 
-
----
-
 ## What's in the swamp?
 
 .pull-left[
-## Exploratory quicksand
+## Exploratory mud
 
 <div class="principles">
 • Start-up <br/>
@@ -433,7 +419,7 @@ class: inverse, center
 ]
 
 .pull-right[
-## Expository quicksand
+## Expository mud
 
 <div class="principles">
 • Deployment <br/>
@@ -442,9 +428,28 @@ class: inverse, center
 ]
 
 ---
-class: inverse, middle, center
+class: inverse
 
-## *How* to drain the swamp?
+## *How* to drain the swamp? `r emo::ji("point_up")` `r emo::ji("tangerine")` 
+
+.pull-left[
+## Exploratory mud
+
+<div class="principles">
+• Start-up <br/>
+• Iteration <br/>
+• Dead-end
+</div>
+]
+
+.pull-right[
+## Expository mud
+
+<div class="principles">
+• Deployment <br/>
+• Latency
+</div>
+]
 
 .footnote[
 ### What follows are some details & my suggestions about how one might go about it
@@ -458,7 +463,7 @@ class: inverse, middle, center
 ## Exploratory
 
 <div class="principles">
-<div class="highlight"> • Start-up quicksand</div> <br/>
+<div class="highlight"> • Start-up mud</div> <br/>
 • Iteration <br/>
 • Dead-end
 </div>
@@ -485,21 +490,6 @@ class: inverse, middle, center
 background-image: url(../20171207/europe.png)
 background-size: contain
 class: inverse
-
----
-background-image: url(../20171207/europe.png)
-background-size: contain
-class: middle
-
-.pull-left[
-# Neat, but I can't: 
-
-<div class="principles">
-• Query populations <br />
-• Zoom/pan <br />
-• Compare population at given lat
-</div>
-]
 
 ---
 
@@ -573,7 +563,7 @@ ggplot(sd, aes(lng, lat + 5*(value / max(value, na.rm = T)))) +
 
 <div class="principles">
 • Start-up <br/>
-• <div class="highlight">Iteration quicksand</div> <br/>
+• <div class="highlight">Iteration mud</div> <br/>
 • Dead-end
 </div>
 ]
@@ -653,7 +643,7 @@ p2 <- add_lines(base, x = ~date, y = ~median, alpha = 0.3)
 ## Expository
 
 <div class="principles">
-<div class="highlight"> • Deployment quicksand </div> <br/>
+<div class="highlight"> • Deployment mud </div> <br/>
 • Latency
 </div>
 ]
@@ -712,7 +702,7 @@ background-size: contain
 
 <div class="principles">
 • Deployment <br/>
-<div class="highlight">• Latency quicksand</div>
+<div class="highlight">• Latency mud</div>
 </div>
 ]
 
@@ -772,7 +762,7 @@ shinyApp(ui, server)
 <div class="principles">
 • Start-up <br/>
 • Iteration <br/>
-<div class="highlight">• Dead-end quicksand</div>
+<div class="highlight">• Dead-end mud</div>
 </div>
 ]
 
@@ -843,7 +833,7 @@ bscols(widths = c(6, 6), p, map)
 <div class="principles">
 • Start-up <br/>
 • Iteration <br/>
-<div class="highlight">• Dead-end quicksand</div>
+<div class="highlight">• Dead-end mud</div>
 </div>
 ]
 
@@ -893,7 +883,7 @@ plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
 <div class="principles">
 • Start-up <br/>
 • Iteration <br/>
-<div class="highlight">• Dead-end quicksand</div>
+<div class="highlight">• Dead-end mud</div>
 </div>
 ]
 
@@ -919,19 +909,24 @@ plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
 background-image: url(../20161212a/plotly.svg)
 background-size: contain
 
-???
+## The plotly ecosystem
 
-Know enough JS to be dangerous
+---
+background-image: url(../20161212a/plotly.svg)
+background-size: contain
+
+## TODO: highlight the interface
 
 ---
 
-## In summary
+## Summary
+
+#### Interactive graphics *can* augment exploratory analysis, but are only *practically* useful when we can iterate quickly
 
 .pull-left[
-## Exploratory quicksand
+## Exploratory mud
 
 * Start-up
-  * Build upon existing knowledge and tools
 * Iteration
   * Reduce distance between data and visuals
   * Leverage grammar of graphics and tidy-data principles
@@ -942,7 +937,7 @@ Know enough JS to be dangerous
 ]
 
 .pull-right[
-## Expository quicksand
+## Expository mud
 
 * Deployment
   * Use standalone web pages whenever possible
@@ -951,11 +946,13 @@ Know enough JS to be dangerous
 ]
 
 ---
-class: middle, center
+class: middle, center, principles
 
 ## Thanks! Questions?
 
-Slides: <https://talks.cpsievert.me> <br />
+Slides: <https://talks.cpsievert.me>
+
+Learn more: <https://plotly-book.cpsievert.me>
 
 #### Contact
 
