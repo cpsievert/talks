@@ -1,0 +1,406 @@
+---
+title: "Creating interactive web graphics suitable for exploratory data analysis"
+#title: "Fitting interactive web graphics into a data science workflow"
+venue: "rstudio::conf"
+type: "contributed"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    self_contained: false
+    css: [main.css, default]
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+date: "Slides: https://talks.cpsievert.me <br /> <br />  `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+class: principles 
+
+## About me
+
+* PhD in statistics at Iowa State with Dr. Heike Hofmann (Dec 2016) 
+  
+  * Thesis: [Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data](http://lib.dr.iastate.edu/etd/15422/)
+  
+* CEO of [Sievert Consulting](https://consulting.cpsievert.me/) LLC (Jan 2017)
+
+  * Clients include: plotly, NOAA, Sandia Labs, O'Reilly
+  
+  * Looking for more part-time projects
+  
+* The majority of my work is in interactive data visualization
+  
+  * Primarily work in R, dabble in JavaScript and python.
+  
+  * Maintain numerous R packages including: plotly, LDAvis, pitchRx
+
+---
+background-image: url(../20171207/workflow.svg)
+background-size: contain
+class: inverse
+
+# Data Science Workflow
+
+
+---
+background-image: url(../20171207/workflow1.svg)
+background-size: contain
+class: inverse
+
+# Expository vis
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+### The web is the preferred medium for communicating results
+
+### Assuming you know _exactly_ what you want to visualize, many good data vis frameworks exist (e.g. [d3.js](https://d3js.org/))
+
+---
+background-image: url(../20171207/workflow2.svg)
+background-size: contain
+class: inverse
+
+# Exploratory vis
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+### Web technologies weren't designed for data exploration
+### People [seem to have forgotten](http://flowingdata.com/2016/03/08/what-i-use-to-visualize-data/) how interative graphics can augment exploration
+
+---
+class: principles
+
+## Interactive graphics augment exploration!
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+    
+* "Search for information quickly without fully specified questions" ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+    
+    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
+    
+* Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+.footnote[
+---
+
+Statisticians were building (very advanced!) int graphics systems decades ago --   <http://stat-graphics.org/movies/>
+]
+
+---
+class: principles
+
+## Interactive graphics augment exploration!
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+
+* "Search for information quickly without fully specified questions" ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+    
+    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
+    
+* <div class="highlight">Better understand/diagnose models</div> ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+---
+## Deeper look at linear model diagnostics
+
+```r
+# choose a model by AIC stepping backwards 
+mod <- step(lm(mpg ~ ., data = mtcars), trace = FALSE)
+formula(mod)
+```
+
+```r
+mpg ~ wt + qsec + am
+```
+
+```r
+# produce (static ggplot2) diagnostic plot
+library(GGally)
+pm <- ggnostic(mod, mapping = aes(color = am))
+
+# make it interactive
+library(plotly)
+ggplotly(pm)
+```
+
+---
+
+<iframe src="../20180118/ggnostic.html" width="100%" height="650" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+???
+
+The noticeably high value of cooksd suggests a large influence on the fitted model. Highlighting this point makes it obvious that it is influential since it has a unusually high response/residual in a fairly sparse region of the design space (i.e., it has a pretty high value of wt) and removing it would significantly reduce the estimated standard deviation (sigma). By comparison, the other two observations with similar values of wt have a response value very close to the overall mean, so even though their value of hat is high, their value of sigma is low.
+
+---
+### See relationships evolve over time ([made via ggplot2](https://plotly-book.cpsievert.me/linking-animated-views.html))
+
+<a href="../20180118/gapminder.html" target="_blank">
+  <img src="https://plotly-book.cpsievert.me/images/gapminder-highlight-animation.gif" width = "100%" />
+</a>
+
+---
+background-image: url(../20170803/tour.gif)
+background-size: contain
+class: middle
+
+### Interactively [plot models in data space](../20180118/tour.html) ([code](https://github.com/ropensci/plotly/blob/master/demo/animation-tour-USArrests.R))
+
+---
+class: middle, inverse
+
+# Designing, building, maintaining, and publishing a *general purpose* vis library (e.g. plotly) is very hard!
+
+### Grad students: make your life easier...design a *domain specific* tool
+
+---
+background-image: url(LDAvis.svg)
+background-size: contain
+
+## LDAvis: interactive vis tools for interpreting topic models
+
+.footnote[
+### <https://github.com/cpsievert/LDAvis>
+]
+
+---
+class: principles
+
+## Interactive graphics augment exploration!
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+    
+* Search for information quickly without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * <div class="highlight">[Multiple linked views] are the optimal framework for posing queries about data</div> ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+    
+    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
+    
+* Better understand/diagnose models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+---
+background-image: url(../20171207/epl.png)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../20171207/epl.png)
+background-size: contain
+class: middle
+
+.pull-left[
+# Neat, but I can't: 
+
+<div class="principles">
+• Query different years <br />
+• Zoom/pan
+</div>
+]
+
+---
+background-image: url(../20171207/epl.gif)
+background-size: contain
+class: principles
+
+<div align="right">
+  <a href="../20180118/epl.html" target="_blank">Live demo </a>
+  (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl.R">code</a>)
+</div>
+
+
+---
+background-image: url(../20171207/epl.gif)
+background-size: contain
+
+# Nice for comparing across seasons within teams
+
+.footnote[
+### What about comparing across teams with seasons?
+]
+
+
+---
+background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-size: contain
+
+<div align="right">
+  <a href="../20180118/epl2.html" target="_blank">Live demo </a>
+  (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R">code</a>)
+</div>
+
+---
+background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-size: contain
+
+# Generally useful for comparing within/across panels!
+
+
+---
+## An example with Texas housing prices
+
+```r
+library(dplyr)
+tx <- txhousing %>%
+  select(city, year, month, median) %>%
+  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+tx
+```
+
+```r
+#> # A tibble: 748 x 4
+#>         city  year month median
+#>        <chr> <int> <int>  <dbl>
+#>  1 Galveston  2000     1  95000
+#>  2 Galveston  2000     2 100000
+#>  3 Galveston  2000     3  98300
+#>  4 Galveston  2000     4 111100
+#>  5 Galveston  2000     5  89200
+#>  6 Galveston  2000     6 108600
+#>  7 Galveston  2000     7  99000
+#>  8 Galveston  2000     8  96200
+#>  9 Galveston  2000     9 104000
+#> 10 Galveston  2000    10 118800
+#> # ... with 738 more rows
+```
+
+---
+### Compare within and across cities
+
+```r
+*TX <- crosstalk::SharedData$new(tx, ~year)
+p <- ggplot(TX, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
+```
+
+<iframe src="../20171207/txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+class: inverse, middle, center
+
+# Note: 'crosstalk highlighting' works _without shiny_ (more later). Here are some examples _with shiny_
+
+
+---
+background-image: url(https://i.imgur.com/T7GSpv9.gif)
+background-size: contain
+class: principles
+
+<https://github.com/cpsievert/zikar>
+
+---
+background-image: url(https://i.imgur.com/MGbR5AI.gif)
+background-size: contain
+class: principles
+
+<div align="right">
+<a href='https://github.com/cpsievert/bcviz'>https://github.com/cpsievert/bcviz</a>
+</div>
+
+---
+background-image: url(https://i.imgur.com/csIUJX0.gif)
+background-size: contain
+class: principles
+
+<https://github.com/cpsievert/apps>
+
+---
+
+.pull-left[
+<img src="../gifs/drowning.gif" width="80%"/>
+]
+
+.pull-right[
+# Lost in a sea of interactive techniques?
+
+### Focus on the analysis task/question first
+
+### Often many different ways to do the same thing!
+]
+
+---
+background-image: url(../20171207/taxonomy.svg)
+background-size: contain
+class: bottom, inverse
+
+### _Interactive High-Dimensional Data Visualization_, [Buja et al 1996](https://www.jstor.org/stable/1390754); authors of [GGobi](http://ggobi.org)
+
+## Summary
+
+#### Interactive graphics *can* augment exploratory analysis, but are only *practically* useful when we can iterate quickly
+
+.pull-left[
+## Exploratory mud
+
+* Start-up
+* Iteration
+  * Reduce distance between data and visuals
+  * Leverage grammar of graphics and tidy-data principles
+* Dead-end
+  * Integrate with other libraries that complement yours
+  * Strive for 80/20 rule: 80% easy, other 20% possible
+  * Interactive techniques should empower data analysis tasks
+]
+
+.pull-right[
+## Expository mud
+
+* Deployment
+  * Use standalone web pages whenever possible
+* Latency
+  * User activity drops w/ delay of 500ms
+]
+
+---
+class: middle, center, principles
+
+## Thanks! Questions?
+
+Slides: <https://talks.cpsievert.me>
+
+Learn more: <https://plotly-book.cpsievert.me>
+
+#### Contact
+
+`r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/>
+
