@@ -108,34 +108,49 @@ class: inverse
 ---
 class: principles
 
-## Interactive graphics augment exploration!
+## Interactive graphics augment exploration<sup>1</sup>
 
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
     
-* "Search for information quickly without fully specified questions" ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
-    
-    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
+* Search for information quickly without fully specified questions<sup>2</sup> ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
     
 * Diagnose and understand models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
 .footnote[
 ---
 
-Statisticians were building (very advanced!) int graphics systems decades ago --   <http://stat-graphics.org/movies/>
+[1]: Statisticians were building (very advanced!) int graphics systems decades ago --   <http://stat-graphics.org/movies/>
+
+[2]: Worried about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
 ]
 
 ---
 class: principles
 
-## Interactive graphics augment exploration!
+## Interactive graphics augment exploration
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+    
+* <div class="highlight">Search for information quickly</div> without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * [Multiple linked views] are the optimal framework for posing queries about data ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
+    
+* Diagnose and understand models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+---
+
+<iframe src="hapmap.html" width="100%" height="700" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+
+---
+class: principles
+
+## Interactive graphics augment exploration
 
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
     
 * Search for information quickly without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * <div class="highlight">[Multiple linked views] are the optimal framework for posing queries about data</div> ([Buja et al 1996](https://www.jstor.org/stable/1390754))
-    
-    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
+    * <div class="highlight">[Multiple linked views] are the optimal framework for posing queries about data</div> ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
     
 * Diagnose and understand models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
@@ -201,6 +216,12 @@ highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
 
 <iframe src="../20171207/txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
+---
+class: center, middle
+
+# Have _lots_ of panels?
+
+### Check out [TrelliscopeJS with Plotly](http://ryanhafen.com/blog/trelliscopejs-plotly)
 
 ---
 class: inverse, middle, center
@@ -214,6 +235,8 @@ class: inverse, middle, center
 
 ---
 class: middle, principles
+
+## The implementation
 
 ```r
 d <- SharedData$new(mpg)
@@ -240,33 +263,12 @@ background-size: contain
 ## The 'data pipeline'
 
 ---
+class: bottom, center, inverse
+background-image: url(https://camo.githubusercontent.com/77e740dc93b1c9357f833100a7f90b2b906a4c63/687474703a2f2f692e696d6775722e636f6d2f635973754e516e2e676966)
+background-size: contain
 
-## The implementation
 
-```r
-library(plotly)
-library(crosstalk)
-
-# define city as 'unit of interaction'
-sd <- SharedData$new(txhousing, ~city)
-
-# initiate plot object, ensuring one mark per group
-base <- plot_ly(sd, color = I("black")) %>%
-  group_by(city)
-
-# transform plot object as if it's a data frame
-p1 <- base %>%
-  summarise(miss = sum(is.na(median))) %>%
-  filter(miss > 0) %>%
-  arrange(miss) %>%
-  add_bars(x = ~miss, y = ~factor(city, levels = city)) %>%
-  layout(barmode = "overlay")
-
-p2 <- add_lines(base, x = ~date, y = ~median, alpha = 0.3)
-
- subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %>% 
-  highlight(dynamic = TRUE, persistent = TRUE, selectize = TRUE)
-```
+<h1 style="margin-bottom: 10px"> Filter vs highlight </h1>
 
 
 ---
@@ -276,10 +278,9 @@ class: principles
 
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
 
-* "Search for information quickly without fully specified questions" ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * "[Multiple linked views] are the optimal framework for posing queries about data" ([Buja et al 1996](https://www.jstor.org/stable/1390754))
+* Search for information quickly without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
     
-    * What about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference.
     
 * <div class="highlight">Diagnose and understand models</div> ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
 
@@ -378,34 +379,14 @@ background-image: url(../20171207/taxonomy.svg)
 background-size: contain
 class: bottom, inverse
 
-### _Interactive High-Dimensional Data Visualization_, [Buja et al 1996](https://www.jstor.org/stable/1390754); authors of [GGobi](http://ggobi.org)
+### _Interactive High-Dimensional Data Visualization_, [Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754); authors of [GGobi](http://ggobi.org)
 
 ---
 ## Summary
 
-#### Interactive graphics *can* augment exploratory analysis, but are only *practically* useful when we can iterate quickly
+### Interactive graphics *can* augment exploratory analysis, but are only *practically* useful when we can iterate quickly
 
-.pull-left[
-## Exploratory mud
-
-* Start-up
-* Iteration
-  * Reduce distance between data and visuals
-  * Leverage grammar of graphics and tidy-data principles
-* Dead-end
-  * Integrate with other libraries that complement yours
-  * Strive for 80/20 rule: 80% easy, other 20% possible
-  * Interactive techniques should empower data analysis tasks
-]
-
-.pull-right[
-## Expository mud
-
-* Deployment
-  * Use standalone web pages whenever possible
-* Latency
-  * User activity drops w/ delay of 500ms
-]
+### Quickly prototype graphical (database) queries with __plotly__ + __crosstalk__
 
 ---
 class: middle, center, principles
