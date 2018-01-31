@@ -4,9 +4,9 @@
     <title>Augmenting data exploration with interactive graphics</title>
     <meta charset="utf-8">
     <meta name="author" content="Carson Sievert" />
-    <link href="index_files/remark-css/example.css" rel="stylesheet" />
     <link href="index_files/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="example.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Augmenting data exploration with interactive graphics
 ### Carson Sievert
-### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> <i class="fa  fa-twitter "></i> <a href='https://twitter.com/cpsievert'><span class="citation" data-cites="cpsievert">@cpsievert</span></a> <br /> <i class="fa  fa-github "></i> <a href='https://github.com/cpsievert'><span class="citation" data-cites="cpsievert">@cpsievert</span></a> <br /> <i class="fa  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> <i class="fa  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
+### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> <i class="fa  fa-twitter "></i> <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> <i class="fa  fa-github "></i> <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> <i class="fa  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> <i class="fa  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
 
 ---
 
@@ -22,7 +22,7 @@ class: principles
 
 ## About me
 
-* PhD in statistics at Iowa State with Dr. Heike Hofmann (Dec 2016) 
+* PhD in statistics at Iowa State with Heike Hofmann &amp; Di Cook (Dec 2016) 
   
   * Thesis: [Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data](http://lib.dr.iastate.edu/etd/15422/)
   
@@ -43,7 +43,7 @@ background-image: url(../20171207/workflow.svg)
 background-size: contain
 class: inverse
 
-# Data Science Workflow
+# Data science workflow
 
 
 ---
@@ -72,7 +72,7 @@ class: inverse
 
 ### The web is the preferred medium for communicating results
 
-### Assuming you know _exactly_ what you want to visualize, many good data vis frameworks exist (e.g. [d3.js](https://d3js.org/))
+### Assuming _you know_ what you want to visualize, many great tools exist (e.g. [plotly.js](https://plot.ly), [vega](), [d3.js](https://d3js.org/))
 
 ---
 background-image: url(../20171207/workflow2.svg)
@@ -97,9 +97,9 @@ class: inverse
 &lt;br /&gt;
 &lt;br /&gt;
 
-### Web technologies weren't designed for data exploration
+### Problem: web technologies are not designed for data analysis, but interaction augments _exploration_!
 
-### Let's not forget that interactive graphics can augment _exploration_!
+### Solution: better bridges (e.g. shiny, plotly, ggvis, rbokeh, etc)
 
 ---
 class: principles
@@ -129,23 +129,6 @@ class: principles
 * Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
     
 * &lt;div class="highlight"&gt;Search for information quickly&lt;/div&gt; without fully specified questions ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * [Multiple linked views] are the optimal framework for posing queries about data ([Buja, Cook, &amp; Swayne 1996](https://www.jstor.org/stable/1390754))
-    
-* Diagnose and understand models ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
-
----
-
-&lt;iframe src="hapmap.html" width="100%" height="700" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
-
-
----
-class: principles
-
-## Interactive graphics augment exploration
-
-* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
-    
-* Search for information quickly without fully specified questions ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
     * &lt;div class="highlight"&gt;[Multiple linked views] are the optimal framework for posing queries about data&lt;/div&gt; ([Buja, Cook, &amp; Swayne 1996](https://www.jstor.org/stable/1390754))
     
 * Diagnose and understand models ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
@@ -207,10 +190,10 @@ library(crosstalk)
 *TX &lt;- SharedData$new(tx, ~year)
 p &lt;- ggplot(TX, aes(month, median, group = year)) + geom_line() +
   facet_wrap(~city, ncol = 2)
-highlight(ggplotly(p), dynamic = T, persistent = T, selectize = T)
+highlight(ggplotly(p), dynamic = TRUE, selectize = TRUE, defaultValues = 2006)
 ```
 
-&lt;iframe src="../20171207/txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+&lt;iframe src="txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
 
 ---
 class: center, middle
@@ -220,12 +203,71 @@ class: center, middle
 ### Check out [TrelliscopeJS with Plotly](http://ryanhafen.com/blog/trelliscopejs-plotly)
 
 ---
-class: inverse, middle, center
+background-image: url(../20171207/server-client.svg)
+background-size: contain
+class: middle, right
 
-# Beyond linked trellis (i.e., facet) displays
+# Produces a standalone webpage!
 
 ---
-### Dynamic aggregation
+background-image: url(../20171207/server-client.svg)
+background-size: contain
+class: middle, right
+
+# Easier to share, scale, &amp; maintain
+
+---
+class: inverse, middle, center
+
+# Beyond trellis (i.e. facet) displays
+
+---
+### Query missing values by city
+
+```r
+demo("crosstalk-highlight-pipeline", package = "plotly")
+```
+
+&lt;iframe src="txmissing.html" width="100%" height="485" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+class: bottom, left 
+background-image: url(../20171207/pipeline.svg)
+background-size: contain
+
+## The 'data pipeline'
+
+---
+class: center
+background-image: url(https://cloud.githubusercontent.com/assets/1365941/25497233/851156d8-2b49-11e7-98cb-0d270b540bb0.gif)
+background-size: contain
+
+## Control how selections are rendered ([code](https://gist.github.com/cpsievert/eca3ff3eba67ab6b4719c748dafd5c4a))
+
+---
+## The implementation
+
+```r
+nc &lt;- sf::st_read(system.file("shape/nc.shp", package = "sf"))
+
+# shared data will make the polygons "query-able"
+ncsd &lt;- SharedData$new(nc)
+
+p &lt;- ggplot(ncsd) +
+  geom_sf(aes(fill = AREA, text = paste0(NAME, "\n", "FIPS: ", FIPS))) +
+  ggthemes::theme_map()
+
+# use highlight function to draw polygon outline on hover
+ggplotly(p, tooltip = "text") %&gt;%
+*  highlight(
+*    "plotly_hover",
+*    opacityDim = 1,
+*    selected = attrs_selected(line = list(color = "black"))
+*  )
+```
+
+---
+### Works with 'aggregated' traces
 
 &lt;iframe src="mpg.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
 
@@ -237,8 +279,8 @@ class: middle, principles
 ```r
 d &lt;- SharedData$new(mpg)
 dots &lt;- plot_ly(d, color = ~class, x = ~displ, y = ~cyl)
-boxs &lt;- plot_ly(d, color = ~class, x = ~class, y = ~cty) %&gt;% add_boxplot()
-bars &lt;- plot_ly(d, x = ~class, color = ~class)
+*boxs &lt;- plot_ly(d, color = ~class, x = ~class, y = ~cty) %&gt;% add_boxplot()
+*bars &lt;- plot_ly(d, x = ~class, color = ~class)
 
 subplot(dots, boxs) %&gt;%
   subplot(bars, nrows = 2) %&gt;%
@@ -246,25 +288,7 @@ subplot(dots, boxs) %&gt;%
   highlight("plotly_selected")
 ```
 
----
-## Query missing values by city
-
-&lt;iframe src="../20171207/txhousing-missing.html" width="100%" height="500" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
-
----
-class: bottom, left 
-background-image: url(../20171207/pipeline.svg)
-background-size: contain
-
-## The 'data pipeline'
-
----
-class: bottom, center, inverse
-background-image: url(https://camo.githubusercontent.com/77e740dc93b1c9357f833100a7f90b2b906a4c63/687474703a2f2f692e696d6775722e636f6d2f635973754e516e2e676966)
-background-size: contain
-
-
-&lt;h1 style="margin-bottom: 10px"&gt; Filter vs highlight &lt;/h1&gt;
+plotly.js dynamically recomputes summary stats as a function of selection 
 
 
 ---
@@ -325,20 +349,18 @@ class: middle
 
 ### Interactively [plot models in data space](../20180118/tour.html) ([code](https://github.com/ropensci/plotly/blob/master/demo/animation-tour-USArrests.R))
 
+---
+class: bottom, center, inverse
+background-image: url(https://camo.githubusercontent.com/77e740dc93b1c9357f833100a7f90b2b906a4c63/687474703a2f2f692e696d6775722e636f6d2f635973754e516e2e676966)
+background-size: contain
 
+
+&lt;h1 style="margin-bottom: 10px"&gt; Filter vs highlight &lt;/h1&gt;
 
 ---
 class: inverse, middle, center
 
-# Note: 'crosstalk highlighting' works _without shiny_. Here are some examples _with shiny_
-
-
----
-background-image: url(https://i.imgur.com/T7GSpv9.gif)
-background-size: contain
-class: principles
-
-&lt;https://github.com/cpsievert/zikar&gt;
+# Filter and highlight events work _without_ and _with_ shiny!
 
 ---
 background-image: url(https://i.imgur.com/MGbR5AI.gif)
@@ -348,6 +370,13 @@ class: principles
 &lt;div align="right"&gt;
 &lt;a href='https://github.com/cpsievert/bcviz'&gt;https://github.com/cpsievert/bcviz&lt;/a&gt;
 &lt;/div&gt;
+
+---
+background-image: url(https://i.imgur.com/T7GSpv9.gif)
+background-size: contain
+class: principles
+
+&lt;https://github.com/cpsievert/zikar&gt;
 
 ---
 background-image: url(https://i.imgur.com/csIUJX0.gif)
@@ -380,9 +409,9 @@ class: bottom, inverse
 ---
 ## Summary
 
-### Interactive graphics *can* augment exploratory analysis, but are only *practically* useful when we can iterate quickly
+### Interactive graphics *can* augment exploratory analysis, but are only *practical* when we can iterate quickly
 
-### Quickly prototype graphical (database) queries with __plotly__ + __crosstalk__
+### Quickly pose queries about data and make comparisons with __plotly__ + __crosstalk__
 
 ---
 class: middle, center, principles
@@ -410,8 +439,15 @@ Learn more: &lt;https://plotly-book.cpsievert.me&gt;
 "scroll": false
 }
 });
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
-(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
