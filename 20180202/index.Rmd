@@ -26,21 +26,17 @@ class: principles
 
 ## About me
 
-* PhD in statistics at Iowa State with Heike Hofmann & Di Cook (Dec 2016) 
+* PhD in statistics with Heike Hofmann & Di Cook (Dec 2016) 
   
-  * Thesis: [Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data](http://lib.dr.iastate.edu/etd/15422/)
+  * Thesis: [Interfacing R with web technologies](http://lib.dr.iastate.edu/etd/15422/)
   
 * CEO of [Sievert Consulting](https://consulting.cpsievert.me/) LLC (Jan 2017)
 
-  * Clients include: plotly, NOAA, Sandia Labs, O'Reilly
+  * Clients: plotly, NOAA, Sandia Labs, O'Reilly
   
-  * Looking for more part-time projects
+* I `r emo::ji("heart")` interactive data visualization
   
-* The majority of my work is in interactive data visualization
-  
-  * Primarily work in R, dabble in JavaScript and python.
-  
-  * Maintain numerous R packages including: plotly, LDAvis, pitchRx
+  * Maintain/author R `r emo::ji("package")`s: plotly, LDAvis, animint
 
 ---
 background-image: url(../20171207/workflow.svg)
@@ -101,7 +97,7 @@ class: inverse
 <br />
 <br />
 
-### Problem: web technologies are not designed for data analysis, but interaction augments _exploration_!
+### Problem: web technologies are not designed for data analysis -- iteration is difficult!
 
 ---
 class: principles
