@@ -69,11 +69,6 @@ class: inverse
 <br />
 <br />
 
-
-### The web is the preferred medium for communicating results
-
-### Assuming _you know_ what you want to visualize, many great tools exist (e.g. [plotly.js](https://plot.ly), [vega](), [d3.js](https://d3js.org/))
-
 ---
 background-image: url(../20171207/workflow2.svg)
 background-size: contain
@@ -96,8 +91,18 @@ class: inverse
 <br />
 <br />
 <br />
+<br />
+<br />
 
-### Problem: web technologies are not designed for data analysis -- iteration is difficult!
+## Problem: analysts juggle many languages (R, JavaScript, python)
+
+---
+background-image: url(../20171207/workflow2.svg)
+background-size: 400px
+background-position: 90% 8%
+class: inverse, middle, center
+
+## Interactive graphics *can* augment exploratory analysis, but are only *practical* when we can iterate quickly
 
 ---
 class: principles
@@ -136,7 +141,7 @@ background-image: url(https://i.imgur.com/Id2nVFG.gif)
 background-size: contain
 
 <div align="right">
-  <a href="../20180118/epl2.html" target="_blank">Live demo </a>
+  <a href="epl.html" target="_blank">Live demo </a>
   (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R">code</a>)
 </div>
 
@@ -153,6 +158,7 @@ background-size: contain
 
 ```r
 library(dplyr)
+library(plotly)
 tx <- txhousing %>%
   select(city, year, month, median) %>%
   filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
@@ -176,22 +182,26 @@ tx
 #> # ... with 738 more rows
 ```
 
-```r
-library(plotly)
-library(crosstalk)
-```
-
 ---
 ### Compare within and across cities
 
 ```r
-*TX <- SharedData$new(tx, ~year)
+*TX <- crosstalk::SharedData$new(tx, ~year)
 p <- ggplot(TX, aes(month, median, group = year)) + geom_line() +
   facet_wrap(~city, ncol = 2)
-highlight(ggplotly(p), dynamic = TRUE, selectize = TRUE, defaultValues = 2006)
+highlight(ggplotly(p), dynamic = TRUE, selectize = TRUE)
 ```
 
-<iframe src="txhousing.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+<iframe src="txhousing-1.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+### Share (default) selections
+
+```r
+highlight(ggplotly(p), defaultValues = 2006)
+```
+
+<iframe src="txhousing-2.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 ---
 class: center, middle
@@ -301,37 +311,6 @@ class: principles
     
     
 * <div class="highlight">Diagnose and understand models</div> ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
-
----
-## Deeper look at linear model diagnostics
-
-```r
-# choose a model by AIC stepping backwards 
-mod <- step(lm(mpg ~ ., data = mtcars), trace = FALSE)
-formula(mod)
-```
-
-```r
-mpg ~ wt + qsec + am
-```
-
-```r
-# produce (static ggplot2) diagnostic plot
-library(GGally)
-pm <- ggnostic(mod, mapping = aes(color = am))
-
-# make it interactive
-library(plotly)
-ggplotly(pm)
-```
-
----
-
-<iframe src="../20180118/ggnostic.html" width="100%" height="650" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
-
-???
-
-The noticeably high value of cooksd suggests a large influence on the fitted model. Highlighting this point makes it obvious that it is influential since it has a unusually high response/residual in a fairly sparse region of the design space (i.e., it has a pretty high value of wt) and removing it would significantly reduce the estimated standard deviation (sigma). By comparison, the other two observations with similar values of wt have a response value very close to the overall mean, so even though their value of hat is high, their value of sigma is low.
 
 ---
 ### See relationships evolve over time ([made via ggplot2](https://plotly-book.cpsievert.me/linking-animated-views.html))
