@@ -1,0 +1,385 @@
+---
+title: "Augmenting data analysis with interactive web graphics"
+venue: "Saint Lawrence University"
+abstract: Interactive web graphics are great for communication, but are more difficult to leverage during data exploration. Even before the web, interactive graphics helped data analysts quickly gather insight from data, discover the unexpected, and develop better model diagnostics. Web technologies, however, are not designed to fit inside an exploratory data analysis workflow where rapid iteration between data manipulation, modeling, and visualization must occur. Fortunately, we are starting to see more and better bridges between statistical computing environments and web technologies that reduce the amount of friction involved when using interactive techniques to accomplish data analysis tasks (e.g., the R packages shiny, htmlwidgets, plotly, etc). This talk demonstrates the power these modern visualization tools through a series of examples and discusses the methodology that allow them to minimize friction during creation.
+type: "invited"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    self_contained: false
+    css: [main.css, example.css]
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+date: "Slides: https://talks.cpsievert.me <br /> <br />  `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+class: principles 
+
+## About me
+
+* PhD in statistics at Iowa State with Heike Hofmann & Di Cook (Dec 2016) 
+  
+  * Thesis: [Interfacing R with web technologies](http://lib.dr.iastate.edu/etd/15422/)
+  
+* CEO of [Sievert Consulting](https://consulting.cpsievert.me/) LLC (Jan 2017)
+
+  * Clients: plotly, NOAA, Sandia Labs, O'Reilly
+  
+* I `r emo::ji("heart")` interactive data visualization
+  
+  * Maintain/author R `r emo::ji("package")`s: plotly, LDAvis, animint
+
+---
+background-image: url(../20171207/workflow.svg)
+background-size: contain
+class: inverse
+
+# Data science workflow
+
+
+---
+background-image: url(../20171207/workflow1.svg)
+background-size: contain
+class: inverse
+
+# Expository vis
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+---
+background-image: url(../20171207/workflow2.svg)
+background-size: contain
+class: inverse
+
+# Exploratory vis
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+## Problem: analysts juggle many languages (R, JavaScript, python)
+
+---
+background-image: url(../20171207/workflow2.svg)
+background-size: 400px
+background-position: 90% 8%
+class: inverse, middle, center
+
+## Interactive graphics *can* augment exploratory analysis, but are only *practical* when we can iterate quickly
+
+---
+class: principles
+
+## Interactive graphics augment exploration<sup>1</sup>
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+    
+* Search for information quickly without fully specified questions<sup>2</sup> ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
+    
+* Diagnose and understand models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+.footnote[
+---
+
+[1]: Statisticians were building (very advanced!) int graphics systems decades ago --   <http://stat-graphics.org/movies/>
+
+[2]: Worried about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
+]
+
+---
+class: principles
+
+## Interactive graphics augment exploration
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+    
+* <div class="highlight">Search for information quickly</div> without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * <div class="highlight">[Multiple linked views] are the optimal framework for posing queries about data</div> ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
+    
+* Diagnose and understand models ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+---
+background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-size: contain
+
+<div align="right">
+  <a href="epl.html" target="_blank">Live demo </a>
+  (<a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R">code</a>)
+</div>
+
+---
+class: middle, inverse
+background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-size: contain
+
+# Generally useful for comparing within/across panels!
+
+---
+class: middle
+
+# How would 
+
+
+---
+### An example with Texas housing prices
+
+```r
+library(dplyr)
+library(plotly)
+tx <- txhousing %>%
+  select(city, year, month, median) %>%
+  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
+tx
+```
+
+```r
+#> # A tibble: 748 x 4
+#>         city  year month median
+#>        <chr> <int> <int>  <dbl>
+#>  1 Galveston  2000     1  95000
+#>  2 Galveston  2000     2 100000
+#>  3 Galveston  2000     3  98300
+#>  4 Galveston  2000     4 111100
+#>  5 Galveston  2000     5  89200
+#>  6 Galveston  2000     6 108600
+#>  7 Galveston  2000     7  99000
+#>  8 Galveston  2000     8  96200
+#>  9 Galveston  2000     9 104000
+#> 10 Galveston  2000    10 118800
+#> # ... with 738 more rows
+```
+
+---
+### Compare within and across cities
+
+```r
+*TX <- crosstalk::SharedData$new(tx, ~year)
+p <- ggplot(TX, aes(month, median, group = year)) + geom_line() +
+  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), dynamic = TRUE, selectize = TRUE)
+```
+
+<iframe src="txhousing-1.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+### Share (default) selections
+
+```r
+highlight(ggplotly(p), defaultValues = 2006)
+```
+
+<iframe src="txhousing-2.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+background-image: url(../20171207/server-client.svg)
+background-size: contain
+class: middle, right
+
+# Produces a standalone webpage!
+
+---
+background-image: url(../20171207/server-client.svg)
+background-size: contain
+class: middle, right
+
+# Easier to share, scale, & maintain
+
+---
+class: inverse, center, middle
+
+# Have _lots_ of panels?
+
+### Check out [TrelliscopeJS with Plotly](http://ryanhafen.com/blog/trelliscopejs-plotly)
+
+---
+class: middle, center
+
+# Beyond trellis (i.e. facet) displays
+
+---
+### Query missing values by city
+
+```r
+demo("crosstalk-highlight-pipeline", package = "plotly")
+```
+
+<iframe src="txmissing.html" width="100%" height="485" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+class: bottom, left 
+background-image: url(../20171207/pipeline.svg)
+background-size: contain
+
+## The 'data pipeline'
+
+---
+class: center
+background-image: url(https://cloud.githubusercontent.com/assets/1365941/25497233/851156d8-2b49-11e7-98cb-0d270b540bb0.gif)
+background-size: contain
+
+## Control how selections are rendered ([code](https://gist.github.com/cpsievert/eca3ff3eba67ab6b4719c748dafd5c4a))
+
+---
+## The implementation
+
+```r
+nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"))
+
+# shared data will make the polygons "query-able"
+ncsd <- SharedData$new(nc)
+
+p <- ggplot(ncsd) +
+  geom_sf(aes(fill = AREA, text = paste0(NAME, "\n", "FIPS: ", FIPS))) +
+  ggthemes::theme_map()
+
+# use highlight function to draw polygon outline on hover
+ggplotly(p, tooltip = "text") %>%
+*  highlight(
+*    "plotly_hover",
+*    opacityDim = 1,
+*    selected = attrs_selected(line = list(color = "black"))
+*  )
+```
+
+---
+### Works with 'aggregated' traces
+
+<iframe src="mpg.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+
+---
+class: middle, principles
+
+## The implementation
+
+```r
+d <- SharedData$new(mpg)
+dots <- plot_ly(d, color = ~class, x = ~displ, y = ~cyl)
+*boxs <- plot_ly(d, color = ~class, x = ~class, y = ~cty) %>% add_boxplot()
+*bars <- plot_ly(d, x = ~class, color = ~class)
+
+subplot(dots, boxs) %>%
+  subplot(bars, nrows = 2) %>%
+  layout(barmode = "overlay") %>%
+  highlight("plotly_selected")
+```
+
+plotly.js dynamically recomputes summary stats as a function of selection 
+
+
+---
+class: principles
+
+## Interactive graphics augment exploration!
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+
+* Search for information quickly without fully specified questions ([Unwin & Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, & Swayne 1996](https://www.jstor.org/stable/1390754))
+    
+    
+* <div class="highlight">Diagnose and understand models</div> ([Wickham, Cook, & Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+---
+### See relationships evolve over time ([made via ggplot2](https://plotly-book.cpsievert.me/linking-animated-views.html))
+
+<a href="../20180118/gapminder.html" target="_blank">
+  <img src="https://plotly-book.cpsievert.me/images/gapminder-highlight-animation.gif" width = "100%" />
+</a>
+
+---
+background-image: url(../20170803/tour.gif)
+background-size: contain
+class: middle
+
+### Interactively [plot models in data space](../20180118/tour.html) ([code](https://github.com/ropensci/plotly/blob/master/demo/animation-tour-USArrests.R))
+
+---
+class: inverse, middle, center
+
+# Works both _without_ and _with_ shiny!
+
+---
+background-image: url(https://i.imgur.com/MGbR5AI.gif)
+background-size: contain
+class: principles
+
+<div align="right">
+<a href='https://github.com/cpsievert/bcviz'>https://github.com/cpsievert/bcviz</a>
+</div>
+
+---
+background-image: url(https://i.imgur.com/T7GSpv9.gif)
+background-size: contain
+class: principles
+
+<https://github.com/cpsievert/zikar>
+
+---
+background-image: url(https://i.imgur.com/csIUJX0.gif)
+background-size: contain
+class: principles
+
+<https://github.com/cpsievert/apps>
+
+---
+## Summary
+
+### Interactive graphics *can* augment exploratory analysis, but are only *practical* when we can iterate quickly
+
+### Quickly pose queries about data and make comparisons with __plotly__ + __crosstalk__
+
+---
+class: middle, center, principles
+
+## Thanks! Questions?
+
+Slides: <https://talks.cpsievert.me>
+
+Learn more: <https://plotly-book.cpsievert.me>
+
+#### Contact
+
+`r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/>
+
