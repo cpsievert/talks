@@ -2,7 +2,7 @@
 title: "Augmenting data exploration with interactive graphics"
 venue: "rstudio::conf"
 type: "contributed"
-recording: "none"
+recording: "<a href='https://www.rstudio.com/resources/videos/creating-interactive-web-graphics-suitable-for-exploratory-data-analysis/'> here </a>"
 output:
   xaringan::moon_reader:
     self_contained: false
