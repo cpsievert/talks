@@ -1,0 +1,46 @@
+---
+title: "Interactive data visualization with plotly and dashr"
+venue: "2018 Midwest Biopharmaceutical Statistics Workshop"
+type: "invited"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+date: "Slides: https://talks.cpsievert.me <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+GitHub: <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+Email: <cpsievert1@gmail.com> <br />
+Web: <https://cpsievert.me/> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
+author: "Carson Sievert"
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+## openFDA data
+
+```{r}
+library(openfda)
+patient_ages <- fda_query("/drug/event.json") %>%
+  fda_count("patient.patientonsetage") %>%
+  fda_exec()
+```
+
+```{r}
+library(ggplot2)
+qplot(x=term, y=count, data=patient_ages)
+```
