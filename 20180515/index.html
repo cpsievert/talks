@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interactive data visualization with R, plotly, and dashR</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Carson Sievert" />
+    <link href="index_files/remark-css/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="index_files/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Interactive data visualization with R, plotly, and dashR
+### Carson Sievert
+### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> GitHub: <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> Email: <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> Web: <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
+
+---
+
+background-image: url(../20171207/workflow.svg)
+background-size: contain
+class: inverse
+
+# Data science workflow
+
+---
+background-image: url(../20171207/workflow1.svg)
+background-size: contain
+class: inverse
+
+## Web graphics are great for presentation!
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+
+### Sharable, portable, composable (i.e., reports, dashboards, etc)
+
+---
+background-image: url(../20171207/workflow2.svg)
+background-size: contain
+class: inverse
+
+## Web technologies aren't designed for this iteration!
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+
+### Follow-up questions (ignited through visualization) may rely on sophisticated computations
+
+---
+class: principles
+
+## ...but interactivity augments exploration
+
+* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+    
+* Search for information quickly without fully specified questions&lt;sup&gt;1&lt;/sup&gt; ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
+    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, &amp; Swayne 1996](https://www.jstor.org/stable/1390754))
+    
+* Diagnose, compare, and understand models ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+
+.footnote[
+---
+
+[1]: Worried about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
+]
+
+---
+class: middle, center, inverse
+
+## Statisticians were building (very advanced!) int graphics systems decades ago &lt;http://stat-graphics.org/movies/&gt;
+
+.pull-left[
+&lt;img src="tukey.gif" /&gt;
+]
+.pull-right[
+&lt;img src="friedman.gif" /&gt;
+]
+
+## however, a web-based platform introduces a whole new set of concerns...
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+class: middle, right
+
+# When is a web application necessary?
+
+---
+background-image: url(server-client-dim.svg)
+background-size: contain
+class: middle, right
+
+# Easier to share, scale, and maintain
+
+---
+background-image: url(server-client-dim.svg)
+background-size: contain
+class: middle, right
+
+# What can plotly do in a standalone page?
+
+---
+#### Quite a lot!
+
+&lt;iframe src="../20180202/mpg.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+### The implementation
+
+```r
+library(plotly)
+library(crosstalk)
+
+d &lt;- SharedData$new(mpg)
+dots &lt;- plot_ly(d, color = ~class, x = ~displ, y = ~cyl)
+boxs &lt;- plot_ly(d, color = ~class, x = ~class, y = ~cty) %&gt;% add_boxplot()
+bars &lt;- plot_ly(d, x = ~class, color = ~class)
+
+subplot(dots, boxs) %&gt;%
+  subplot(bars, nrows = 2) %&gt;%
+  layout(barmode = "overlay") %&gt;%
+  highlight("plotly_selected")
+```
+
+---
+#### Another standalone plotly example
+
+&lt;iframe src="../20180202/txmissing.html" width="100%" height="485" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+
+---
+class: bottom, left 
+background-image: url(../20171207/pipeline.svg)
+background-size: contain
+
+## "Linking as a &lt;br&gt; database query"
+
+
+---
+class: middle, inverse
+
+&lt;h2 align="center"&gt; Not everything can be (reasonably) framed as a database query!&lt;/h2&gt;
+
+.footnote[
+#### But a suprising amount can, see:
+
+* [The plotly for R book](https://plotly-book.cpsievert.me/linking-views-without-shiny.html)
+* [The R package demos](https://github.com/ropensci/plotly/tree/master/demo)
+* [My talks](https://talks.cpsievert.me/)
+* [My workshops](https://workshops.cpsievert.me/)
+]
+
+---
+background-image: url(server-client.svg)
+background-size: contain
+class: middle, right
+
+## Ok, so you need a web application
+
+---
+background-image: url(server-dash.svg)
+background-size: contain
+class: middle, right
+
+## dash: a python framework for reactive web apps
+
+.footnote[
+### dash is a [product](https://plot.ly/products/dash/) of [plotly](https://plot.ly/)
+]
+
+---
+background-image: url(server-dash.svg)
+background-size: contain
+class: middle, right
+
+## Built on flask &amp; react (MIT licensed)
+
+.footnote[
+### dash is a [product](https://plot.ly/products/dash/) of [plotly](https://plot.ly/)
+]
+
+---
+background-image: url(server-dash.svg)
+background-size: contain
+class: middle, right
+
+## Stateless web architecture (easy to scale)
+
+.footnote[
+### dash is a [product](https://plot.ly/products/dash/) of [plotly](https://plot.ly/)
+]
+
+---
+background-image: url(server-dashR.svg)
+background-size: contain
+class: middle, right
+
+## &lt;font color="red"&gt;dashR:&lt;/font&gt; an R framework for reactive web apps
+
+.footnote[
+**dashR** is not yet released... &lt;br&gt;
+...hoping end of summer!
+]
+
+&lt;!--
+.pull-left[
+### dash: a python framework for reactive web apps
+
+* Open source (MIT) **python** library.
+* Built on flask (backend), react (frontend), and plotly.js (viz).
+]
+
+.pull-right[
+### dashR: an R framework for reactive web apps
+
+* Open source (MIT) **R** library (release coming this fall).
+* Built on fiery (backend), react (frontend), and plotly.js (viz).
+* First class support for **htmlwidgets**.
+]
+--&gt;
+
+---
+class: middle, center, inverse
+
+## But R already has [shiny](https://shiny.rstudio.com/)...why bother with dashR?
+
+---
+class: middle, center
+
+# Reason 1: Agile (team) development
+
+## More precisely, easily switch between R/Python backend
+
+---
+class: principles
+
+First, a simple **dashR** example:
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+  coreInput(
+    id = 'inputID', 
+    value = 'Hello World!', 
+    type = "text"
+  ),
+  htmlDiv(id = 'outputID')
+)
+app$callback(
+  function(text = input("inputID")) {
+    sprintf("You entered:", text)
+  },
+  output("outputID")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="hello-world.gif" width="100%" /&gt;
+]
+
+---
+class: principles
+
+First, a simple **dashR** example:
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+  coreInput(
+    id = 'inputID', 
+    value = 'Hello World!', 
+    type = "text"
+  ),
+  htmlDiv(id = 'outputID')
+)
+app$callback(
+  function(text = input("inputID")) {
+    sprintf("You entered:", text)
+  },
+  output("outputID")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="hello-world.gif" width="100%" /&gt;
+]
+
+### __Note__: undo/redo resolved without a server callback *if* callbacks are pure (output depends solely inputs)
+
+---
+class: principles
+
+Easy to switch between Python &lt;-&gt; R
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+  coreInput(
+    id = 'inputID', 
+    value = 'Hello World!', 
+    type = "text"
+  ),
+  htmlDiv(id = 'outputID')
+)
+app$callback(
+  function(text = input("inputID")) {
+    sprintf("You entered:", text)
+  },
+  output("outputID")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+```python
+import dash
+import dash_core_components as core
+import dash_html_components as html
+app = dash.Dash()
+app.layout = html.Div([
+    core.Input(
+      id = 'inputID',
+      value = 'Hello World!',
+      type = "text"
+    ),
+    html.Div(id = 'outputID')
+])
+@app.callback(
+    Output('outputID', 'children'),
+    [Input('inputID', 'value')]
+)
+def update(text):
+    return "You entered: " + text
+app.run_server()
+```
+]
+
+---
+
+TODO: a ggplot2 slider example?
+
+
+---
+
+Another example, accessing url pathname
+
+Note how `input()` takes a component *id* and *property*
+
+.pull-left[
+```r
+library(dashR)
+app &lt;- Dash$new()
+app$layout_set(
+  # represents the URL bar, doesn't render anything
+  coreLocation('url', refresh = F),
+  
+  coreLink(
+    'Navigate to "/"', 
+    href = '/'
+  ),
+  coreLink(
+    'Navigate to "/page-2"', 
+    href = '/page-2'
+  ),
+  htmlDiv(id = 'page-content')
+)
+app$callback(
+  function(pathname = input("url", "pathname")) {
+    htmlH3(paste("You are on page", pathname))
+  },
+  output("page-content")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="urls.gif" /&gt;
+]
+
+---
+
+Another example, demonstrating `state()` (like `input()` but doesn't trigger a callback).
+
+.pull-left[
+```r
+library(dashR)
+app &lt;- Dash$new()
+app$layout_set(
+  coreInput(id = "a", type = "text"),
+  htmlButton(id = "b", "submit"),
+  htmlDiv(id = "c")
+)
+app$callback(
+  function(
+    value = state("a", "value"),
+    n_clicks = input("b", "n_clicks")
+  ) {
+    sprintf(
+      'The input value was "%s" and the button has been clicked %s times', 
+      value, n_clicks
+    )
+  }, output("c", "children")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="state.gif" /&gt;
+]
+
+Note how `input()`, `state()`, and `output()` need a component *id* and *property* (`input()`/`state()` default to `"value"`, `output()` defaults to `"children"`) 
+
+---
+class: principles
+
+One exception: [htmlwidgets for R](http://www.htmlwidgets.org/) in dashR!
+
+.pull-left[
+```r
+library(dashR)
+library(dashRwidgets)
+library(plotly)
+p &lt;- plot_ly(
+  mtcars, x = ~wt, y = ~mpg, 
+  key = row.names(mtcars)
+)
+app &lt;- Dash$new()
+app$layout_set(
+  htmlwidget(
+    id = 'plotID', 
+    widget = p
+  ),
+  htmlDiv(id = 'hover')
+)
+app$callback_print(
+  function(hover = input("plotID", "input_plotly_hover")) {
+    if (!length(hover)) "Hover on a point" else hover
+  },
+  output(id = 'hover')
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="plotly-hover.gif" /&gt;
+]
+
+---
+class: principles
+
+One exception: [htmlwidgets for R](http://www.htmlwidgets.org/) in dashR!
+
+.pull-left[
+```r
+library(dashR)
+library(dashRwidgets)
+library(leaflet)
+p &lt;- leaflet(quakes) %&gt;% 
+  addTiles() %&gt;% 
+  addMarkers()
+app &lt;- Dash$new()
+app$layout_set(
+  htmlwidget(
+    id = 'plotID', 
+    widget = p
+    ),
+  htmlDiv(id = "marker-click")
+)
+app$callback_print(
+  function(click = input("plotID", "input_marker_click")) {
+    if (!length(click)) "Click on a marker" else click
+  },
+  output(id = 'marker-click')
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="leaflet-click.gif" /&gt;
+]
+
+---
+background-image: url(htmlwidgets.gif)
+background-size: contain
+class: bottom, right
+
+#### &lt;http://gallery.htmlwidgets.org/&gt;
+
+
+---
+class: middle, center, inverse
+
+# Reason 2: leverage the dash &amp; react communities
+
+---
+class: principles
+
+* __dash__/__dashR__ components are *transpiled* from [React](https://reactjs.org/) components.
+    * If someone creates a component for a __dash__, it's trivial to use in __dashR__ (&amp; vice-versa).&lt;sup&gt;1&lt;/sup&gt;
+    * If you know JavaScript, [use our template to write your own](https://dash.plot.ly/plugins)!
+    * There are 1,000s of [existing React components](https://github.com/brillout/awesome-react-components).
+
+&lt;br /&gt;
+
+&lt;div align="center"&gt;
+  &lt;img src="transpile.svg" width="50%" /&gt;
+&lt;/div&gt;
+
+.footnote[
+[1]: Except using the `htmlwidget()` component in **dash**
+]
+
+---
+class: principles
+
+For example, both `core.Input()` (python) and `coreInput()` (R)
+wrap [the same React component](https://github.com/plotly/dash-core-components/blob/master/src/components/Input.react.js) from the [dash-core-component](https://github.com/plotly/dash-core-components) library
+
+```javascript
+import React, {Component} from 'react';
+import {omit} from 'ramda';
+
+export default class Input extends Component {
+  render() {
+    const {setProps, value} = this.props;
+    return (
+      &lt;input
+        value={value}
+        onChange={e =&gt; {
+            setProps({value: e.target.value});
+        }}
+        
+      /&gt;
+    );
+  }
+}
+```
+
+Other **dash** component libraries: [dash-html-components](https://github.com/plotly/dash-html-components), [dash-core-components](https://github.com/plotly/dash-core-components), [dash-svg-components](https://github.com/plotly/dash-svg-components), [dash-table-experiments](https://github.com/plotly/dash-table-experiments), [dash-colorscales](https://github.com/plotly/dash-colorscales), [Video-Engine-Dash](https://github.com/SkyRatInd/Video-Engine-Dash)
+
+---
+class: middle, center, inverse
+
+# Visualizing openFDA data with dashR
+
+## &lt;font color="red"&gt;Example 1: Visualizing adverse drug outcomes&lt;/font&gt;
+## Example 2: Visualizing drug recall enforcements
+
+---
+class: middle, center
+
+# First, let's survey some existing work
+
+---
+background-image: url(medcheck.gif)
+background-size: contain
+
+
+#### https://medcheck.octoconsulting.com
+
+
+---
+class: middle, center, inverse
+
+## What about *comparing a few* similar drugs? 
+
+---
+background-image: url(openfda-dashboard.gif)
+background-size: contain
+
+#### https://github.com/statwonk/openfda-dashboard
+
+---
+class: middle, center, inverse
+
+## What about comparing *many* drugs?
+
+---
+
+## Heatmap is a bit more scalable!
+
+&lt;a href="heat-bars.html"&gt;
+  &lt;img src="heat-bars.png" width="100%" /&gt;
+&lt;/a&gt;
+
+---
+
+#### Heatmap of 1000 drug outcomes (made with [heatmaply](http://cran.r-project.org/package=heatmaply) and [plotly](http://cran.r-project.org/package=plotly))
+
+&lt;a href="heatmap.html"&gt;
+  &lt;img src="heatmap.gif" width="100%" /&gt;
+&lt;/a&gt;
+
+---
+class: middle, center, inverse
+
+## What about comparing *millions* of drugs?
+
+---
+class: center, middle
+
+# Overview first, then zoom and filter, then details on demand 
+
+Dr. Ben Shneiderman
+
+.footnote[
+### In other words, show summary stats first, then guided exploration to raw data.
+]
+
+---
+background-image: url(pca.gif)
+background-size: contain
+
+
+
+---
+class: middle, center, inverse
+
+# Visualizing openFDA data with dashR
+
+## Example 1: Visualizing adverse drug outcomes
+## &lt;font color="red"&gt;Example 2: Visualizing drug recall enforcements&lt;/font&gt;
+
+---
+background-image: url(enforcement.gif)
+background-size: contain
+
+
+---
+class: middle,principles
+
+## Thanks! Questions? 
+
+Slides: &lt;https://talks.cpsievert.me&gt; &lt;br&gt;
+Learn more: &lt;https://dash.plot.ly&gt; (soon &lt;https://dashR.plot.ly&gt;)
+Dash gallery: &lt;https://dash.plot.ly/gallery&gt; 
+
+#### Contact me:
+
+<i class="fab  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fab  fa-github "></i> &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
+<i class="fas  fa-globe "></i> &lt;https://cpsievert.me/&gt;
+    </textarea>
+<script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "14.6:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
