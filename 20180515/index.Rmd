@@ -100,7 +100,7 @@ class: principles
 ---
 class: middle, center, inverse
 
-## Statisticians were building (very advanced!) int graphics systems decades ago <http://stat-graphics.org/movies/>
+## Statisticians built (very advanced!) int graphics systems decades ago <http://stat-graphics.org/movies/>
 
 .pull-left[
 <img src="tukey.gif" />
@@ -109,7 +109,7 @@ class: middle, center, inverse
 <img src="friedman.gif" />
 ]
 
-## however, a web-based platform introduces a whole new set of concerns...
+## ...the web introduces a whole new set of possibilties & concerns (e.g., distribution, concurrency, reproducibility, security, etc)
 
 ---
 background-image: url(server-client.svg)
@@ -282,7 +282,7 @@ app$layout_set(
 )
 app$callback(
   function(text = input("inputID")) {
-    sprintf("You entered:", text)
+    paste("You entered:", text)
   },
   output("outputID")
 )
@@ -313,7 +313,7 @@ app$layout_set(
 )
 app$callback(
   function(text = input("inputID")) {
-    sprintf("You entered:", text)
+    paste("You entered:", text)
   },
   output("outputID")
 )
@@ -346,7 +346,7 @@ app$layout_set(
 )
 app$callback(
   function(text = input("inputID")) {
-    sprintf("You entered:", text)
+    paste("You entered:", text)
   },
   output("outputID")
 )
@@ -380,101 +380,106 @@ app.run_server()
 
 ---
 
-TODO: a ggplot2 slider example?
-
-
----
-
-Another example, accessing url pathname
-
-Note how `input()` takes a component *id* and *property*
-
 .pull-left[
 ```r
 library(dashR)
+library(ggplot2)
+library(MASS)
 app <- Dash$new()
 app$layout_set(
-  # represents the URL bar, doesn't render anything
-  coreLocation('url', refresh = F),
-  
-  coreLink(
-    'Navigate to "/"', 
-    href = '/'
-  ),
-  coreLink(
-    'Navigate to "/page-2"', 
-    href = '/page-2'
-  ),
-  htmlDiv(id = 'page-content')
-)
-app$callback(
-  function(pathname = input("url", "pathname")) {
-    htmlH3(paste("You are on page", pathname))
-  },
-  output("page-content")
-)
-app$run_server()
-```
-]
-
-.pull-right[
-<img src="urls.gif" />
-]
-
----
-
-Another example, demonstrating `state()` (like `input()` but doesn't trigger a callback).
-
-.pull-left[
-```r
-library(dashR)
-app <- Dash$new()
-app$layout_set(
-  coreInput(id = "a", type = "text"),
-  htmlButton(id = "b", "submit"),
-  htmlDiv(id = "c")
-)
-app$callback(
-  function(
-    value = state("a", "value"),
-    n_clicks = input("b", "n_clicks")
-  ) {
-    sprintf(
-      'The input value was "%s" and the button has been clicked %s times', 
-      value, n_clicks
+  htmlDiv(id = 'plot'),
+  htmlDiv(
+    id = "slider",
+    "Adjust slider to alter sample size:",
+    coreSlider(
+      id = 'n', value = 1000, 
+      min = 10, max = 1e4, 
+      marks = c(10, 5000, 1e4)
     )
-  }, output("c", "children")
+  )
+)
+app$callback_png(
+  function(n = input("n")) {
+    covm <- matrix(c(10, 3, 3, 2), 2, 2)
+    xy <- mvrnorm(n, c(0, 0), covm)
+    d <- data.frame(x = xy[, 1], y = xy[, 2])
+    base <- ggplot(d, aes(x, y)) +
+      ggtitle(paste(n, "samples from a multivariate normal distribution"))
+    if (n >= 5000) base + geom_hex() else base + geom_point(alpha = min(1, 100 / n))
+  }, output(id = 'plot')
 )
 app$run_server()
 ```
 ]
 
 .pull-right[
-<img src="state.gif" />
+### Random sampling n observations from 2 correlated variables
+
+<img src="ggplot-slider.gif" />
 ]
 
-Note how `input()`, `state()`, and `output()` need a component *id* and *property* (`input()`/`state()` default to `"value"`, `output()` defaults to `"children"`) 
+---
+
+.pull-left[
+```r
+library(dashR)
+*library(plotly)
+*library(dashRwidgets)
+app <- Dash$new()
+app$layout_set(
+*  htmlwidget(id = 'plot', name = "plotly"),
+  htmlDiv(
+    id = "slider",
+    "Adjust slider to alter sample size:",
+    coreSlider(
+      id = 'n', value = 1000, 
+      min = 10, max = 1e4, 
+      marks = c(10, 5000, 1e4)
+    )
+  )
+)
+app$callback(
+  function(n = input("n")) {
+    covm <- matrix(c(10, 3, 3, 2), 2, 2)
+    xy <- MASS::mvrnorm(n, c(0, 0), covm)
+    d <- data.frame(x = xy[, 1], y = xy[, 2])
+    base <- ggplot(d, aes(x, y)) +
+      ggtitle(paste(n, "samples from a multivariate normal distribution"))
+    p <- if (n >= 5000) base + geom_hex() else base + geom_point(alpha = min(1, 100 / n))
+*    ggplotly(p)
+*  }, output(id = 'plot', 'widget')
+)
+app$run_server()
+```
+]
+
+.pull-right[
+### Render htmlwidgets in dashR via dashRwidgets!
+
+<img src="ggplotly-slider.gif" />
+]
+
 
 ---
 class: principles
 
-One exception: [htmlwidgets for R](http://www.htmlwidgets.org/) in dashR!
+Can even access input events for some htmlwidgets (e.g. **plotly**, **leaflet**)!
 
 .pull-left[
 ```r
 library(dashR)
-library(dashRwidgets)
-library(plotly)
-p <- plot_ly(
-  mtcars, x = ~wt, y = ~mpg, 
-  key = row.names(mtcars)
-)
+*library(dashRwidgets)
+*library(plotly)
+*p <- plot_ly(
+*  mtcars, x = ~wt, y = ~mpg, 
+*  key = row.names(mtcars)
+*)
 app <- Dash$new()
 app$layout_set(
-  htmlwidget(
-    id = 'plotID', 
-    widget = p
-  ),
+*  htmlwidget(
+*    id = 'plotID', 
+*    widget = p
+*  ),
   htmlDiv(id = 'hover')
 )
 app$callback_print(
@@ -494,22 +499,22 @@ app$run_server()
 ---
 class: principles
 
-One exception: [htmlwidgets for R](http://www.htmlwidgets.org/) in dashR!
+Can even access input events for some htmlwidgets (e.g. **plotly**, **leaflet**)!
 
 .pull-left[
 ```r
 library(dashR)
 library(dashRwidgets)
-library(leaflet)
-p <- leaflet(quakes) %>% 
-  addTiles() %>% 
-  addMarkers()
+*library(leaflet)
+*p <- leaflet(quakes) %>% 
+*  addTiles() %>% 
+*  addMarkers()
 app <- Dash$new()
 app$layout_set(
   htmlwidget(
     id = 'plotID', 
     widget = p
-    ),
+  ),
   htmlDiv(id = "marker-click")
 )
 app$callback_print(
