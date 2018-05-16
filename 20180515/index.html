@@ -130,7 +130,27 @@ class: middle, right
 # What can plotly do in a standalone page?
 
 ---
-#### Quite a lot!
+
+### Quite a lot (animation)!
+
+&lt;a href="../20180118/gapminder.html" &gt;
+ &lt;img src="gapminder.gif" /&gt;
+&lt;/a&gt;
+
+---
+### The implementation
+
+```r
+library(plotly)
+gg &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent, frame = year)) +
+  geom_point(aes(size = pop, ids = country)) +
+  geom_smooth(se = FALSE, method = "lm") +
+  scale_x_log10()
+ggplotly(gg)
+```
+
+---
+#### Quite a lot (linked views)!
 
 &lt;iframe src="../20180202/mpg.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
 
@@ -153,14 +173,65 @@ subplot(dots, boxs) %&gt;%
 ```
 
 ---
-#### Another standalone plotly example
+### Linking plotly with other htmlwidgets
+
+&lt;img src="https://i.imgur.com/fsxwr5l.gif" width="100%" /&gt;
+
+---
+### The implementation
+
+
+```r
+library(plotly)
+library(crosstalk)
+
+data(trails, package = "mapview")
+tsd &lt;- SharedData$new(trails)
+
+bscols(
+  plot_mapbox(tsd, text = ~FKN, hoverinfo = "text"),
+  DT::datatable(tsd)
+)
+```
+
+---
+background-image: url(storms.gif)
+background-size: contain
+
+### Linking 3D to 2D
+
+
+---
+### Linking summaries to geo features
+
+&lt;img src="https://i.imgur.com/3YKx7Ow.gif" width="100%" /&gt;
+
+---
+
+```r
+library(plotly)
+library(crosstalk)
+ncsd &lt;- SharedData$new(nc)
+
+bscols(
+  plot_mapbox(ncsd) %&gt;%
+    highlight(dynamic = TRUE, persistent = TRUE),
+  plot_ly(ncsd, x = ~AREA) %&gt;% 
+    add_histogram(xbins = list(start = 0, end = 0.3, size = 0.02)) %&gt;%
+    layout(barmode = "overlay") %&gt;% 
+    highlight("plotly_selected", persistent = TRUE)
+)
+```
+
+---
+#### Linking summaries to raw data
 
 &lt;iframe src="../20180202/txmissing.html" width="100%" height="485" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
 
 ---
-class: bottom, left 
 background-image: url(../20171207/pipeline.svg)
 background-size: contain
+class: bottom, left 
 
 ## "Linking as a &lt;br&gt; database query"
 
