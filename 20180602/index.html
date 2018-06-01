@@ -74,32 +74,56 @@ class: middle, center, inverse
 ---
 class: middle, center
 
-# Reason 1: Agile (team) development
+# Reason 1: Agile development
 
-## More precisely, easily switch between R/Python backend
+## Easily switch between R/Python backend
+
 
 ---
 class: principles
 
-First, a simple **dashR** example:
+A **dashR** template:
 
 .pull-left[
 ```r
 library(dashR)
 app = Dash$new()
 app$layout_set(
-  coreInput(
-    id = 'inputID', 
-    value = 'Hello World!', 
-    type = "text"
-  ),
-  htmlDiv(id = 'outputID')
+*  # defines the layout/UI
+*  # (a collection of "components")
 )
 app$callback(
-  function(text = input("inputID")) {
-    paste("You entered:", text)
-  },
-  output("outputID")
+*  # maps input(s) -&gt; output
+)
+app$run_server()
+```
+
+
+Can have multiple callbacks, but only one layout
+]
+
+---
+class: principles
+
+A simple **dashR** app:
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+*  coreInput(
+*    id = 'a', 
+*    value = 'Hello World!', 
+*    type = "text"
+*  ),
+*  htmlDiv(id = 'b')
+)
+app$callback(
+*  function(text = input("a")) {
+*    paste("You entered:", text)
+*  },
+*  output("b")
 )
 app$run_server()
 ```
@@ -120,17 +144,17 @@ library(dashR)
 app = Dash$new()
 app$layout_set(
   coreInput(
-    id = 'inputID', 
+    id = 'a', 
     value = 'Hello World!', 
     type = "text"
   ),
-  htmlDiv(id = 'outputID')
+  htmlDiv(id = 'b')
 )
 app$callback(
-  function(text = input("inputID")) {
+  function(text = input("a")) {
     paste("You entered:", text)
   },
-  output("outputID")
+  output("b")
 )
 app$run_server()
 ```
@@ -144,15 +168,15 @@ import dash_html_components as html
 app = dash.Dash()
 app.layout = html.Div([
     core.Input(
-      id = 'inputID',
+      id = 'a',
       value = 'Hello World!',
       type = "text"
     ),
-    html.Div(id = 'outputID')
+    html.Div(id = 'b')
 ])
 @app.callback(
-    Output('outputID', 'children'),
-    [Input('inputID', 'value')]
+    Output('b', 'children'),
+    [Input('a', 'value')]
 )
 def update(text):
     return "You entered: " + text
@@ -344,6 +368,15 @@ class: middle, center, inverse
 ## For code, see -- &lt;https://dash.plot.ly/gallery&gt;
 
 ---
+background-image: url(../gifs/forecast.gif)
+background-size: contain
+class: middle
+
+.footnote[
+Built with **dashR**, **plotly**, and **forecast**
+]
+
+---
 class: middle
 
 &lt;div align="center"&gt;
@@ -360,14 +393,7 @@ class: middle
   &lt;/a&gt;
 &lt;/div&gt;
 
----
-background-image: url(../gifs/forecast.gif)
-background-size: contain
-class: middle
 
-.footnote[
-Built with **dashR**, **plotly**, and **forecast**
-]
 
 ---
 class: middle,principles
