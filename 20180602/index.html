@@ -3,7 +3,7 @@
   <head>
     <title>Reactive web applications for finance with dash for R</title>
     <meta charset="utf-8">
-    <meta name="author" content="Carson Sievert" />
+    <meta name="author" content="Carson Sievert, PhD   CEO, Sievert Consulting LLC" />
     <link href="index_files/remark-css/default.css" rel="stylesheet" />
     <link href="index_files/remark-css/default-fonts.css" rel="stylesheet" />
     <link href="index_files/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
@@ -14,366 +14,370 @@
 class: center, middle, inverse, title-slide
 
 # Reactive web applications for finance with dash for R
-### Carson Sievert
+### Carson Sievert, PhD <br /> CEO, Sievert Consulting LLC
 ### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> <i class="fab  fa-twitter "></i> <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> <i class="fab  fa-github "></i> <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> <i class="fas  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> <i class="fas  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
 
 ---
 
-class: principles 
-
-&lt;h3 align="center"&gt; About me &lt;/h3&gt;
-
-* CEO of [Sievert Consulting](https://consulting.cpsievert.me/) LLC
-
-  * Clients: Plotly, Library of Congress, Sandia Labs, NOAA, TCB Analytics
-
-* PhD in statistics at Iowa State with Heike Hofmann &amp; Di Cook (Dec 2016)
-
-  * Thesis: [Interfacing R with web technologies](http://lib.dr.iastate.edu/etd/15422/)
-
-* I ❤️ interactive data visualization
-
-  * Maintain/author R 📦s: plotly, LDAvis, animint
-
----
-background-image: url(../20171207/workflow.svg)
+background-image: url(server-client.svg)
 background-size: contain
-class: inverse
+class: middle, right
 
-# Data science workflow
-
-
----
-background-image: url(../20171207/workflow1.svg)
-background-size: contain
-class: inverse
-
-# Expository vis
-
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-
----
-background-image: url(../20171207/workflow2.svg)
-background-size: contain
-class: inverse
-
-# Exploratory vis
-
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-
-## Problem: analysts juggle many languages (R, JavaScript, python)
-
----
-background-image: url(../20171207/workflow2.svg)
-background-size: 400px
-background-position: 90% 8%
-class: inverse, middle, center
-
-## Interactive graphics *can* augment exploratory analysis, but are only *practical* when we can iterate quickly
-
----
-class: principles
-
-## Interactive graphics augment exploration&lt;sup&gt;1&lt;/sup&gt;
-
-* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
-    
-* Search for information quickly without fully specified questions&lt;sup&gt;2&lt;/sup&gt; ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, &amp; Swayne 1996](https://www.jstor.org/stable/1390754))
-    
-* Diagnose and understand models ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+## dash: a python framework for reactive web apps
 
 .footnote[
----
-
-[1]: Statisticians were building (very advanced!) int graphics systems decades ago --   &lt;http://stat-graphics.org/movies/&gt;
-
-[2]: Worried about inference? See visual ([Majumder et al 2013](http://amstat.tandfonline.com/doi/abs/10.1080/01621459.2013.808157?journalCode=uasa20#.Wl01_ZM-dTY)) and post-selection ([Berk et al 2013](https://projecteuclid.org/euclid.aos/1369836961)) inference frameworks.
+### dash is a [product](https://plot.ly/products/dash/) of [plotly](https://plot.ly/)
 ]
 
 ---
-class: principles
-
-## Interactive graphics augment exploration
-
-* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
-    
-* &lt;div class="highlight"&gt;Search for information quickly&lt;/div&gt; without fully specified questions ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * &lt;div class="highlight"&gt;[Multiple linked views] are the optimal framework for posing queries about data&lt;/div&gt; ([Buja, Cook, &amp; Swayne 1996](https://www.jstor.org/stable/1390754))
-    
-* Diagnose and understand models ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
-
----
-background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-image: url(server-dash.svg)
 background-size: contain
+class: middle, right
 
-&lt;div align="right"&gt;
-  &lt;a href="epl.html" target="_blank"&gt;Live demo &lt;/a&gt;
-  (&lt;a href="https://github.com/ropensci/plotly/blob/master/demo/crosstalk-highlight-epl2.R"&gt;code&lt;/a&gt;)
-&lt;/div&gt;
+## MIT licensed: built on flask &amp; react
+[Paid services](https://plot.ly/dash/pricing/) (e.g. private cloud, training, etc)
 
 ---
-class: middle, inverse
-background-image: url(https://i.imgur.com/Id2nVFG.gif)
+background-image: url(server-dashR.svg)
 background-size: contain
+class: middle, right
 
-# Generally useful for comparing within/across panels!
-
----
-class: center, middle
-
-# Should an interactive graphics system be purely graphical (from a user perspective)?
+## &lt;font color="red"&gt;dashR:&lt;/font&gt; an R framework for reactive web apps
 
 .footnote[
-### Over a system where users have to write code?
+**dashR** is not yet released... &lt;br&gt;
+...hoping end of fall!
 ]
 
----
-class: inverse, center, middle
+&lt;!--
+.pull-left[
+### dash: a python framework for reactive web apps
 
-### From Hofmann &amp; Unwin, [*GUI and Command-line - Conflict or Synergy?*](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy)
-
-# "Statistical software should be expressive, powerful, fast and reliable, but it should also be intuitive, easy to use, flexible, forgiving and consistent"
-
----
-class: inverse, center, middle
-
-# Statistical software should be &lt;font color='red'&gt;expressive, powerful, fast and reliable&lt;/font&gt;, but it should also be &lt;font color='#119dff'&gt;intuitive, easy to use, flexible, forgiving and consistent&lt;/font&gt;
-
-.footnote[
-
-### &lt;font color='red'&gt;Programming languages are good at this!&lt;/font&gt;
-
-### &lt;font color='#119dff'&gt;Graphical interfaces are good at this!&lt;/font&gt;
-
+* Open source (MIT) **python** library.
+* Built on flask (backend), react (frontend), and plotly.js (viz).
 ]
 
----
-background-image: url(https://i.imgur.com/c7NJRa2.gif)
-background-size: contain
-class: inverse
+.pull-right[
+### dashR: an R framework for reactive web apps
 
-# The ideal 'power' system has best of both worlds
-
----
-background-image: url(../gifs/swamp.gif)
-background-size: contain
-class: inverse, center, bottom
-
-## It is all too easy for statistical thinking to be **swamped by programming tasks.** -- Brian D. Ripley
-
-
-
----
-### An example with Texas housing prices
-
-```r
-library(ggplot2)
-library(DT)
-datatable(txhousing)
-```
-
-
-
-&lt;iframe src="txdata.html" width="100%" height="450" scrolling="yes" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
-
----
-## Annual variation in price by city
-
-```r
-ggplot(txhousing, aes(month, median, group = year)) + geom_line() +
-  facet_wrap(~city, ncol = 2)
-```
-
-![](index_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
-
----
-### *Quickly* compare within and across cities
-
-```r
-*tx &lt;- SharedData$new(txhousing, ~year)
-p &lt;- ggplot(tx, aes(month, median, group = year)) + geom_line() +
-  facet_wrap(~city, ncol = 2)
-highlight(ggplotly(p), dynamic = TRUE, selectize = TRUE)
-```
-
-&lt;iframe src="txhousing-1.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
-
----
-### Share (default) selections
-
-```r
-highlight(ggplotly(p), defaultValues = 2006)
-```
-
-&lt;iframe src="txhousing-2.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+* Open source (MIT) **R** library (release coming this fall).
+* Built on fiery (backend), react (frontend), and plotly.js (viz).
+* First class support for **htmlwidgets**.
+]
+--&gt;
 
 ---
 class: middle, center, inverse
 
-# Beyond trellis (i.e. facet) displays
+## But R already has [shiny](https://shiny.rstudio.com/)...why bother with dashR?
 
 ---
-### Query missing values by city
+class: middle, center
 
-&lt;iframe src="txmissing.html" width="100%" height="525" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
+# Reason 1: Agile (team) development
 
----
-class: bottom, left 
-background-image: url(../20171207/pipeline.svg)
-background-size: contain
-
-## The 'data pipeline'
+## More precisely, easily switch between R/Python backend
 
 ---
-background-image: url(../20171207/server-client.svg)
-background-size: contain
-class: middle, right
+class: principles
 
-# Where does the pipeline reside?  &amp;nbsp;
+First, a simple **dashR** example:
 
----
-background-image: url(../20171207/server-client-dim.svg)
-background-size: contain
-class: middle, right
-
-# No server required! &amp;nbsp;
-
----
-background-image: url(../20171207/server-client-dim.svg)
-background-size: contain
-class: middle, right
-
-# Easier to share, scale, &amp; maintain &amp;nbsp;
-
-
----
-### Works with 'aggregated' traces
-
-&lt;iframe src="mpg.html" width="100%" height="600" scrolling="no" seamless="seamless" frameBorder="0"&gt; &lt;/iframe&gt;
-
----
-class: middle, principles
-
-## The implementation
-
+.pull-left[
 ```r
-d &lt;- SharedData$new(mpg)
-dots &lt;- plot_ly(d, color = ~class, x = ~displ, y = ~cyl)
-*boxs &lt;- plot_ly(d, color = ~class, x = ~class, y = ~cty) %&gt;% add_boxplot()
-*bars &lt;- plot_ly(d, x = ~class, color = ~class)
-
-subplot(dots, boxs) %&gt;%
-  subplot(bars, nrows = 2) %&gt;%
-  layout(barmode = "overlay") %&gt;%
-  highlight("plotly_selected")
+library(dashR)
+app = Dash$new()
+app$layout_set(
+  coreInput(
+    id = 'inputID', 
+    value = 'Hello World!', 
+    type = "text"
+  ),
+  htmlDiv(id = 'outputID')
+)
+app$callback(
+  function(text = input("inputID")) {
+    paste("You entered:", text)
+  },
+  output("outputID")
+)
+app$run_server()
 ```
+]
 
-plotly.js dynamically recomputes summary stats as a function of selection 
+.pull-right[
+&lt;img src="../20180515/hello-world.gif" width="100%" /&gt;
+]
+
+---
+class: principles
+
+Easy to switch between Python &lt;-&gt; R
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+  coreInput(
+    id = 'inputID', 
+    value = 'Hello World!', 
+    type = "text"
+  ),
+  htmlDiv(id = 'outputID')
+)
+app$callback(
+  function(text = input("inputID")) {
+    paste("You entered:", text)
+  },
+  output("outputID")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+```python
+import dash
+import dash_core_components as core
+import dash_html_components as html
+app = dash.Dash()
+app.layout = html.Div([
+    core.Input(
+      id = 'inputID',
+      value = 'Hello World!',
+      type = "text"
+    ),
+    html.Div(id = 'outputID')
+])
+@app.callback(
+    Output('outputID', 'children'),
+    [Input('inputID', 'value')]
+)
+def update(text):
+    return "You entered: " + text
+app.run_server()
+```
+]
+
+---
+
+.pull-left[
+```r
+library(dashR)
+library(ggplot2)
+library(MASS)
+app &lt;- Dash$new()
+app$layout_set(
+  htmlDiv(id = 'plot'),
+  htmlDiv(
+    id = "slider",
+    "Adjust slider to alter sample size:",
+    coreSlider(
+      id = 'n', value = 1000, 
+      min = 10, max = 1e4, 
+      marks = c(10, 5000, 1e4)
+    )
+  )
+)
+app$callback_png(
+  function(n = input("n")) {
+    covm &lt;- matrix(c(10, 3, 3, 2), 2, 2)
+    xy &lt;- mvrnorm(n, c(0, 0), covm)
+    d &lt;- data.frame(x = xy[, 1], y = xy[, 2])
+    base &lt;- ggplot(d, aes(x, y)) +
+      ggtitle(paste(n, "samples from a multivariate normal distribution"))
+    if (n &gt;= 5000) base + geom_hex() else base + geom_point(alpha = min(1, 100 / n))
+  }, output(id = 'plot')
+)
+app$run_server()
+```
+]
+
+.pull-right[
+### Random sampling n observations from 2 correlated variables
+
+&lt;img src="../20180515/ggplot-slider.gif" /&gt;
+]
+
+---
+
+.pull-left[
+```r
+library(dashR)
+*library(plotly)
+*library(dashRwidgets)
+app &lt;- Dash$new()
+app$layout_set(
+*  htmlwidget(id = 'plot', name = "plotly"),
+  htmlDiv(
+    id = "slider",
+    "Adjust slider to alter sample size:",
+    coreSlider(
+      id = 'n', value = 1000, 
+      min = 10, max = 1e4, 
+      marks = c(10, 5000, 1e4)
+    )
+  )
+)
+app$callback(
+  function(n = input("n")) {
+    covm &lt;- matrix(c(10, 3, 3, 2), 2, 2)
+    xy &lt;- MASS::mvrnorm(n, c(0, 0), covm)
+    d &lt;- data.frame(x = xy[, 1], y = xy[, 2])
+    base &lt;- ggplot(d, aes(x, y)) +
+      ggtitle(paste(n, "samples from a multivariate normal distribution"))
+    p &lt;- if (n &gt;= 5000) base + geom_hex() else base + geom_point(alpha = min(1, 100 / n))
+*    ggplotly(p)
+*  }, output(id = 'plot', 'widget')
+)
+app$run_server()
+```
+]
+
+.pull-right[
+### Render htmlwidgets in dashR via dashRwidgets!
+
+&lt;img src="../20180515/ggplotly-slider.gif" /&gt;
+]
 
 
 ---
 class: principles
 
-## Interactive graphics augment exploration!
+Can even access input events for some htmlwidgets (e.g. **plotly**, **leaflet**)!
 
-* Identify structure that otherwise goes missing ([Tukey 1972](http://stat-graphics.org/movies/prim9.html)).
+.pull-left[
+```r
+library(dashR)
+*library(dashRwidgets)
+*library(plotly)
+*p &lt;- plot_ly(
+*  mtcars, x = ~wt, y = ~mpg, 
+*  key = row.names(mtcars)
+*)
+app &lt;- Dash$new()
+app$layout_set(
+*  htmlwidget(
+*    id = 'plotID', 
+*    widget = p
+*  ),
+  htmlDiv(id = 'hover')
+)
+app$callback_print(
+  function(hover = input("plotID", "input_plotly_hover")) {
+    if (!length(hover)) "Hover on a point" else hover
+  },
+  output(id = 'hover')
+)
+app$run_server()
+```
+]
 
-* Search for information quickly without fully specified questions ([Unwin &amp; Hofmann, 2000](https://www.researchgate.net/publication/2425912_GUI_and_Command-line_-_Conflict_or_Synergy))
-    * Multiple linked views are the optimal framework for posing queries about data ([Buja, Cook, &amp; Swayne 1996](https://www.jstor.org/stable/1390754))
-    
-    
-* &lt;div class="highlight"&gt;Diagnose and understand models&lt;/div&gt; ([Wickham, Cook, &amp; Hofmann 2015](http://onlinelibrary.wiley.com/doi/10.1002/sam.11271/abstract)).
+.pull-right[
+&lt;img src="../20180515/plotly-hover.gif" /&gt;
+]
 
 ---
-### See relationships evolve over time ([made via ggplot2](https://plotly-book.cpsievert.me/linking-animated-views.html))
+class: principles
 
-&lt;a href="../20180118/gapminder.html" target="_blank"&gt;
-  &lt;img src="https://plotly-book.cpsievert.me/images/gapminder-highlight-animation.gif" width = "100%" /&gt;
-&lt;/a&gt;
+Can even access input events for some htmlwidgets (e.g. **plotly**, **leaflet**)!
+
+.pull-left[
+```r
+library(dashR)
+library(dashRwidgets)
+*library(leaflet)
+*p &lt;- leaflet(quakes) %&gt;% 
+*  addTiles() %&gt;% 
+*  addMarkers()
+app &lt;- Dash$new()
+app$layout_set(
+  htmlwidget(
+    id = 'plotID', 
+    widget = p
+  ),
+  htmlDiv(id = "marker-click")
+)
+app$callback_print(
+  function(click = input("plotID", "input_marker_click")) {
+    if (!length(click)) "Click on a marker" else click
+  },
+  output(id = 'marker-click')
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="../20180515/leaflet-click.gif" /&gt;
+]
 
 ---
-background-image: url(../20170803/tour.gif)
-background-size: contain
+class: middle, center, inverse
+
+# Reason 2: leverage the dash &amp; react communities
+
+---
+class: principles
+
+* __dash__/__dashR__ components are *transpiled* from [React](https://reactjs.org/) components.
+    * If someone creates a component for a __dash__, it's trivial to use in __dashR__ (&amp; vice-versa).&lt;sup&gt;1&lt;/sup&gt;
+    * If you know JavaScript, [use our template to write your own](https://dash.plot.ly/plugins)!
+    * There are 1,000s of [existing React components](https://github.com/brillout/awesome-react-components).
+
+&lt;br /&gt;
+
+&lt;div align="center"&gt;
+  &lt;img src="../20180515/transpile.svg" width="50%" /&gt;
+&lt;/div&gt;
+
+.footnote[
+[1]: Except using the `htmlwidget()` component in **dash**
+]
+
+---
+class: middle, center, inverse
+
+# Visualizing finance data with dashR
+
+## For code, see -- &lt;https://dash.plot.ly/gallery&gt;
+
+---
 class: middle
 
-### Interactively [plot models in data space](../20180118/tour.html) ([code](https://github.com/ropensci/plotly/blob/master/demo/animation-tour-USArrests.R))
-
----
-class: inverse, middle, center
-
-# Works both _without_ and _with_ shiny!
-
----
-background-image: url(https://i.imgur.com/MGbR5AI.gif)
-background-size: contain
-class: principles
-
-&lt;div align="right"&gt;
-&lt;a href='https://github.com/cpsievert/bcviz'&gt;https://github.com/cpsievert/bcviz&lt;/a&gt;
+&lt;div align="center"&gt;
+  &lt;a href="https://dash-yield-curve.plot.ly/" &gt;
+    &lt;img src="../gifs/yield-curve.gif" width="150%"&gt;
+  &lt;/a&gt;
 &lt;/div&gt;
 
 ---
-background-image: url(https://i.imgur.com/T7GSpv9.gif)
+
+&lt;div align="center"&gt;
+  &lt;a href="https://vanguard-report.herokuapp.com/" &gt;
+    &lt;img src="../gifs/vanguard.gif" width="80%"&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+---
+background-image: url(../gifs/forecast.gif)
 background-size: contain
-class: principles
+class: middle
 
-&lt;https://github.com/cpsievert/zikar&gt;
-
----
-background-image: url(https://i.imgur.com/csIUJX0.gif)
-background-size: contain
-class: principles
-
-&lt;https://github.com/cpsievert/apps&gt;
+.footnote[
+Built with **dashR**, **plotly**, and **forecast**
+]
 
 ---
-## Summary
+class: middle,principles
 
-### Interactive graphics *can* augment exploratory analysis, but are only *practical* when we can iterate quickly
+## Thanks! Questions? 
 
-### Quickly pose queries about data and make comparisons with __plotly__ + __crosstalk__
+Slides: &lt;https://talks.cpsievert.me&gt; &lt;br&gt;
+Learn more: &lt;https://dash.plot.ly&gt; (soon &lt;https://dashR.plot.ly&gt;)
 
----
-class: middle, center, principles
-
-## Thanks! Questions?
-
-Slides: &lt;https://talks.cpsievert.me&gt;
-
-Learn more: &lt;https://plotly-book.cpsievert.me&gt;
-
-#### Contact
+#### Contact me:
 
 <i class="fab  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
 <i class="fab  fa-github "></i> &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
