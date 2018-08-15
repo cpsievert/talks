@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Visualizing openFDA data with R, plotly, and dashR</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Carson Sievert, PhD   CEO, Sievert Consulting LLC" />
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="index_files/font-awesome-5.0.12/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Visualizing openFDA data with R, plotly, and dashR
+### Carson Sievert, PhD <br /> CEO, Sievert Consulting LLC
+### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> <i class="fab  fa-twitter "></i> <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> <i class="fab  fa-github "></i> <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> <i class="fas  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <i class="fas  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
+
+---
+
+background-image: url(server-client.svg)
+background-size: contain
+class: middle, right
+
+## dash: a python framework for reactive web apps
+
+.footnote[
+### dash is a [product](https://plot.ly/products/dash/) of [plotly](https://plot.ly/)
+]
+
+---
+background-image: url(server-dash.svg)
+background-size: contain
+class: middle, right
+
+## MIT licensed: built on flask &amp; react
+[Paid services](https://plot.ly/dash/pricing/) (e.g. private cloud, training, etc)
+
+---
+background-image: url(server-dashR.svg)
+background-size: contain
+class: middle, right
+
+## &lt;font color="red"&gt;dashR:&lt;/font&gt; an R framework for reactive web apps
+
+.footnote[
+**dashR** is not yet released...
+]
+
+---
+class: middle, center, inverse
+
+## But R already has [shiny](https://shiny.rstudio.com/)...why bother with dashR?
+
+---
+class: middle, center
+
+# Reason 1: Agile development
+
+## Easily switch between R/Python backend
+
+
+---
+class: principles
+
+A **dashR** template:
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+*  # defines the layout/UI
+*  # (a collection of "components")
+)
+app$callback(
+*  # maps input(s) -&gt; output
+)
+app$run_server()
+```
+
+
+Can have multiple callbacks, but only one layout
+]
+
+---
+class: principles
+
+A simple **dashR** app:
+
+.pull-left[
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+*  coreInput(
+*    id = 'a', 
+*    value = 'Hello World!', 
+*    type = "text"
+*  ),
+*  htmlDiv(id = 'b')
+)
+app$callback(
+*  function(text = input("a")) {
+*    paste("You entered:", text)
+*  },
+*  output("b")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+&lt;img src="../20180515/hello-world.gif" width="100%" /&gt;
+]
+
+---
+class: principles
+
+
+.pull-left[
+dashR version
+
+```r
+library(dashR)
+app = Dash$new()
+app$layout_set(
+  coreInput(
+    id = 'a', 
+    value = 'Hello World!', 
+    type = "text"
+  ),
+  htmlDiv(id = 'b')
+)
+app$callback(
+  function(text = input("a")) {
+    paste("You entered:", text)
+  },
+  output("b")
+)
+app$run_server()
+```
+]
+
+.pull-right[
+dash (python) version
+
+```python
+import dash
+import dash_core_components as core
+import dash_html_components as html
+app = dash.Dash()
+app.layout = html.Div([
+    core.Input(
+      id = 'a',
+      value = 'Hello World!',
+      type = "text"
+    ),
+    html.Div(id = 'b')
+])
+@app.callback(
+    Output('b', 'children'),
+    [Input('a', 'value')]
+)
+def update(text):
+    return "You entered: " + text
+app.run_server()
+```
+]
+
+---
+class: middle, center, inverse
+
+# Reason 2: stateless web architecture
+
+---
+class: middle, principles
+
+### What does stateless mean?
+
+* A stateless server treats each request as an independent transaction that is unrelated to any previous request.
+
+### When is it important?
+
+* Scaling websites to many concurrent users
+
+### How does dashR manage to be stateless?
+
+* __dash__/__dashR__'s dependency graph is managed on the client via [dash-renderer](https://github.com/plotly/dash-renderer)
+
+  * When a callback needs to be executed, the client makes an HTTP request to an R server.
+  
+  * As long as callback functions do not create side-effects, requests can be managed in a stateless fashion
+
+---
+class: middle, center, inverse
+
+# Reason 3: leverage the dash &amp; react communities
+
+---
+class: principles
+
+* __dash__/__dashR__ components are *transpiled* from [React](https://reactjs.org/) components
+
+    * If someone creates a component for a __dash__, it's trivial to use in __dashR__ (&amp; vice-versa)
+    
+    * If you know JavaScript, [use our template to write your own](https://dash.plot.ly/plugins)!
+    
+    * There are 1,000s of [existing React components](https://github.com/brillout/awesome-react-components)
+
+&lt;br /&gt;
+
+&lt;div align="center"&gt;
+  &lt;img src="../20180515/transpile.svg" width="50%" /&gt;
+&lt;/div&gt;
+
+---
+class: middle, center, inverse
+
+# Visualizing openFDA data 
+
+## &lt;font color="red"&gt;Example 1: Visualizing adverse drug outcomes&lt;/font&gt;
+## Example 2: Visualizing drug recall enforcements
+
+---
+class: middle, center
+
+# First, let's survey some existing work
+
+---
+background-image: url(../20180515/medcheck.gif)
+background-size: contain
+
+
+#### https://medcheck.octoconsulting.com
+
+
+---
+class: middle, center, inverse
+
+## What about *comparing* drug outcomes? 
+
+---
+background-image: url(../20180515/openfda-dashboard.gif)
+background-size: contain
+class: bottom, right
+
+#### [Work by Christopher Peters](https://github.com/statwonk/openfda-dashboard)
+
+---
+class: middle, center, inverse
+
+## What about comparing *many* drugs?
+
+---
+
+## Heatmap is a bit more scalable!
+
+&lt;a href="../20180515/heat-bars.html"&gt;
+  &lt;img src="../20180515/heat-bars.png" width="100%" /&gt;
+&lt;/a&gt;
+
+---
+
+#### Heatmap of 1000 drug outcomes (made with [heatmaply](http://cran.r-project.org/package=heatmaply) and [plotly](http://cran.r-project.org/package=plotly))
+
+&lt;a href="../20180515/heatmap.html"&gt;
+  &lt;img src="../20180515/heatmap.gif" width="100%" /&gt;
+&lt;/a&gt;
+
+---
+class: middle, center, inverse
+
+## What about comparing *millions* of drugs?
+
+---
+class: center, middle
+
+# Overview first, then zoom and filter, then details on demand 
+
+Dr. Ben Shneiderman
+
+.footnote[
+### In other words, show summary stats first, then guided exploration to raw data.
+]
+
+---
+
+&lt;div align="center" &gt;
+&lt;iframe src="https://player.vimeo.com/video/285119443" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+
+---
+class: middle, center, inverse
+
+# Visualizing openFDA data 
+
+## Example 1: Visualizing adverse drug outcomes
+## &lt;font color="red"&gt;Example 2: Visualizing drug recall enforcements&lt;/font&gt;
+
+---
+
+&lt;div align="center" &gt;
+&lt;iframe src="https://player.vimeo.com/video/285120278" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+---
+class: middle,principles
+
+## Thanks! Questions? 
+
+Slides: &lt;https://talks.cpsievert.me&gt;
+
+#### Contact me:
+
+<i class="fab  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fab  fa-github "></i> &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
+<i class="fas  fa-globe "></i> &lt;https://cpsievert.me/&gt;
+    </textarea>
+<script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "14.6:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
