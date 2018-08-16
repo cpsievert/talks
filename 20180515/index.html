@@ -1,23 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Interactive data visualization with R, plotly, and dashR</title>
+    <title>index.utf8</title>
     <meta charset="utf-8">
-    <meta name="author" content="Carson Sievert" />
-    <link href="index_files/remark-css/default.css" rel="stylesheet" />
-    <link href="index_files/remark-css/default-fonts.css" rel="stylesheet" />
-    <link href="index_files/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="index_files/font-awesome-5.0.12/css/fontawesome-all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="main.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
-class: center, middle, inverse, title-slide
-
-# Interactive data visualization with R, plotly, and dashR
-### Carson Sievert
-### Slides: <a href="https://talks.cpsievert.me" class="uri">https://talks.cpsievert.me</a> <br /> <br /> Twitter: <a href='https://twitter.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> GitHub: <a href='https://github.com/cpsievert'><span class="citation">@cpsievert</span></a> <br /> Email: <a href="mailto:cpsievert1@gmail.com">cpsievert1@gmail.com</a> <br /> Web: <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
-
----
 
 background-image: url(../20171207/workflow.svg)
 background-size: contain
@@ -782,12 +774,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
