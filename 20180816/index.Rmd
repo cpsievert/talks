@@ -18,7 +18,7 @@ output:
         scroll: false
 date: "Slides: https://talks.cpsievert.me <br /> <br /> `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br /> `r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br /> `r icon::fa_globe()` <https://cpsievert.me/> <br /> `r icon::fa_envelope()` <cpsievert1@gmail.com> <br /> <br /> Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>"
 author: "Carson Sievert, PhD <br /> CEO, Sievert Consulting LLC"
---- 
+---
 background-image: url(server-client.svg)
 background-size: contain
 class: middle, right
@@ -177,13 +177,13 @@ class: middle, center, inverse
 ---
 class: middle, principles
 
+### When is stateless useful?
+
+* Scaling apps to many concurrent users (or requests).
+
 ### What does stateless mean?
 
 * A stateless server treats each request as an independent transaction that is unrelated to any previous request.
-
-### When is it important?
-
-* Scaling websites to many concurrent users
 
 ### How does dashR manage to be stateless?
 
@@ -255,7 +255,7 @@ class: middle, center, inverse
 
 ---
 
-## Heatmap is a bit more scalable!
+## Same data, different look
 
 <a href="../20180515/heat-bars.html">
   <img src="../20180515/heat-bars.png" width="100%" />
@@ -265,9 +265,11 @@ class: middle, center, inverse
 
 #### Heatmap of 1000 drug outcomes (made with [heatmaply](http://cran.r-project.org/package=heatmaply) and [plotly](http://cran.r-project.org/package=plotly))
 
-<a href="../20180515/heatmap.html">
-  <img src="../20180515/heatmap.gif" width="100%" />
-</a>
+<div align="center">
+<iframe src="https://player.vimeo.com/video/285132666" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+</div>
+
+<a href="../20180515/heatmap.html">Interactive</a>
 
 ---
 class: middle, center, inverse
@@ -286,6 +288,8 @@ Dr. Ben Shneiderman
 ]
 
 ---
+
+### Using principal components and interactive graphics to identify then examine 'unusual' patterns.
 
 <div align="center" >
 <iframe src="https://player.vimeo.com/video/285119443" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -307,7 +311,58 @@ class: middle, center, inverse
 </div>
 
 ---
-class: middle,principles
+class: middle, center
+
+## If we have time, here are some more dash/dashR apps.
+
+### See more <https://dash.plot.ly/gallery>
+
+.footnote[
+#### NOTE: I did not create the following apps.
+]
+
+---
+background-image: url(drug-discovery-app.gif)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../gifs/vanguard.gif)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../gifs/forecast.gif)
+background-size: contain
+class: inverse
+
+---
+
+## In summary
+
+* __dash__ is a *Python* framework for creating reactive web apps.
+
+* __dashR__ is an *R* framework for creating reactive web apps.
+
+* **dash**/**dashR** is appealing because:
+
+  * Choose between R or Python backend
+  
+  * Stateless web architecture
+  
+  * Reusable components
+  
+* However, note that:
+
+  * No htmlwidgets support
+  
+  * No rmarkdown integration
+  
+  * Only way to cache computations is to [memoise callback functions by hand](https://dash.plot.ly/performance).
+
+
+---
+class: middle, principles
 
 ## Thanks! Questions? 
 

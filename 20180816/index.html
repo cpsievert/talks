@@ -35,7 +35,7 @@ background-size: contain
 class: middle, right
 
 ## MIT licensed: built on flask &amp; react
-[Paid services](https://plot.ly/dash/pricing/) (e.g. private cloud, training, etc)
+[Paid services](https://plot.ly/dash/pricing/) (e.g. private cloud, on-premise, etc)
 
 ---
 background-image: url(server-dashR.svg)
@@ -177,13 +177,13 @@ class: middle, center, inverse
 ---
 class: middle, principles
 
+### When is stateless useful?
+
+* Scaling apps to many concurrent users (or requests).
+
 ### What does stateless mean?
 
 * A stateless server treats each request as an independent transaction that is unrelated to any previous request.
-
-### When is it important?
-
-* Scaling websites to many concurrent users
 
 ### How does dashR manage to be stateless?
 
@@ -255,7 +255,7 @@ class: middle, center, inverse
 
 ---
 
-## Heatmap is a bit more scalable!
+## Same data, different look
 
 &lt;a href="../20180515/heat-bars.html"&gt;
   &lt;img src="../20180515/heat-bars.png" width="100%" /&gt;
@@ -265,9 +265,11 @@ class: middle, center, inverse
 
 #### Heatmap of 1000 drug outcomes (made with [heatmaply](http://cran.r-project.org/package=heatmaply) and [plotly](http://cran.r-project.org/package=plotly))
 
-&lt;a href="../20180515/heatmap.html"&gt;
-  &lt;img src="../20180515/heatmap.gif" width="100%" /&gt;
-&lt;/a&gt;
+&lt;div align="center"&gt;
+&lt;iframe src="https://player.vimeo.com/video/285132666" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;a href="../20180515/heatmap.html"&gt;Interactive&lt;/a&gt;
 
 ---
 class: middle, center, inverse
@@ -286,6 +288,8 @@ Dr. Ben Shneiderman
 ]
 
 ---
+
+### Using principal components and interactive graphics to identify then examine 'unusual' patterns.
 
 &lt;div align="center" &gt;
 &lt;iframe src="https://player.vimeo.com/video/285119443" width="640" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
@@ -307,7 +311,58 @@ class: middle, center, inverse
 &lt;/div&gt;
 
 ---
-class: middle,principles
+class: middle, center
+
+## If we have time, here are some more dash/dashR apps.
+
+### See more &lt;https://dash.plot.ly/gallery&gt;
+
+.footnote[
+#### NOTE: I did not create the following apps.
+]
+
+---
+background-image: url(drug-discovery-app.gif)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../gifs/vanguard.gif)
+background-size: contain
+class: inverse
+
+---
+background-image: url(../gifs/forecast.gif)
+background-size: contain
+class: inverse
+
+---
+
+## In summary
+
+* __dash__ is a *Python* framework for creating reactive web apps.
+
+* __dashR__ is an *R* framework for creating reactive web apps.
+
+* **dash**/**dashR** is appealing because:
+
+  * Choose between R or Python backend
+  
+  * Stateless web architecture
+  
+  * Reusable components
+  
+* However, note that:
+
+  * No htmlwidgets support
+  
+  * No rmarkdown integration
+  
+  * Only way to cache computations is to [memoise callback functions by hand](https://dash.plot.ly/performance).
+
+
+---
+class: middle, principles
 
 ## Thanks! Questions? 
 
