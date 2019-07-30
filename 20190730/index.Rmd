@@ -217,8 +217,9 @@ Example from Hadley Wickham's _Building Tidy Tools_ [workshop](https://blog.rstu
 ]
 
 ---
+class:inverse
 
-<font color="#BF0F0F" style="font-size:2em; position:absolute; top:20px; left:100px">JavaScript</font>
+<font color="#BF0F0F" style="font-size:2em; position:absolute; top:20px; left:100px">JavaScript/D3</font>
 
 <img src="crossout.png" width="140px" style="position:absolute;top:65px;left:100px" />
 ## For loop emphasizes objects 
@@ -227,9 +228,7 @@ Example from Hadley Wickham's _Building Tidy Tools_ [workshop](https://blog.rstu
 <br>
 <br>
 
-### JavaScript: a language for manipulating the Document **Object** Model (DOM)!
-
-* <font style="font-size:1.5em">D3: easier to map data to the DOM, but you're still <i>working with a low-level graphics API</i> (e.g., HTML, SVG, CSS, etc)</font>
+### The low-level graphics API (e.g. SVG, Canvas, etc) is often far removed from the domain problem
   
 ---
 class: small-code
@@ -266,7 +265,7 @@ Plotly.plot("graph", {data: [bar]})
 class:small-code
 ### 'High-level' JS libraries
 
-- <font style="font-size:1.5em"> `r emo::ji("+1")` Compared to D3, more weight on the domain problem</font>
+- <font style="font-size:1.5em"> `r emo::ji("+1")` Compared to D3, more weight on the intention</font>
 * <font style="font-size:1.5em"> `r emo::ji("-1")` HTML boilerplate</font>
 - <font style="font-size:1.5em"> `r emo::ji("-1")` Web tech is not designed for data exploration, <b>but R is!</b> </font>
 
@@ -340,35 +339,6 @@ plot_ly(diamonds, x = ~cut, color = ~clarity, colors = "Accent")
 <img src="within-view.gif" width="100%" />
 
 ---
-### What about "non-standard interaction"?
-
-<img src="hyperlink.gif" width="100%" />
-
----
-class: small-code
-
-### Time to JavaScript!
-
-```r
-plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
-  add_markers(
-    customdata = paste0(
-      "http://google.com/#q=", rownames(mtcars)
-    )
-  ) %>%
-  htmlwidgets::onRender("
-    function(el) {
-*      el.on('plotly_click', function(d) {
-*        var url = d.points[0].customdata;
-*        window.open(url);
-*      });
-    }
-  ")
-```
-
-### Learn more about registering custom JavaScript events with **plotly** -- <https://plotly-r.com/javascript.html>
-
----
 ### What about *across view* interaction?
 
 <img src="zikar.gif" width="100%" />
@@ -376,7 +346,7 @@ plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
 ---
 class: small-code
 
-### Time to shiny (and _maybe_ JavaScript?)
+### shiny: manage communication _across views_
 
 Most **htmlwidgets** allow you to access user events in **shiny**
 
@@ -407,7 +377,38 @@ shinyApp(ui, server)
 
 ### shiny itself isn't slow, your R code is!
 
-<img src="cross.gif"width="100%" />
+Do you _need_ to redraw the entire graph? [Probably not](https://plotly-r.com/linking-views-with-shiny.html#shiny-performance)!
+
+<img src="cross.gif" width="100%" />
+
+---
+### What about "non-standard interaction"?
+
+<img src="hyperlink.gif" width="100%" />
+
+---
+class: small-code
+
+### Time to JavaScript!
+
+```r
+plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
+  add_markers(
+    customdata = paste0(
+      "http://google.com/#q=", rownames(mtcars)
+    )
+  ) %>%
+  htmlwidgets::onRender("
+    function(el) {
+*      el.on('plotly_click', function(d) {
+*        var url = d.points[0].customdata;
+*        window.open(url);
+*      });
+    }
+  ")
+```
+
+### Learn more about registering custom JavaScript events with **plotly** -- <https://plotly-r.com/javascript.html>
 
 ---
 class: large-font
