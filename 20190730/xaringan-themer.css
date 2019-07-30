@@ -184,3 +184,12 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   overflow-y: scroll;
   font-size: 0.7em;
 }
+.large-font {
+  font-size: 1.5em;
+}
+.huge-font {
+  font-size: 3em;
+}
+.small-code {
+  font-size: 1em;
+}

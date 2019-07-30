@@ -17,7 +17,7 @@ output:
       countIncrementalSlides: false
       navigation:
         scroll: false
-date: "Slides: https://talks.cpsievert.me <br /> <br /> "
+date: "Slides: http://bit.ly/jsm_19 <br /> <br /> "
 author: "Carson Sievert, PhD <br /> Software Engineer, RStudio"
 ---
 class: middle, center, inverse
@@ -26,7 +26,28 @@ class: middle, center, inverse
 
 ### Carson Sievert, PhD <br/> Software Engineer, RStudio
 
-### Slides: https://talks.cpsievert.me
+### Slides: http://bit.ly/jsm_19
+
+### `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br/> `r icon::fa_globe()` <https://cpsievert.me> <br/> `r icon::fa_envelope()` <cpsievert1@gmail.com>
+
+---
+background-image: url(karl-moustache.jpg)
+background-size: contain
+class: huge-font
+
+<font color = "#005DAA">Mo</font> <font color = "white">us</font> <font color = "#005DAA">t</font> <font color = "white">ach</font> <font color = "#005DAA">ivation</font>
+
+---
+class: middle, center, inverse
+
+<font color="#BF0F0F" style="font-size:2em;position:absolute;top:75px;left:340px">Why not</font>
+<img src="crossout.png" width="100px" style="position:absolute;top:130px;left:340px" />
+
+# Why JavaScript?
+
+### Carson Sievert, PhD <br/> Software Engineer, RStudio
+
+### Slides: http://bit.ly/jsm_19
 
 ### `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br/> `r icon::fa_globe()` <https://cpsievert.me> <br/> `r icon::fa_envelope()` <cpsievert1@gmail.com>
 
@@ -40,7 +61,7 @@ class: middle, center, inverse
 
 ### Carson Sievert, PhD <br/> Software Engineer, RStudio
 
-### Slides: https://talks.cpsievert.me
+### Slides: http://bit.ly/jsm_19
 
 ### `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br/> `r icon::fa_globe()` <https://cpsievert.me> <br/> `r icon::fa_envelope()` <cpsievert1@gmail.com>
 
@@ -53,7 +74,6 @@ class: middle
 
 ```{r xaringan-themer, include = FALSE}
 knitr::opts_chunk$set(message = FALSE)
-# install.packages(xaringan)
 # devtools::install_github("gadenbuie/xaringanthemer")
 xaringanthemer::mono_light(
   base_color = "#005DAA",
@@ -72,7 +92,10 @@ xaringanthemer::mono_light(
       "height" = "95%",
       "overflow-y" = "scroll",
       "font-size" = "0.7em"
-    )
+    ),
+    ".large-font" = list("font-size" = "1.5em"),
+    ".huge-font" = list("font-size" = "3em"),
+    ".small-code" = list("font-size" = "1em")
   )
 )
 ```
@@ -91,7 +114,11 @@ class: middle
 ---
 class: middle
 
-## Why avoid for loops (and JavaScript)?
+<img src="crossout.png" width="150px" style="position:absolute;top:255px;right:575px" />
+
+<font color="#BF0F0F" style="font-size:2em;position:absolute;top:205px;right:475px">JavaScript</font>
+
+## Why avoid for loops?
 
 > <font style='font-size:1.5em'> "It is all too easy for statistical thinking to be swamped by programming tasks." </font> (Brian D. Ripley)
 
@@ -202,180 +229,12 @@ Example from Hadley Wickham's _Building Tidy Tools_ [workshop](https://blog.rstu
 
 ### JavaScript: a language for manipulating the Document **Object** Model (DOM)!
 
-* <font style="font-size:1.5em">D3 make it easier to map data to the DOM, but you're still <i>working with</i> HTML/SVG/CSS etc.</font>
-
----
-## D3 scatterplot example
-
-<img src="d3-scatterplot.png" width="100%" />
-
----
-
-.scroll-output[
-```html
-<!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-
-<style>
-body {
-  font: 11px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.dot {
-  stroke: #000;
-}
-
-.tooltip {
-  position: absolute;
-  width: 200px;
-  height: 28px;
-  pointer-events: none;
-}
-</style>
-<body>
-<script src="https://d3js.org/d3.v3.min.js"></script>
-
-<script>
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-/* 
- * value accessor - returns the value to encode for a given data object.
- * scale - maps value to a visual display encoding, such as a pixel position.
- * map function - maps from data value to display value
- * axis - sets up axis
- */ 
-
-// setup x 
-var xValue = function(d) { return d.Calories;}, // data -> value
-    xScale = d3.scale.linear().range([0, width]), // value -> display
-    xMap = function(d) { return xScale(xValue(d));}, // data -> display
-    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
-
-// setup y
-var yValue = function(d) { return d["Protein (g)"];}, // data -> value
-    yScale = d3.scale.linear().range([height, 0]), // value -> display
-    yMap = function(d) { return yScale(yValue(d));}, // data -> display
-    yAxis = d3.svg.axis().scale(yScale).orient("left");
-
-// setup fill color
-var cValue = function(d) { return d.Manufacturer;},
-    color = d3.scale.category10();
-
-// add the graph canvas to the body of the webpage
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// add the tooltip area to the webpage
-var tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
-// load data
-d3.csv("cereal.csv", function(error, data) {
-
-  // change string (from CSV) into number format
-  data.forEach(function(d) {
-    d.Calories = +d.Calories;
-    d["Protein (g)"] = +d["Protein (g)"];
-//    console.log(d);
-  });
-
-  // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
-
-  // x-axis
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-    .append("text")
-      .attr("class", "label")
-      .attr("x", width)
-      .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("Calories");
-
-  // y-axis
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("class", "label")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Protein (g)");
-
-  // draw dots
-  svg.selectAll(".dot")
-      .data(data)
-    .enter().append("circle")
-      .attr("class", "dot")
-      .attr("r", 3.5)
-      .attr("cx", xMap)
-      .attr("cy", yMap)
-      .style("fill", function(d) { return color(cValue(d));}) 
-      .on("mouseover", function(d) {
-          tooltip.transition()
-               .duration(200)
-               .style("opacity", .9);
-          tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
-	        + ", " + yValue(d) + ")")
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-          tooltip.transition()
-               .duration(500)
-               .style("opacity", 0);
-      });
-
-  // draw legend
-  var legend = svg.selectAll(".legend")
-      .data(color.domain())
-    .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-  // draw legend colored rectangles
-  legend.append("rect")
-      .attr("x", width - 18)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", color);
-
-  // draw legend text
-  legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) { return d;})
-});
-
-</script>
-</body>
-</html>
-```
-]
+* <font style="font-size:1.5em">D3: easier to map data to the DOM, but you're still <i>working with a low-level graphics API</i> (e.g., HTML, SVG, CSS, etc)</font>
   
 ---
-### 'High-level' JS libraries reduce 'DOM cruft'
+class: small-code
+
+### 'High-level' JS libraries
 
 <div align="center">
   <img src="bars.png" height="250" />
@@ -404,11 +263,12 @@ Plotly.plot("graph", {data: [bar]})
 ]
 
 ---
-### 'High-level' JS libraries reduce 'DOM cruft'
+class:small-code
+### 'High-level' JS libraries
 
-- <font style="font-size:1.5em"> 👍 Compared to D3, more weight on the domain problem</font>
-* <font style="font-size:1.5em"> 👎 HTML boilerplate</font>
-- <font style="font-size:1.5em"> 👎 Web tech generally lacks tools for data transformation and inspection</font>
+- <font style="font-size:1.5em"> `r emo::ji("+1")` Compared to D3, more weight on the domain problem</font>
+* <font style="font-size:1.5em"> `r emo::ji("-1")` HTML boilerplate</font>
+- <font style="font-size:1.5em"> `r emo::ji("-1")` Web tech is not designed for data exploration, <b>but R is!</b> </font>
 
 <br/>
 
@@ -434,47 +294,25 @@ Plotly.plot("graph", {data: [bar]})
 ```
 ]
 
----
-## Data science workflow
-
-<img src="data-science.svg" width="100%"/>
-
-.footnote[
-Diagram from Wickham and Grolemund (2017), [_R for Data Science_](https://r4ds.had.co.nz/) 
-]
 
 ---
-class: middle
-
-<img src="data-science-communication.svg" width="100%"/>
-
----
-class: middle
-
-<img src="data-science-understanding.svg" width="100%"/>
-
----
-class: middle
-
-<img src="data-science-understanding-r.svg" width="100%"/>
-
----
-background-image: url(why-not-both.gif)
+background-image: url(why-not-both2.gif)
 background-size: contain
 
 
-<!--
-Programming in JavaScript might help you create graphics that help your audience explore data, but I don't recommend it for helping yourself 
--->
 
 ---
 ### htmlwidgets: a bridge between R and JS libraries
 
-<http://gallery.htmlwidgets.org>
+<a href="http://gallery.htmlwidgets.org">
+  <img src="htmlwidgets.png" width="100%" />
+</a>
 
-<img src="htmlwidgets.png" width="100%" />
 
 ---
+class: small-code
+
+### htmlwidgets: computing+graphics synergy
 
 ```r
 library(plotly)
@@ -485,92 +323,111 @@ albersusa::usa_sf("laea") %>%
   colorbar(title = "Population \n 2014")
 ```
 
-<iframe src="cartogram.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+<div align="center">
+  <img src="cartogram.png" height=400 />
+</div>
 
 ---
+class: small-code
 
-## htmlwidgets: nice for single view interaction
+### htmlwidgets: *within view* interaction for 'free'
 
-https://vimeo.com/315707813
+```r
+library(plotly)
+plot_ly(diamonds, x = ~cut, color = ~clarity, colors = "Accent")
+```
 
-
----
-background-image: url(https://i.imgur.com/T7GSpv9.gif)
-background-size: contain
-
-## shiny: great for coordinating multiple views
-
-
-
-
-<!--
-
-## So, when _should_ statisticians learn JavaScript?
-
-1. You know _exactly_ what type of visual interface you want
-  -  Weeks to prototype in shiny+ggplot2, months to prototype in D3js
-    
-2. The 'prior art' doesn't do what you need
-  - Nowadays, you can get a *long* way with **htmlwidgets**, **shiny**, and **rmarkdown**
-
-3. You want to build tools that enable others
--->
+<img src="within-view.gif" width="100%" />
 
 ---
-## That being said...
+### What about "non-standard interaction"?
 
-Knowing 'enough' JavaScript can be powerful, especially if you leverage existing 'scaffolding'!
+<img src="hyperlink.gif" width="100%" />
+
+---
+class: small-code
+
+### Time to JavaScript!
 
 ```r
 plot_ly(mtcars, x = ~wt, y = ~mpg) %>%
   add_markers(
-    text = rownames(mtcars),
-    customdata = paste0("http://google.com/#q=", rownames(mtcars))
+    customdata = paste0(
+      "http://google.com/#q=", rownames(mtcars)
+    )
   ) %>%
-  htmlwidgets::onRender("function(el) {
-    el.on('plotly_click', function(d) {
-      var url = d.points[0].customdata;
-      window.open(url);
-    });
-  }")
+  htmlwidgets::onRender("
+    function(el) {
+*      el.on('plotly_click', function(d) {
+*        var url = d.points[0].customdata;
+*        window.open(url);
+*      });
+    }
+  ")
 ```
-
----
-
-## Click on a point to google search
-
-<iframe src="scatterplot.html" width="100%" height="370" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 ### Learn more about registering custom JavaScript events with **plotly** -- <https://plotly-r.com/javascript.html>
 
 ---
+### What about *across view* interaction?
 
-## So, you want to 'learn JavaScript'
+<img src="zikar.gif" width="100%" />
 
-### Have a goal in mind and learn the fundamentals
+---
+class: small-code
 
-HTML, JSON, *vanilla* JavaScript, and CSS. Maybe D3.
+### Time to shiny (and _maybe_ JavaScript?)
 
-### Don't get caught up in the framework-of-the-day (e.g. React, Vue, Angular, etc)
+Most **htmlwidgets** allow you to access user events in **shiny**
 
-Especially if you're willing and able to use **shiny**.
+.pull-left[
+```r
+library(shiny)
+ui <- fluidPage(
+  plotlyOutput("p"),
+  verbatimTextOutput("click")
+)
+server <- function(input, output) {
+  output$p <- renderPlotly({
+    plot_ly(mtcars, x = ~wt, y = ~mpg)
+  })
+  output$click <- renderPrint({
+*    event_data("plotly_click")
+  })
+}
+shinyApp(ui, server)
+```
+]
 
-### Don't waste your time on build tools (e.g., Webpack, Grunt, etc)
-
-You can get a long way doing thing the old-fashioned way.
+.pull-right[
+<img src="event.gif"/>
+]
 
 ---
 
+### shiny itself isn't slow, your R code is!
+
+<img src="cross.gif"width="100%" />
+
+---
+class: large-font
+
 ## In summary
-
-### functional programming : for loops :: htmlwidgets : JavaScript
-  * Don't waste your time on programming 'cruft' if don't need to!
   
+* Programming in JavaScript, like for loops, can distract from the main task/action.
+    * Over-emphasis on objects that are far removed from your domain problem
+
+* R bindings to JS libs (i.e., htmlwidgets, shiny, etc), best of both worlds!
+  * If you hit a dead-end with these tools, *then it's time to learn JavaScript*!
   
-* Programming in JavaScript, like for loops, pulls focus away from the main task/action.
-    * Functional programming offers a nice alternative to for loops
+---
+class: middle, center, inverse, large-font
 
-* Web programming tools are not designed for EDA
-  * Bad at transforming and inspecting data
+## Thank you!
 
-* R bindings to JS libs (i.e., htmlwidgets, shiny, etc) help bring the power of the web 
+
+### Slides <https://bit.ly/jsm_19> <br>
+### `r icon::fa_twitter()` <a href="https://twitter.com/cpsievert">@cpsievert</a> <br>
+### `r icon::fa_envelope()` <cpsievert1@gmail.com> <br>
+### `r icon::fa_globe()` <https://cpsievert.me/>
+  
