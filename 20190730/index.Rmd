@@ -228,8 +228,9 @@ class:inverse
 <br>
 <br>
 
+
 ### The low-level graphics API (e.g. SVG, Canvas, etc) is often far removed from the domain problem
-  
+
 ---
 class: small-code
 
@@ -265,7 +266,7 @@ Plotly.plot("graph", {data: [bar]})
 class:small-code
 ### 'High-level' JS libraries
 
-- <font style="font-size:1.5em"> `r emo::ji("+1")` Compared to D3, more weight on the intention</font>
+- <font style="font-size:1.5em"> `r emo::ji("+1")` Compared to D3, more weight on the domain problem</font>
 * <font style="font-size:1.5em"> `r emo::ji("-1")` HTML boilerplate</font>
 - <font style="font-size:1.5em"> `r emo::ji("-1")` Web tech is not designed for data exploration, <b>but R is!</b> </font>
 
@@ -416,7 +417,7 @@ class: large-font
 ## In summary
   
 * Programming in JavaScript, like for loops, can distract from the main task/action.
-    * Over-emphasis on objects that are far removed from your domain problem
+    * Over-emphasis on objects that are far removed from your overall intention
 
 * R bindings to JS libs (i.e., htmlwidgets, shiny, etc), best of both worlds!
   * If you hit a dead-end with these tools, *then it's time to learn JavaScript*!
