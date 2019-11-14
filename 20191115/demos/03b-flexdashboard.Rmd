@@ -1,0 +1,52 @@
+---
+title: "Diamonds data"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+
+`plot_ly()`
+========================================================================
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### By cut and clarity
+
+```{r}
+library(plotly)
+plot_ly(diamonds, x = ~cut, color = ~clarity, colors = "Accent")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### By cut
+
+```{r}
+plot_ly(diamonds, x = ~cut)
+```
+
+### By clarity
+
+```{r}
+plot_ly(diamonds, x = ~clarity)
+```
+
+
+`ggplotly()`
+========================================================================
+
+
+```{r}
+p <- ggplot(diamonds, aes(x = clarity, y = log(price), color = clarity)) +
+    ggforce::geom_sina(alpha = 0.1) + 
+    stat_summary(fun.data = "mean_cl_boot", color = "black") +
+    facet_wrap(~cut)
+
+# WebGL is a lot more efficient at rendering lots of points
+toWebGL(ggplotly(p))
+```

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Linking plotly graphs in shiny</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Carson Sievert   Software Engineer, RStudio   February 20th, 2018" />
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="index_files/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="index_files/countdown-0.3.3/countdown.css" rel="stylesheet" />
+    <script src="index_files/countdown-0.3.3/countdown.js"></script>
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Linking plotly graphs in shiny
+### Carson Sievert <br> Software Engineer, RStudio <br> February 20th, 2018
+### Slides: <a href="https://bit.ly/jj-shiny-day">bit.ly/jj-shiny-day</a> <br> <br> <i class="fab  fa-twitter "></i> <a href="https://twitter.com/cpsievert"><span class="citation">@cpsievert</span></a> <br> <i class="fab  fa-github "></i> <a href="https://github.com/cpsievert"><span class="citation">@cpsievert</span></a> <br> <i class="fas  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com" class="email">cpsievert1@gmail.com</a> <br /> <i class="fas  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br> <br> Slides released under <a href="https://github.com/cpsievert/talks/blob/gh-pages/LICENSE">Creative Commons</a>
+
+---
+
+background-image: url(your-turn.jpeg)
+background-size: contain
+class: inverse, principles
+
+&lt;h2 align="center"&gt; Your turn &lt;/h2&gt;
+
+1. Open the slides:  [bit.ly/jj-shiny-day](https://bit.ly/jj-shiny-day)
+
+2. Go to this address &lt;https://rstudio.cloud/project/446255&gt;. This hosted RStudio instance contains materials for today's workshop.
+    * Login or sign up to RStudio Cloud (it's free)
+    * Click "Save a Permanent Copy" to copy the project to your account.
+
+3. Ask me any question at any time by going to [slido.com](https://www.sli.do) and enter event code #H808 (or use [this link](https://app.sli.do/event/hwgdwyr2)). I'll try to check these questions periodically (upvote questions if you'd like them answered!)
+
+
+
+<div class="countdown" id="timer_5dcc9f7a" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+class: principles
+
+### About me
+
+* Started at RStudio about 1 year ago
+    * First edition of [plotly for R book](https://plotly-r.com) coming very soon!
+    * Authored **shinymeta** with Joe Cheng
+    * Maintaining/contributing to: **plotly**, **shiny**, **htmlwidgets**, **rmarkdown**, etc.
+    
+* Previously freelance consultant
+    * Maintained **plotly** R package (since 2015)
+    * Developed **shiny** apps for exploratory visualization
+  
+* PhD in statistics at Iowa State (December 2016)
+    * Dissertation mainly on interactive statistical graphics
+
+---
+
+### About plotly
+
+* The R package **plotly** provides R bindings to the (MIT-licensed) JavaScript library [plotly.js](https://github.com/plotly/plotly.js).
+
+```r
+library(plotly)
+plot_ly(diamonds, x = ~cut, color = ~clarity, colors = "Accent")
+```
+
+<iframe src="https://player.vimeo.com/video/315707813?title=0&amp;byline=0&amp;portrait=0" width="100%" height="420" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+---
+class: inverse, principles
+
+## plotly works wherever htmlwidgets do!
+
+* At the R/RStudio console
+    * Printing at the console generates and opens HTML file.
+    * Use RStudio or `htmlwidgets::saveWidget()` to save HTML file.
+
+* In R Markdown documents
+    * Use awesome R Markdown templates like [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/).
+    
+* In Shiny apps
+    * Build sophisticated web applications that leverage the computing power of R
+    
+#### [Demo](https://rstudio.cloud/project/446255)
+
+---
+### Use Shiny inputs to trigger re-render
+
+.pull-left[
+```r
+library(shiny)
+library(plotly)
+
+ui &lt;- fluidPage(
+* selectInput(
+*   "y", "Choose a variable", 
+*   choices = names(diamonds)
+* ),
+  plotlyOutput("p")
+)
+
+server &lt;- function(input, output) {
+
+  output$p &lt;- renderPlotly({
+    plot_ly(
+*     y = diamonds[[input$y]]
+    )
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="shiny-plotly-y.gif" width="100%" &gt;
+]
+
+---
+### Access output interaction as an input value
+
+.pull-left[
+```r
+library(shiny)
+library(plotly)
+
+ui &lt;- fluidPage(
+  selectInput(
+    "y", "Choose a variable", 
+    choices = names(diamonds)
+  ),
+  plotlyOutput("p"),
+  verbatimTextOutput("hover")
+)
+
+server &lt;- function(input, output) {
+  output$p &lt;- renderPlotly({
+    plot_ly(y = diamonds[[input$y]])
+  })
+* output$hover &lt;- renderPrint({
+*   #Think of this like an input value
+*   event_data("plotly_hover")
+* })
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="shiny-plotly-hover.gif" width="90%" &gt;
+]
+
+---
+### Many types of output interactions
+
+Access hover, click, click&amp;drag, etc, as input values:
+
+* `plotly::plotlyOutput()`
+    * https://plotly-r.com/linking-views-with-shiny.html#shiny-plotly-inputs
+    
+* `leaflet::leafletOutput()`
+    * https://rstudio.github.io/leaflet/shiny.html
+
+* `DT::dataTableOutput()`
+    * https://rstudio.github.io/DT/shiny.html
+
+* `shiny::plotOutput()` &amp; `shiny::imageOutput()`
+    * Interactive plots section of https://shiny.rstudio.com/gallery/
+    * https://shiny.rstudio.com/articles/plot-interaction.html
+    * https://shiny.rstudio.com/articles/selecting-rows-of-data.html
+    * https://shiny.rstudio.com/articles/plot-interaction-advanced.html
+    
+.footnote[
+Many other [htmlwidgets](http://www.htmlwidgets.org/) packages also expose output interactions as input values.
+]
+
+---
+### An example: sales data drill-down
+
+<iframe src="https://player.vimeo.com/video/307597838?title=0&amp;byline=0&amp;portrait=0" width="100%" height="500" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+---
+### sales transactions
+
+.pull-left[
+```r
+library(tidyverse)
+sales &lt;- read_csv("data/sales.csv")
+glimpse(sales)
+```
+
+```r
+#&gt; Observations: 9,994
+#&gt; Variables: 5
+#&gt; $ id           &lt;chr&gt; "CG-12520", "CG-12520", "DV-13045", "SO-20335…
+#&gt; $ category     &lt;chr&gt; "Furniture", "Furniture", "Office  Supplies", …
+#&gt; $ sub_category &lt;chr&gt; "Bookcases", "Chairs", "Labels", "Tables", "S…
+#&gt; $ order_date   &lt;date&gt; 2016-11-08, 2016-11-08, 2016-06-12, 2015-10-…
+#&gt; $ sales        &lt;dbl&gt; 261.9600, 731.9400, 14.6200, 957.5775, 22.368…
+```
+]
+
+.pull-right[
+```r
+sales %&gt;%
+  group_by(category) %&gt;%
+  summarise(n = sum(sales))
+```
+
+```r
+#&gt; # A tibble: 3 x 2
+#&gt;   category              n
+#&gt;   &lt;chr&gt;             &lt;dbl&gt;
+#&gt; 1 Furniture       742000.
+#&gt; 2 Office Supplies 719047.
+#&gt; 3 Technology      836154.
+```
+]
+
+
+---
+### sales transactions (continued)
+
+.pull-left[
+```r
+library(tidyverse)
+sales &lt;- read_csv("data/sales.csv")
+glimpse(sales)
+```
+
+```r
+#&gt; Observations: 9,994
+#&gt; Variables: 5
+#&gt; $ id           &lt;chr&gt; "CG-12520", "CG-12520", "DV-13045", "SO-20335…
+#&gt; $ category     &lt;chr&gt; "Furniture", "Furniture", "Office  Supplies", …
+#&gt; $ sub_category &lt;chr&gt; "Bookcases", "Chairs", "Labels", "Tables", "S…
+#&gt; $ order_date   &lt;date&gt; 2016-11-08, 2016-11-08, 2016-06-12, 2015-10-…
+#&gt; $ sales        &lt;dbl&gt; 261.9600, 731.9400, 14.6200, 957.5775, 22.368…
+```
+]
+
+.pull-right[
+```r
+sales %&gt;%
+  count(category, wt = sales)
+```
+
+```r
+#&gt; # A tibble: 3 x 2
+#&gt;   category              n
+#&gt;   &lt;chr&gt;             &lt;dbl&gt;
+#&gt; 1 Furniture       742000.
+#&gt; 2 Office Supplies 719047.
+#&gt; 3 Technology      836154.
+```
+]
+
+---
+### sales transactions (continued)
+
+.pull-left[
+```r
+library(tidyverse)
+sales &lt;- read_csv("data/sales.csv")
+glimpse(sales)
+```
+
+```r
+#&gt; Observations: 9,994
+#&gt; Variables: 5
+#&gt; $ id           &lt;chr&gt; "CG-12520", "CG-12520", "DV-13045", "SO-20335…
+#&gt; $ category     &lt;chr&gt; "Furniture", "Furniture", "Office  Supplies", …
+#&gt; $ sub_category &lt;chr&gt; "Bookcases", "Chairs", "Labels", "Tables", "S…
+#&gt; $ order_date   &lt;date&gt; 2016-11-08, 2016-11-08, 2016-06-12, 2015-10-…
+#&gt; $ sales        &lt;dbl&gt; 261.9600, 731.9400, 14.6200, 957.5775, 22.368…
+```
+]
+
+.pull-right[
+```r
+sales %&gt;%
+  count(category, wt = sales) %&gt;%
+  plot_ly(x = ~category, y = ~n)
+```
+&lt;img src="sales-by-category.png" height=200 /&gt;
+]
+
+
+---
+### Accessing sales category clicks
+
+.pull-left[
+```r
+library(shiny)
+ui &lt;- fluidPage(
+  plotlyOutput("category"),
+* verbatimTextOutput("info")
+)
+server &lt;- function(input, output) {
+  output$category &lt;- renderPlotly({
+    sales %&gt;%
+      count(category, wt = sales) %&gt;%
+      plot_ly(x = ~category, y = ~n)
+  })
+  output$info &lt;- renderPrint({
+*   event_data("plotly_click")
+  })
+}
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="sales-click.png" /&gt;
+]
+
+---
+### Plotting sub-categories
+
+.pull-left[
+```r
+library(shiny)
+ui &lt;- fluidPage(
+  plotlyOutput("category"),
+* plotlyOutput("sub_category")
+)
+server &lt;- function(input, output) {
+  output$category &lt;- renderPlotly({
+    sales %&gt;%
+      count(category, wt = sales) %&gt;%
+      plot_ly(x = ~category, y = ~n)
+  })
+  output$sub_category &lt;- renderPlotly({
+    d &lt;- event_data("plotly_click")
+    if (is.null(d)) return(NULL)
+    
+*   sales %&gt;%
+*     filter(category %in% d$x) %&gt;%
+*     count(sub_category, wt = sales) %&gt;%
+*     plot_ly(x = ~sub_category, y = ~n)
+  })
+}
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="sales-click-plot.png" /&gt;
+]
+
+---
+background-image: url(your-turn.jpeg)
+background-size: contain
+class: inverse, principles
+
+&lt;h2 align="center"&gt; Your turn &lt;/h2&gt;
+
+* Open the `demo/04-sales-drill.R` script in RStudio Cloud.
+
+* Run the Shiny app. Play around with it.
+
+* What's wrong with the app?
+
+
+<div class="countdown" id="timer_5dcc9fbb" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+## Scoping event data
+
+By default `event_data()` listens to _every_ `plotlyOutput()`.
+
+```r
+server &lt;- function(input, output) {
+
+  output$category &lt;- renderPlotly({
+    sales %&gt;%
+      count(category, wt = sales) %&gt;%
+      plot_ly(x = ~category, y = ~n)
+  })
+  
+  output$sub_category &lt;- renderPlotly({
+*   # This responds to clicks on output$sub_category!
+*   d &lt;- event_data("plotly_click")
+    if (is.null(d)) return(NULL)
+    
+    sales %&gt;%
+      filter(category %in% d$x) %&gt;%
+      count(sub_category, wt = sales) %&gt;%
+      plot_ly(x = ~sub_category, y = ~n) %&gt;%
+      layout(xaxis = list(title = d$x))
+  })
+}
+```
+
+---
+## Scoping event data
+
+Match the `source` argument of `plot_ly()` (or `ggplotly()`) with `event_data()`.
+
+```r
+server &lt;- function(input, output) {
+  
+  output$category &lt;- renderPlotly({
+    sales %&gt;%
+      count(category, wt = sales) %&gt;%
+*     plot_ly(x = ~category, y = ~n, source = "category")
+  })
+  
+  output$sub_category &lt;- renderPlotly({
+*   d &lt;- event_data("plotly_click", source = "category")
+    if (is.null(d)) return(NULL)
+    
+    sales %&gt;%
+      filter(category %in% d$x) %&gt;%
+      count(sub_category, wt = sales) %&gt;%
+      plot_ly(x = ~sub_category, y = ~n) %&gt;%
+      layout(xaxis = list(title = d$x))
+  })
+}
+```
+
+---
+background-image: url(your-turn.jpeg)
+background-size: contain
+class: inverse, principles
+
+&lt;h2 align="center"&gt; Your turn &lt;/h2&gt;
+
+* Open the `demo/04-sales-drill-scoped.R` script in RStudio Cloud.
+
+* Add the ability to click a `sub_category` to populate a line chart of `sales` by `order_date`.
+
+Hints:
+  * You'll need another `plotlyOutput()` that makes use of `add_lines()`
+  * Use a similar coding pattern to `output$sub_category`'s logic
+
+
+<div class="countdown" id="timer_5dcca07b" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">07</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+&lt;a href="https://community.rstudio.com/t/shiny-developer-series-episode-1-follow-up-thread/29491"&gt;
+  &lt;img src="community.png" /&gt;
+&lt;/a&gt;
+
+
+---
+## Want a more 'classic drill-down'?
+
+<iframe src="https://player.vimeo.com/video/328763167?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+https://plotly-r.com/linking-views-with-shiny.html#drill-down
+
+---
+## Drill-down across multiple views!
+
+<iframe src="https://player.vimeo.com/video/328768848?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+https://plotly-r.com/linking-views-with-shiny.html#drill-down
+
+---
+## UI pro-tip: leave 'breadcrumbs'
+
+<iframe src="https://player.vimeo.com/video/328770954?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+https://plotly-r.com/linking-views-with-shiny.html#drill-down
+
+
+---
+## Another example: brushing a histogram to update scatterplot
+
+<iframe src="https://player.vimeo.com/video/318129005?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+---
+## Useful layout attributes for histogram brushing
+
+```r
+plot_ly(diamonds, x = ~depth) %&gt;%
+  layout(
+    dragmode = "select", 
+    selectdirection = "h"
+  )
+```
+
+&lt;div align="center"&gt;
+  &lt;img src="brushing-cropped.gif" width="70%" /&gt;
+&lt;/div&gt;
+
+
+---
+## Accessing brush limits
+
+.pull-left[
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  plotlyOutput("bars"),
+  verbatimTextOutput("info")
+)
+
+server &lt;- function(input, output) {
+  
+  output$bars &lt;- renderPlotly({
+    plot_ly(diamonds, x = ~depth) %&gt;%
+      layout(dragmode = "select", selectdirection = "h")
+  })
+  
+  output$info &lt;- renderPrint({
+*   event_data("plotly_brushing")
+  })
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="brushing.gif" width="100%" /&gt;
+]
+
+
+---
+## Applying the brush (i.e., selecting rows)
+
+.pull-left[
+```r
+server &lt;- function(input, output) {
+  
+  output$bars &lt;- renderPlotly({
+    plot_ly(diamonds, x = ~depth) %&gt;%
+      layout(dragmode = "select", selectdirection = "h")
+  })
+  
+  brushed &lt;- reactive({
+    brush &lt;- event_data("plotly_brushing")
+*    if (is.null(brush)) {
+*      TRUE
+*    } else {
+*      between(
+*        diamonds$depth, 
+*        brush$x[1], 
+*        brush$x[2]
+*      )
+*    }
+  })
+  
+  output$info &lt;- renderPrint({
+    summary(brushed())
+  })
+}
+```
+]
+
+.pull-right[
+&lt;img src="brushing-summary.gif" width="100%" /&gt;
+]
+
+---
+## Updating the scatterplot
+
+.pull-left[
+```r
+server &lt;- function(input, output) {
+
+  output$bars &lt;- renderPlotly({
+    plot_ly(diamonds, x = ~depth) %&gt;%
+      layout(dragmode = "select", selectdirection = "h")
+  })
+  
+  brushed &lt;- reactive({
+    brush &lt;- event_data("plotly_brushed")
+    if (is.null(brush)) TRUE else between(diamonds$depth, brush$x[1], brush$x[2])
+  })
+  
+  output$scatter &lt;- renderPlotly({
+    diamonds %&gt;%
+*     filter(brushed()) %&gt;%
+      plot_ly(
+        x = ~carat, 
+        y = ~price, 
+        alpha = 0.2
+      ) %&gt;%
+      toWebGL()
+  })
+}
+```
+]
+
+.pull-right[
+&lt;img src="brushing-filtering.gif" width="100%" /&gt;
+]
+
+---
+## Performance note: use `toWebGL()`!
+
+.pull-left[
+```r
+server &lt;- function(input, output) {
+
+  output$bars &lt;- renderPlotly({
+    plot_ly(diamonds, x = ~depth) %&gt;%
+      layout(dragmode = "select", selectdirection = "h")
+  })
+  
+  brushed &lt;- reactive({
+    brush &lt;- event_data("plotly_brushing")
+    if (is.null(brush)) TRUE else between(diamonds$depth, brush$x[1], brush$x[2])
+  })
+  
+  output$scatter &lt;- renderPlotly({
+    diamonds %&gt;%
+      filter(brushed()) %&gt;%
+      plot_ly(
+        x = ~carat, 
+        y = ~price, 
+        alpha = 0.2
+      ) %&gt;%
+*     toWebGL()
+  })
+}
+```
+]
+
+.pull-right[
+&lt;img src="brushing-filtering.gif" width="100%" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+Uses a Canvas-based renderer instead of SVG (think png versus pdf)
+]
+
+---
+## Performance note: use summaries!
+
+.pull-left[
+```r
+server &lt;- function(input, output) {
+
+  output$bars &lt;- renderPlotly({
+    plot_ly(diamonds, x = ~depth) %&gt;%
+      layout(dragmode = "select", selectdirection = "h")
+  })
+  
+  brushed &lt;- reactive({
+    brush &lt;- event_data("plotly_brushing")
+    if (is.null(brush)) TRUE else between(diamonds$depth, brush$x[1], brush$x[2])
+  })
+  
+  output$scatter &lt;- renderPlotly({
+    diamonds %&gt;%
+      filter(brushed()) %&gt;%
+      plot_ly(
+        x = ~carat, 
+        y = ~price, 
+        alpha = 0.2
+      ) %&gt;%
+*     add_histogram2dcontour()
+  })
+}
+```
+]
+
+.pull-right[
+&lt;img src="brushing-filtering-contour.gif" width="100%" /&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+It can also pay to minimize the amount of data sent over-the-wire (make this even more scalable by [summarizing server-side](https://github.com/ropensci/plotly/blob/master/inst/examples/shiny/crossfilter_kde/app.R))
+]
+  
+---
+class: inverse, middle, principles
+
+## General notes on brushing responsively
+
+* `plotly_brushed` / `plotly_selected`: fires once after mouseup.
+* `plotly_brushing` / `plotly_selecting`: fires rapidly while brush moving.
+
+* If the response to a brush event is slow, consider these options:
+    * Do continous updates help? If not, use `plotly_brushed`.
+    * Do intermediate updates matter? If not, `debounce()` rapid firing events.
+    * Use `plotlyProxy()` to partially modify plotly graphs
+
+* Learn more about improving responsiveness:
+  - https://plotly-r.com/linking-views-with-shiny.html#shiny-performance
+  - https://resources.rstudio.com/webinars/accessing-and-responding-to-plotly-events-in-shiny-carson-sievert
+
+---
+## How about brushing the scatterplot?
+
+&lt;div align="center"&gt;
+  &lt;img src="scatter-target.gif" height=500 /&gt;
+&lt;/div&gt;
+
+---
+## Accessing brushed data points
+
+.pull-left[
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  plotlyOutput("scatter"),
+  verbatimTextOutput("info")
+)
+
+server &lt;- function(input, output) {
+  
+  output$scatter &lt;- renderPlotly({
+    plot_ly(
+      diamonds, alpha = 0.2,
+      x = ~carat, y = ~price
+    ) %&gt;%
+    toWebGL() %&gt;%
+*   event_register("plotly_selecting")
+  })
+  
+  output$info &lt;- renderPrint({
+*   event_data("plotly_selecting")
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="plotly_selecting.gif" /&gt;
+]
+
+---
+## How do we determine which rows are brushed?
+
+.pull-left[
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  plotlyOutput("scatter"),
+  verbatimTextOutput("info")
+)
+
+server &lt;- function(input, output) {
+  
+  output$scatter &lt;- renderPlotly({
+    plot_ly(
+      diamonds, alpha = 0.2,
+      x = ~carat, y = ~price
+    ) %&gt;%
+    toWebGL() %&gt;%
+*   event_register("plotly_selecting")
+  })
+  
+  output$info &lt;- renderPrint({
+*   event_data("plotly_selecting")
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="plotly_selecting.gif" /&gt;
+]
+
+---
+## Attach a row identifier!
+
+.pull-left[
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  plotlyOutput("scatter"),
+  verbatimTextOutput("info")
+)
+
+server &lt;- function(input, output) {
+  
+  output$scatter &lt;- renderPlotly({
+    plot_ly(
+      diamonds, alpha = 0.2,
+      x = ~carat, y = ~price,
+*     customdata = seq(1, nrow(diamonds))
+    ) %&gt;%
+    toWebGL() %&gt;%
+    event_register("plotly_selecting")
+  })
+  
+  output$info &lt;- renderPrint({
+    event_data("plotly_selecting")
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="plotly_selecting_custom.gif" /&gt;
+]
+
+---
+## Updating the histogram
+
+.pull-left[
+```r
+server &lt;- function(input, output) {
+  
+  output$scatter &lt;- renderPlotly({
+    plot_ly(diamonds, alpha = 0.2, x = ~carat, y = ~price, customdata = seq(1, nrow(diamonds))) %&gt;% toWebGL() %&gt;% event_register("plotly_selecting")
+  })
+  
+  output$bars &lt;- renderPlotly({
+    d &lt;- event_data("plotly_selecting")
+*   if (is.null(d)) {
+*     plot_ly(diamonds, x = ~depth)
+*   } else {
+*     diamonds %&gt;%
+*       slice(d$customdata) %&gt;%
+*       plot_ly(x = ~depth)
+*   }
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="scatter-target.gif" /&gt;
+]
+
+---
+## Pro-tip: overlay selections with relative frequencies!
+
+.pull-left[
+```r
+server &lt;- function(input, output) {
+  
+  output$scatter &lt;- renderPlotly({
+    plot_ly(diamonds, alpha = 0.2, x = ~carat, y = ~price, customdata = seq(1, nrow(diamonds)), selected = list(marker = list(color = "red"))) %&gt;% toWebGL() %&gt;% event_register("plotly_selecting")
+  })
+  
+  output$bars &lt;- renderPlotly({
+    base &lt;- diamonds %&gt;%
+      plot_ly(
+        x = ~depth, alpha = 0.3,
+*       histnorm = "probability density"
+      ) %&gt;%
+      add_histogram()
+    
+    d &lt;- event_data("plotly_selecting")
+    if (is.null(d))  return(base)
+    
+    add_histogram(
+      base, color = I("red"),
+      data = slice(diamonds, d$customdata)
+    )
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="scatter-target-compare.gif" /&gt;
+]
+
+---
+
+### Advanced linking example: cross-filtering 350,000 flights
+
+<iframe src="https://player.vimeo.com/video/318129502?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+[App](https://testing-apps.shinyapps.io/crossfilter/) / [Code](https://github.com/ropensci/plotly/blob/master/inst/examples/shiny/crossfilter/app.R)
+
+This approach scales to about 5 million on my laptop
+
+---
+
+### Advanced linking example: cross-filter with comparisons
+
+<iframe src="https://player.vimeo.com/video/307598246?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+[App](https://testing-apps.shinyapps.io/crossfilter_compare) / [Code](https://github.com/ropensci/plotly/blob/master/inst/examples/shiny/crossfilter_compare/app.R)
+
+---
+class: inverse, middle, principles
+
+## Managing 'hidden state'
+
+* Advanced linking sometimes requires management of 'hidden state'. 
+
+* A Shiny app has 'hidden state' if output(s) can't be fully determined by the UI's current `input` values.
+
+* 'Hidden state' often surfaces when selections need to persist or accumulate.
+  * It also surfaces when there are multiple controllers for the same event data (e.g., [drill-down with 'back' button](https://plotly-r.com/linking-views-with-shiny.html#drill-down)).
+
+* Persistent selection is very useful for making comparisons
+
+---
+## Making comparisons...way more useful than transient filtering!
+
+<iframe src="https://player.vimeo.com/video/353646796?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+https://tutorials.cpsievert.me/20190821/#32
+https://tutorials.cpsievert.me/20190821/shiny/05-solution/app.R
+
+---
+## Managing state with `reactiveVal()`
+
+.pull-left[
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  actionButton("minus", "-1"),
+  actionButton("plus", "+1"),
+  textOutput("value")
+)
+
+server &lt;- function(input, output) {
+  val &lt;- reactiveVal(0)     
+  observeEvent(input$minus, {
+    newValue &lt;- val() - 1
+    val(newValue)
+  })
+  observeEvent(input$plus, {
+    newValue &lt;- val() + 1
+    val(newValue)
+  })
+  output$value &lt;- renderText(val())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="state-count.gif" /&gt;
+]
+
+---
+### Remembering event data
+
+.pull-left[
+```r
+library(shiny)
+
+ui &lt;- fluidPage(
+  plotlyOutput("p"),
+  verbatimTextOutput("cars")
+)
+
+server &lt;- function(input, output) {
+  output$p &lt;- renderPlotly({
+    plot_ly(mtcars, x = ~wt, y = ~mpg)
+  })
+  hover_data &lt;- reactiveVal()
+  observeEvent(event_data("plotly_hover"), {
+    new_hover &lt;- rbind(
+      hover_data(), 
+      event_data("plotly_hover")
+    )
+    hover_data(new_hover)
+  })
+  observeEvent(event_data("plotly_doubleclick"), {
+    hover_data(NULL)
+  })
+  output$cars &lt;- renderPrint(hover_data())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+&lt;img src="state-hover-data.gif" /&gt;
+]
+
+---
+class: inverse, middle, principles
+
+## In summary
+
+* plotly is an htmlwidget that works with R/RStudio, rmarkdown, and shiny
+
+* Use `event_data()` to access user events with plotly graph(s) inside Shiny applications.
+
+* Use `event_data()` to inform other views of the data
+  * Often by filtering "raw" data to subset of interest
+  
+* Go beyond the typical "naive" filtering approach
+  * Provide context by overlaying relative frequencies
+  * Enable comparisons by persisting selections and controls for selection color/appearance.
+
+* Be aware that [plotly can link views without shiny](https://plotly-r.com/client-side-linking.html), but [linking with shiny](https://plotly-r.com/linking-views-with-shiny.html) is _way more_ powerful.
+
+---
+### Go forth, create linked views!
+
+<iframe src="https://player.vimeo.com/video/372903411?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+Awesome example of linking views with Shiny in Flexdashboard by Kyle Walker https://walkerke.shinyapps.io/neighborhood_diversity/
+
+---
+background-image: url(rstudio.svg)
+background-size: 90%
+class: principles, center
+
+## Thanks for listening! Questions?
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+Slides &lt;https://bit.ly/jj-shiny-day&gt; &lt;br&gt;
+<i class="fab  fa-twitter "></i> &lt;a href="https://twitter.com/cpsievert"&gt;@cpsievert&lt;/a&gt; &lt;br&gt;
+<i class="fab  fa-github "></i> &lt;a href="https://github.com/cpsievert"&gt;@cpsievert&lt;/a&gt; &lt;br&gt;
+<i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br&gt;
+<i class="fas  fa-globe "></i> [cpsievert.me](https://cpsievert.me)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "14.6:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

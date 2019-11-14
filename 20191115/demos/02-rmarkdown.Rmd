@@ -1,0 +1,24 @@
+---
+title: "My HTML report"
+output: 
+  html_document:
+    code_folding: "show"
+---
+
+To embed **plotly** inside **rmarkdown**, just place it in a code chunk: 
+
+```{r, message = FALSE, out.width="100%"}
+library(plotly)
+plot_ly(diamonds, x = ~cut, color = ~clarity, colors = "Accent")
+```
+
+The **DT** package is another htmlwidget, designed for creating interactive tables.
+
+```{r, message = FALSE}
+library(dplyr)
+library(DT)
+
+diamonds %>% 
+  count(cut, clarity) %>%
+  datatable()
+```
