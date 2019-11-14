@@ -1,0 +1,6 @@
+---
+title: "Building reproducible shiny components with shinymeta"
+venue: "R/Pharma"
+type: "invited"
+recording: "none"
+---

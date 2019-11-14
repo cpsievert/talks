@@ -3,7 +3,7 @@
   <head>
     <title>Linking plotly graphs in shiny</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Carson Sievert   Software Engineer, RStudio   February 20th, 2018" />
+    <meta name="author" content="Carson Sievert   Software Engineer, RStudio   November 15th, 2019" />
     <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link href="index_files/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
@@ -16,8 +16,8 @@
 class: center, middle, inverse, title-slide
 
 # Linking plotly graphs in shiny
-### Carson Sievert <br> Software Engineer, RStudio <br> February 20th, 2018
-### Slides: <a href="https://bit.ly/jj-shiny-day">bit.ly/jj-shiny-day</a> <br> <br> <i class="fab  fa-twitter "></i> <a href="https://twitter.com/cpsievert"><span class="citation">@cpsievert</span></a> <br> <i class="fab  fa-github "></i> <a href="https://github.com/cpsievert"><span class="citation">@cpsievert</span></a> <br> <i class="fas  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com" class="email">cpsievert1@gmail.com</a> <br /> <i class="fas  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br> <br> Slides released under <a href="https://github.com/cpsievert/talks/blob/gh-pages/LICENSE">Creative Commons</a>
+### Carson Sievert <br> Software Engineer, RStudio <br> November 15th, 2019
+### Slides: <a href="https://bit.ly/jj-shiny">bit.ly/jj-shiny</a> <br> <br> <i class="fab  fa-twitter "></i> <a href="https://twitter.com/cpsievert"><span class="citation">@cpsievert</span></a> <br> <i class="fab  fa-github "></i> <a href="https://github.com/cpsievert"><span class="citation">@cpsievert</span></a> <br> <i class="fas  fa-envelope "></i> <a href="mailto:cpsievert1@gmail.com" class="email">cpsievert1@gmail.com</a> <br /> <i class="fas  fa-globe "></i> <a href="https://cpsievert.me/" class="uri">https://cpsievert.me/</a> <br> <br> Slides released under <a href="https://github.com/cpsievert/talks/blob/gh-pages/LICENSE">Creative Commons</a>
 
 ---
 
@@ -27,7 +27,7 @@ class: inverse, principles
 
 &lt;h2 align="center"&gt; Your turn &lt;/h2&gt;
 
-1. Open the slides:  [bit.ly/jj-shiny-day](https://bit.ly/jj-shiny-day)
+1. Open the slides:  [bit.ly/jj-shiny](https://bit.ly/jj-shiny)
 
 2. Go to this address &lt;https://rstudio.cloud/project/446255&gt;. This hosted RStudio instance contains materials for today's workshop.
     * Login or sign up to RStudio Cloud (it's free)
@@ -37,7 +37,7 @@ class: inverse, principles
 
 
 
-<div class="countdown" id="timer_5dcc9f7a" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dce0e26" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -47,7 +47,7 @@ class: principles
 ### About me
 
 * Started at RStudio about 1 year ago
-    * First edition of [plotly for R book](https://plotly-r.com) coming very soon!
+    * First edition of [_Interactive data visualization with R, plotly, and shiny_](https://plotly-r.com) coming very soon!
     * Authored **shinymeta** with Joe Cheng
     * Maintaining/contributing to: **plotly**, **shiny**, **htmlwidgets**, **rmarkdown**, etc.
     
@@ -177,9 +177,7 @@ Access hover, click, click&amp;drag, etc, as input values:
     * https://shiny.rstudio.com/articles/selecting-rows-of-data.html
     * https://shiny.rstudio.com/articles/plot-interaction-advanced.html
     
-.footnote[
-Many other [htmlwidgets](http://www.htmlwidgets.org/) packages also expose output interactions as input values.
-]
+* Many other [htmlwidgets](http://www.htmlwidgets.org/) packages also expose output interactions as input values.
 
 ---
 ### An example: sales data drill-down
@@ -369,7 +367,7 @@ class: inverse, principles
 * What's wrong with the app?
 
 
-<div class="countdown" id="timer_5dcc9fbb" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5dce0d6a" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -443,9 +441,13 @@ Hints:
   * You'll need another `plotlyOutput()` that makes use of `add_lines()`
   * Use a similar coding pattern to `output$sub_category`'s logic
 
+.footnote[
+* Want to [ask a question](https://app.sli.do/event/hwgdwyr2)? 
+    * Event code #H808 on https://sli.do
+]
 
-<div class="countdown" id="timer_5dcca07b" style="right:0;bottom:0;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">07</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div class="countdown" id="timer_5dce0f3a" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
@@ -887,8 +889,28 @@ shinyApp(ui, server)
 ]
 
 ---
+background-image: url(your-turn.jpeg)
+background-size: contain
+class: inverse, principles
 
-### Advanced linking example: cross-filtering 350,000 flights
+&lt;h2 align="center"&gt; Your turn &lt;/h2&gt;
+
+* Open the `demo/05-scatter-brush.R` script. Run it and brush the scatterplot.
+
+* Want a challenge? Add the ability to choose the selection color with `colourpicker::colourInput()`.
+
+* Want a break? Take one!
+
+* Want to [ask a question](https://app.sli.do/event/hwgdwyr2)? 
+    * Event code #H808 on https://sli.do
+    
+<div class="countdown" id="timer_5dce0f6a" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+### Advanced linking: cross-filtering 350,000 flights
 
 <iframe src="https://player.vimeo.com/video/318129502?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
@@ -898,11 +920,19 @@ This approach scales to about 5 million on my laptop
 
 ---
 
-### Advanced linking example: cross-filter with comparisons
+### Advanced linking: cross-filter with comparisons
 
 <iframe src="https://player.vimeo.com/video/307598246?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
 [App](https://testing-apps.shinyapps.io/crossfilter_compare) / [Code](https://github.com/ropensci/plotly/blob/master/inst/examples/shiny/crossfilter_compare/app.R)
+
+---
+## Making comparisons...way more useful than transient filtering!
+
+<iframe src="https://player.vimeo.com/video/353646796?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+https://tutorials.cpsievert.me/20190821/#32 &lt;br&gt;
+https://tutorials.cpsievert.me/20190821/shiny/05-solution/app.R
 
 ---
 class: inverse, middle, principles
@@ -914,17 +944,9 @@ class: inverse, middle, principles
 * A Shiny app has 'hidden state' if output(s) can't be fully determined by the UI's current `input` values.
 
 * 'Hidden state' often surfaces when selections need to persist or accumulate.
-  * It also surfaces when there are multiple controllers for the same event data (e.g., [drill-down with 'back' button](https://plotly-r.com/linking-views-with-shiny.html#drill-down)).
+  * It also surfaces when there are multiple controls for the same event data (e.g., [drill-down with 'back' button](https://plotly-r.com/linking-views-with-shiny.html#drill-down)).
 
 * Persistent selection is very useful for making comparisons
-
----
-## Making comparisons...way more useful than transient filtering!
-
-<iframe src="https://player.vimeo.com/video/353646796?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
-https://tutorials.cpsievert.me/20190821/#32
-https://tutorials.cpsievert.me/20190821/shiny/05-solution/app.R
 
 ---
 ## Managing state with `reactiveVal()`
@@ -961,56 +983,149 @@ shinyApp(ui, server)
 ]
 
 ---
-### Remembering event data
+#### Managing an event data store
+
+&lt;div align="center"&gt;
+  &lt;img src="hover-data-persist.gif" height=280 /&gt;
+&lt;/div&gt;
+
+```r
+selected_rows &lt;- reactiveVal()
+
+observeEvent(event_data("plotly_hover"), {
+  row &lt;- event_data("plotly_hover")$customdata
+  if (row %in% selected_rows()) return()
+  new_rows &lt;- c(row, selected_rows())
+  selected_rows(new_rows)
+})
+
+observeEvent(event_data("plotly_doubleclick"), {
+  selected_rows(NULL)
+})
+```
+
+---
+#### Managing selected drugs (+ color)
+
+&lt;div align="center"&gt;
+  &lt;img src="drugs.png" height=280 /&gt;
+&lt;/div&gt;
+
+```r
+selected_drugs &lt;- reactiveVal()
+observeEvent(event_data("plotly_click"), {
+  drug &lt;- event_data("plotly_click")$customdata
+* drug &lt;- setNames(drug, sample(color(), 1))
+  if (drug %in% selected_drugs()) return()
+  new_drugs &lt;- c(drugs, selected_drugs())
+  selected_drugs(new_drugs)
+})
+observeEvent(event_data("plotly_doubleclick"), {
+  selected_drugs(NULL)
+})
+```
+
+---
+## Relayout events
 
 .pull-left[
 ```r
-library(shiny)
-
 ui &lt;- fluidPage(
   plotlyOutput("p"),
-  verbatimTextOutput("cars")
+  verbatimTextOutput("info")
 )
-
 server &lt;- function(input, output) {
   output$p &lt;- renderPlotly({
-    plot_ly(mtcars, x = ~wt, y = ~mpg)
+    plot_ly(x = 1, y = 1)
   })
-  hover_data &lt;- reactiveVal()
-  observeEvent(event_data("plotly_hover"), {
-    new_hover &lt;- rbind(
-      hover_data(), 
-      event_data("plotly_hover")
-    )
-    hover_data(new_hover)
+  output$info &lt;- renderPrint({
+*   event_data("plotly_relayout")
   })
-  observeEvent(event_data("plotly_doubleclick"), {
-    hover_data(NULL)
-  })
-  output$cars &lt;- renderPrint(hover_data())
 }
-
 shinyApp(ui, server)
 ```
 ]
 
 .pull-right[
-&lt;img src="state-hover-data.gif" /&gt;
+&lt;img src="relayout.gif" width="100%" &gt;
+]
+
+
+---
+## Example of view responding to layout changes
+
+&lt;img src="../gifs/zikar.gif" width="100%" /&gt;
+
+
+---
+## Accessing shape (e.g., line) edits
+
+.pull-left[
+```r
+ui &lt;- fluidPage(
+  plotlyOutput("p"),
+  verbatimTextOutput("info")
+)
+server &lt;- function(input, output) {
+  output$p &lt;- renderPlotly({
+    plot_ly(x = 1, y = 1) %&gt;%
+      layout(
+        shapes = list(
+          type = "line",
+          x0 = 0.5, y0 = 0,
+          x1 = 0.5, y1 = 1,
+          xref = "paper", 
+          yref = "paper"
+        )
+      ) %&gt;%
+*     config(edits = list(shapePosition = TRUE))
+  })
+  output$info &lt;- renderPrint({
+*   event_data("plotly_relayout")
+  })
+}
+```
+]
+
+.pull-right[
+&lt;img src="edits.gif" /&gt;
 ]
 
 ---
-class: inverse, middle, principles
+## Responding to line edits
+
+```r
+plotly_example("shiny", "drag_lines")
+```
+
+<iframe src="https://player.vimeo.com/video/307597984?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+---
+## Responding to marker edits
+
+```r
+plotly_example("shiny", "drag_markers")
+```
+
+<iframe src="https://player.vimeo.com/video/318338029?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+
+---
+class: inverse, middle
 
 ## In summary
 
 * plotly is an htmlwidget that works with R/RStudio, rmarkdown, and shiny
 
-* Use `event_data()` to access user events with plotly graph(s) inside Shiny applications.
-
-* Use `event_data()` to inform other views of the data
-  * Often by filtering "raw" data to subset of interest
+* Use `event_data()` to access and respond to plotly user events in Shiny.
+  * Use `source` argument to scope event listeners.
+  * Use the `customdata` attribute to attach identifying information, if necessary.
   
-* Go beyond the typical "naive" filtering approach
+* Use `reactiveVal()` to manage a data store of event information
+  * Useful for multiple selection
+  * Useful for enabling multiple controls (e.g., 'back'/'clear' button)
+  
+* Get creative and go beyond the typical "naive" filtering approach
   * Provide context by overlaying relative frequencies
   * Enable comparisons by persisting selections and controls for selection color/appearance.
 
@@ -1043,7 +1158,7 @@ class: principles, center
 &lt;br&gt;
 &lt;br&gt;
 
-Slides &lt;https://bit.ly/jj-shiny-day&gt; &lt;br&gt;
+Slides &lt;https://bit.ly/jj-shiny&gt; &lt;br&gt;
 <i class="fab  fa-twitter "></i> &lt;a href="https://twitter.com/cpsievert"&gt;@cpsievert&lt;/a&gt; &lt;br&gt;
 <i class="fab  fa-github "></i> &lt;a href="https://github.com/cpsievert"&gt;@cpsievert&lt;/a&gt; &lt;br&gt;
 <i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br&gt;

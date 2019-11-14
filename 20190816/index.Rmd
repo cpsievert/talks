@@ -1,0 +1,6 @@
+---
+title: "Building reproducible shiny components with shinymeta"
+venue: "noRth R conference"
+type: "invited"
+recording: "none"
+---
