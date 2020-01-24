@@ -1,6 +1,6 @@
 ---
-title: "Building reproducible shiny components with shinymeta"
-venue: "R/Pharma"
+title: "Reproducible shiny apps"
+venue: "rstudio::conf"
 type: "invited"
 recording: "none"
 ---
