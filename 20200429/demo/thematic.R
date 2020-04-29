@@ -11,6 +11,8 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
 thematic_on()
 last_plot()
 
+plotly::ggplotly()
+
 # Now any future plot will be themed
 hist(rnorm(100))
 

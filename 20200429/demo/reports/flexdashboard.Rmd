@@ -1,0 +1,57 @@
+---
+title: "Flexdashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: superhero
+    orientation: rows
+---
+
+<!-- 
+Flexdashboard sets white bg and black fg on its chart containers. 
+Right now you can change that with custom CSS, but in the near future you shouldn't need this hack
+-->
+
+```{css}
+.chart-wrapper * {
+  color: #fff;
+  background: #2b3e50
+}
+```
+
+
+```{r setup, include=FALSE}
+thematic::thematic_on(font = "Pacifico")
+knitr::opts_chunk$set(dev = "svg")
+```
+
+
+Row
+-------------------------------------
+
+### ggplot2 
+
+```{r, message=FALSE}
+library(ggplot2)
+ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
+```
+
+Row
+-------------------------------------
+
+### Lattice 
+
+```{r}
+lattice::show.settings()
+```
+
+### Base
+
+```{r}
+pairs(
+  iris[,1:4], pch = 19, 
+  col = iris$Species, lower.panel = NULL
+)
+```

@@ -68,7 +68,7 @@ include_vimeo <- function(id, width = "100%", height = "450") {
     allowFullScreen = NA
   )
 }
-auto_defaults_set(
+auto_defaults(
   bg = "#002B36", fg = "#FDF6E3", 
   accent = "#2AA198", 
   # 2 is better for non-ragg
@@ -162,16 +162,19 @@ Visit the demo at <https://bit.ly/thematic-cloud>
 ---
 class: large, contrast, middle
 
-## What about when auto-theming fails?
+## How can auto-theming fail? How can I fix it?
 
-* In some scenarios (e.g., non-HTML output formats in **rmarkdown**, R terminal, etc), auto-theming "fails"
-  * That is, it defaults to the usual white background + black foreground.
+* In some scenarios auto-theming "works", but some additional CSS may be required on plot containers (e.g., **flexdashboard**)...we're working hard to improve such  scenarios caused by our own decisions.
+
+* In some scenarios auto-theming may "fail" due to lack of information.
+  * Most common scenarios: R terminal and non-HTML output formats in **rmarkdown**.
+  * When auto-theming "fails", it defaults to the usual white background + black foreground.
   
-* There are two ways to resolve auto-theming failure:
-  * Set defaults via `auto_defaults_set()`
-  * Specify colors (and/or fonts) directly in `thematic_on()`
+* Auto-theming is entirely optional, avoid it by providing colors (and/or fonts) directly in `thematic_on()`
+
+* If you want to "inform" the auto-theming, set defaults via `auto_defaults()`.
   
-* Providing non-auto values to `thematic_on()`/`auto_defaults_set()` is also useful for customizing theming defaults 
+* Providing values to `thematic_on()` (and/or `auto_defaults()`) is also useful for customizing the theme...
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
@@ -718,6 +721,124 @@ image(volcano, col = thematic_get_option("sequential"))
 ```
 
 ---
+class: contrast, middle, center
+
+## What about auto-theming in other plots, tables, etc? 
+
+Hope is on the way...
+
+---
+class: contrast
+
+### The real magic: `getCurrentOutputInfo()`
+
+Any **shiny** output with a special `.shiny-report-theme` class will soon report it's computed CSS styles.
+
+.pull-left[
+```r
+library(shiny)
+
+shinyApp(
+  fluidPage(
+    theme = shinythemes::shinytheme("superhero"),
+    titlePanel("superhero styles"),
+    tagAppendAttributes(
+      verbatimTextOutput("info"), 
+*     class = "shiny-report-theme"
+    )
+  ),
+  function(input, output) {
+    output$info <- renderPrint({
+*     str(getCurrentOutputInfo())
+    })
+  }
+)
+```
+]
+
+.pull-right[
+<img src="superhero-styles.png" width="100%">
+]
+---
+class: contrast
+
+### The real magic: `getCurrentOutputInfo()`
+
+**thematic** uses `getCurrentOutputInfo()` for auto-theming in **shiny**, but technically _any R code_ could leverage this info to set sensible theming defaults.
+
+.pull-left[
+```r
+library(shiny)
+
+shinyApp(
+  fluidPage(
+    theme = shinythemes::shinytheme("superhero"),
+    titlePanel("superhero styles"),
+    tagAppendAttributes(
+      verbatimTextOutput("info"), 
+*     class = "shiny-report-theme"
+    )
+  ),
+  function(input, output) {
+    output$info <- renderPrint({
+*     str(getCurrentOutputInfo())
+    })
+  }
+)
+```
+]
+
+.pull-right[
+<img src="superhero-styles.png" width="100%">
+]
+
+---
+class: contrast
+
+### The real magic: `getCurrentOutputInfo()`
+
+In the near future, things like **plotly**, **DT**, etc will take advantage.
+
+(If you're **htmlwidgets** developer, `shinyWidgetOutput()` will [soon](https://github.com/ramnathv/htmlwidgets/pull/361) gain a `reportTheme` argument).
+
+.pull-left[
+```r
+library(shiny)
+
+shinyApp(
+  fluidPage(
+    theme = shinythemes::shinytheme("superhero"),
+    titlePanel("superhero styles"),
+    tagAppendAttributes(
+      verbatimTextOutput("info"), 
+*     class = "shiny-report-theme"
+    )
+  ),
+  function(input, output) {
+    output$info <- renderPrint({
+*     str(getCurrentOutputInfo())
+    })
+  }
+)
+```
+]
+
+.pull-right[
+<img src="superhero-styles.png" width="100%">
+]
+
+---
+class: contrast, middle, center
+
+# Where can I learn more about modern approaches to styling in shiny and rmarkdown?
+
+The new [**bootstraplib** package](https://rstudio.github.io/bootstraplib/index.html) makes it possible to style **shiny** and **rmarkdown** in R (via **sass**) instead of CSS.
+
+Check out [this article](https://rstudio.github.io/bootstraplib/articles/recipes.html) for a good sense of where things are (more to come).
+
+(BTW, **bootstraplib** is what makes auto-theming in `html_document()` feasible) 
+
+---
 class: large
 
 ## Summary
@@ -732,7 +853,7 @@ class: large
 * Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R).
   * For Google Fonts, you'll also need **ragg** or **showtext** installed and some other setup (see the respective [Shiny](https://rstudio.github.io/thematic/articles/shiny.html), [R Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html), and [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html) articles)
   
-* Provide values directly to `thematic_on()` and/or `auto_defaults_set()` to customize.
+* Provide values directly to `thematic_on()` and/or `auto_defaults()` to customize.
 
 ---
 class: center, middle
