@@ -1,5 +1,5 @@
 ---
-title: "Plot theming made easieR"
+title: "thematic: auto theming for ggplot2, lattice, and base R graphics"
 venue: "Statistical Programming DC (SPDC)"
 type: "invited"
 recording: "none"
@@ -20,11 +20,11 @@ date: ""
 ---
 class: middle, center
 
-# Plot theming made easieR
+# [**thematic**](https://github.com/rstudio/thematic): auto theming for **ggplot2**, **lattice**, and **base** R graphics
 
 ### Carson Sievert
 
-### Slides: https://talks.cpsievert.me  
+### Slides: https://bit.ly/thematic-talk  
 
 `r icon::fa_twitter()` [@cpsievert](https://twitter.com/cpsievert)
 
@@ -109,12 +109,20 @@ h1, h2, h3 {
     background-color: #3D4752;
     color: #FFFFFF;
   }
+  
+  &.large {
+    font-size: 1.5rem
+  }
+  
+  &.contrast {
+    background-color: #FFFFFF;
+    color: black;
+  }
 }
 ```
 
 ---
-## [**thematic**](https://github.com/rstudio/thematic): automatically theme **ggplot2**, **lattice**, and **base** R graphics.
-
+## [**thematic**](https://github.com/rstudio/thematic): auto theming for **ggplot2**, **lattice**, and **base** R graphics
 
 
 Not yet on CRAN, but install it now with:
@@ -139,13 +147,36 @@ remotes::install_github("rstudio/rmarkdown#1706")
 Learn more <https://rstudio.github.io/thematic/>
 
 ---
+class: middle, center
 
 ## RStudio Cloud Demo
+
+Visit the demo at <https://bit.ly/thematic-cloud>
+
+<div>
+  <a href="https://rstudio.cloud/project/1208127" target="_blank">
+    <img src="thematic-cloud.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;">
+  </a>
+</div>
+
+---
+class: large, contrast, middle
+
+## What about when auto-theming fails?
+
+* In some scenarios (e.g., non-HTML output formats in **rmarkdown**, R terminal, etc), auto-theming "fails"
+  * That is, it defaults to the usual white background + black foreground.
+  
+* There are two ways to resolve auto-theming failure:
+  * Set defaults via `auto_defaults_set()`
+  * Specify colors (and/or fonts) directly in `thematic_on()`
+  
+* Providing non-auto values to `thematic_on()`/`auto_defaults_set()` is also useful for customizing theming defaults 
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
 
-Use `thematic_on()` to opt-in in to new plotting defaults. The "main" color settings are `bg`, `fg`, `accent`.
+The main color settings are `bg`, `fg`, `accent` (they default to `"auto"`).
 
 .pull-left[
 ```{r intro, eval = FALSE, echo = FALSE}
@@ -166,7 +197,6 @@ decorate("intro", eval = FALSE) %>%
   flair('"#2AA198"', background = "#2AA198", color = "white")
 ```
 
-These new defaults _persist to any future plots_ (until `thematic_off()` is called).
 ]
 
 .pull-right[
@@ -213,6 +243,46 @@ decorate("fonts", eval = FALSE) %>%
 .pull-right[
 ```{r, echo = FALSE, fig.asp = 0.8}
 thematic_on(font = font_spec("Pacifico", 2))
+last_plot()
+```
+]
+
+.footnote[
+1. Requires **showtext** or **ragg** to be installed, and potential other "setup" (for details, see <https://rstudio.github.io/thematic>)
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Use `font_spec()` to control other font settings (e.g., `scale`)
+
+.pull-left[
+```{r fonts-scale, eval = FALSE, echo = FALSE}
+thematic_on(
+  bg = "#002B36", 
+  fg = "#FDF6E3", 
+  accent = "#2AA198",
+  font=font_spec("Pacifico", scale=2)
+)
+library(ggplot2)
+ggplot(mtcars, aes(wt, mpg)) + 
+  geom_point() + 
+  geom_smooth() 
+```
+
+```{r, echo = FALSE}
+decorate("fonts-scale", eval = FALSE) %>%
+  flair('"#002B36"', background = "#002B36", color = "white") %>%
+  flair('"#2AA198"', background = "#2AA198", color = "white") %>%
+  flair("scale=2")
+```
+
+]
+
+.pull-right[
+```{r, echo = FALSE, fig.asp = 0.8}
+thematic_on(font = font_spec("Pacifico", 3))
 last_plot()
 ```
 ]
@@ -648,106 +718,28 @@ image(volcano, col = thematic_get_option("sequential"))
 ```
 
 ---
-class: darkly
+class: large
 
-### [**thematic**](https://github.com/rstudio/thematic): auto theming
+## Summary
 
-Call `thematic_on()` without any arguments for auto coloring (works w/ any [**shiny** runtime](http://rstudio.github.io/thematic/articles/shiny.html) and [rmarkdown::html_document()](http://rstudio.github.io/thematic/articles/rmarkdown.html))
+* Call `thematic_on()`/`thematic_off()` to enable/disable **thematic**.
 
-```{r, echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/KewYfYq.gif")
-```
-
----
-class: darkly
-
-### [**thematic**](https://github.com/rstudio/thematic): auto theming
-
-Call `thematic_on(font = "auto")` if you know your app/document uses Google Font (or a font that R knows about).
-
-```{r, echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/yG5uTlY.gif")
-```
-
----
-class: darkly
-
-### [**thematic**](https://github.com/rstudio/thematic): auto theming
-
-Auto theming also works in RStudio ([RStudio 1.4 or higher](http://rstudio.github.io/thematic/articles/rstudio.html), which is _very_ new, and currently has [known bugs](https://github.com/rstudio/rstudio/issues/6679), is required for Google Fonts). Here is my setup with `thematic_on(font = "Fira Sans Condensed")`
-
-```{r, echo = FALSE, out.width="88%"}
-knitr::include_graphics("rstudio.png")
-```
-
----
-class: dark-mode 
-
-**thematic** resolves auto values at plot time, so it works with [**bootstraplib**'s real-time themer](https://rstudio.github.io/bootstraplib/articles/recipes.html)!
-
-```{r bootstraplib, eval = FALSE, echo = FALSE}
-library(bootstraplib)
-bs_theme_new()
-bs_theme_base_colors(bg = "#444", fg = "#e4e4e4")
-bs_theme_accent_colors(primary = "#e39777")
-thematic_on(font = "auto")
-bs_theme_preview()
-```
-
-```{r, echo = FALSE}
-decorate("bootstraplib", eval = FALSE) %>%
-  flair('"#444"', background = "#444", color = "white") %>%
-  flair('"#e4e4e4"', background = "#e4e4e4", color = "black") %>%
-  flair('"#e39777"', background = "#e39777", color = "white")
-```
-
-
-```{r, echo = FALSE}
-include_vimeo("411238499", height = "400")
-```
-
----
-class: middle, center
-
-## RStudio Cloud Demo
-
-Follow along at <https://bit.ly/thematic-cloud>
-
-<div>
-  <a href="https://rstudio.cloud/project/1208127" target="_blank">
-    <img src="thematic-cloud.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;">
-  </a>
-</div>
-
----
-## TODO
-
-* Mention `auto_preferences_set()`
-  * non-HTML **rmarkdown**
-  * Useful for more complicated projects (like this one!)
-
-* Get into `shiny::getCurrentOutputInfo()`
-  * Talk about how (htmlwidget) developers can leverage this
+* By default, `"auto"` colors are enabled...this generally works if:
+  * A **shiny** runtime is generating the plots.
+  * Plots are generated when `rmarkdown::html_document()` is rendered (this won't work with conflicting custom CSS, [but there's a workaround](https://rstudio.github.io/thematic/articles/rmarkdown.html)).
+  * Inside RStudio.
   
-* `ggplotly()`?
-
----
-## Future work
-
-This work is part of an larger initiate to enable better theming experience in **shiny**, **rmarkdown**, etc. Keep on the lookout for:
-
-* Shiny
-* R Markdown
-* DT
-* plotly
-* flexdashboard
+* Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R).
+  * For Google Fonts, you'll also need **ragg** or **showtext** installed and some other setup (see the respective [Shiny](https://rstudio.github.io/thematic/articles/shiny.html), [R Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html), and [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html) articles)
+  
+* Provide values directly to `thematic_on()` and/or `auto_defaults_set()` to customize.
 
 ---
 class: center, middle
 
 ## Thank you! Any questions?
 
-### Slides: <https://talks.cpsievert.me>
+### Slides: <https://bit.ly/thematic-talk>
 
 ### Learn more: <https://rstudio.github.io/thematic>
 

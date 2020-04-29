@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Plot theming made easieR</title>
+    <title>thematic: auto theming for ggplot2, lattice, and base R graphics</title>
     <meta charset="utf-8" />
     <meta name="author" content="Carson Sievert" />
     <script src="index_files/header-attrs-2.2.0/header-attrs.js"></script>
@@ -14,11 +14,11 @@
 
 class: middle, center
 
-# Plot theming made easieR
+# [**thematic**](https://github.com/rstudio/thematic): auto theming for **ggplot2**, **lattice**, and **base** R graphics
 
 ### Carson Sievert
 
-### Slides: https://talks.cpsievert.me  
+### Slides: https://bit.ly/thematic-talk  
 
 <i class="fab  fa-twitter "></i> [@cpsievert](https://twitter.com/cpsievert)
 
@@ -36,12 +36,11 @@ Slides released under &lt;a href='https://github.com/cpsievert/talks/blob/gh-pag
 
 
 &lt;style type="text/css"&gt;
-@import url(https://fonts.googleapis.com/css?family=Pacifico);body{font-family:Roboto Condensed}h1,h2,h3{font-family:Roboto Condensed}.remark-slide-content{background-color:#002B36;color:#FDF6E3}.remark-slide-content a{color:#2AA198}.remark-slide-content.darkly{background-color:#222;color:#FFF}.remark-slide-content.darkly a{color:#0CE3AC}.remark-slide-content.dark-mode{background-color:#444;color:#e4e4e4}.remark-slide-content.dark-mode a{color:#e39777}.remark-slide-content.lucid{background-color:#3D4752;color:#FFFFFF}
+@import url(https://fonts.googleapis.com/css?family=Pacifico);body{font-family:Roboto Condensed}h1,h2,h3{font-family:Roboto Condensed}.remark-slide-content{background-color:#002B36;color:#FDF6E3}.remark-slide-content a{color:#2AA198}.remark-slide-content.darkly{background-color:#222;color:#FFF}.remark-slide-content.darkly a{color:#0CE3AC}.remark-slide-content.dark-mode{background-color:#444;color:#e4e4e4}.remark-slide-content.dark-mode a{color:#e39777}.remark-slide-content.lucid{background-color:#3D4752;color:#FFFFFF}.remark-slide-content.large{font-size:1.5rem}.remark-slide-content.contrast{background-color:#FFFFFF;color:black}
 &lt;/style&gt;
 
 ---
-## [**thematic**](https://github.com/rstudio/thematic): automatically theme **ggplot2**, **lattice**, and **base** R graphics.
-
+## [**thematic**](https://github.com/rstudio/thematic): auto theming for **ggplot2**, **lattice**, and **base** R graphics
 
 
 Not yet on CRAN, but install it now with:
@@ -66,9 +65,36 @@ remotes::install_github("rstudio/rmarkdown#1706")
 Learn more &lt;https://rstudio.github.io/thematic/&gt;
 
 ---
+class: middle, center
+
+## RStudio Cloud Demo
+
+Visit the demo at &lt;https://bit.ly/thematic-cloud&gt;
+
+&lt;div&gt;
+  &lt;a href="https://rstudio.cloud/project/1208127" target="_blank"&gt;
+    &lt;img src="thematic-cloud.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+---
+class: large, contrast, middle
+
+## What about when auto-theming fails?
+
+* In some scenarios (e.g., non-HTML output formats in **rmarkdown**, R terminal, etc), auto-theming "fails"
+  * That is, it defaults to the usual white background + black foreground.
+  
+* There are two ways to resolve auto-theming failure:
+  * Set defaults via `auto_defaults_set()`
+  * Specify colors (and/or fonts) directly in `thematic_on()`
+  
+* Providing non-auto values to `thematic_on()`/`auto_defaults_set()` is also useful for customizing theming defaults 
+
+---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
 
-Use `thematic_on()` to opt-in in to new plotting defaults. The "main" color settings are `bg`, `fg`, `accent`.
+The main color settings are `bg`, `fg`, `accent` (they default to `"auto"`).
 
 .pull-left[
 
@@ -76,7 +102,6 @@ Use `thematic_on()` to opt-in in to new plotting defaults. The "main" color sett
 
 &lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point() + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth()&lt;/code&gt;
 
-These new defaults _persist to any future plots_ (until `thematic_off()` is called).
 ]
 
 .pull-right[
@@ -111,6 +136,28 @@ Also specify any `font` known to R or any [Google Font](https://fonts.google.com
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
 
+Use `font_spec()` to control other font settings (e.g., `scale`)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font=font_spec("Pacifico", &lt;span style='background-color:#ffff7f'&gt;scale=2&lt;/span&gt;)&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point() + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth()&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-7-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.footnote[
+1. Requires **showtext** or **ragg** to be installed, and potential other "setup" (for details, see &lt;https://rstudio.github.io/thematic&gt;)
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
 **thematic** informs `theme()` _defaults_ (i.e., plot specific code takes priority)
 
 .pull-left[
@@ -122,7 +169,7 @@ Also specify any `font` known to R or any [Google Font](https://fonts.google.com
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-7-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -140,7 +187,7 @@ Also specify any `font` known to R or any [Google Font](https://fonts.google.com
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-9-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-11-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -158,7 +205,7 @@ Uses `bg`, `fg`, `accent` to construct a new default for sequential colorscales.
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-11-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -174,7 +221,7 @@ Customize with `sequential_gradient()` (here is `fg` -&gt; `accent`)
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-15-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 .footnote[
@@ -195,7 +242,7 @@ Opt-out with `NA`.
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-15-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-17-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -212,7 +259,7 @@ Also sets qualitative colorscale defaults to [Okabe-Ito](https://jfly.uni-koeln.
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-17-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -230,7 +277,7 @@ For **ggplot2**, `qualitative` is only relevant if there are enough colors to en
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-19-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-21-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -246,7 +293,7 @@ Opt-out with `NA`
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-21-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-23-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -263,7 +310,7 @@ Opt-out with `NA`
 ]
 
 .pull-right[
-&lt;img src="index_files/figure-html/unnamed-chunk-23-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-25-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -276,7 +323,7 @@ Also **lattice** graphics:
 
 &lt;code class ='r hljs remark-code'&gt;&lt;span style='background-color:#ffff7f'&gt;lattice&lt;/span&gt;::show.settings()&lt;/code&gt;
 
-&lt;img src="index_files/figure-html/unnamed-chunk-25-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-27-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -291,7 +338,7 @@ hist(rnorm(100))
 plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-26-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-28-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
@@ -303,7 +350,7 @@ plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25)
 
 &lt;code class ='r hljs remark-code'&gt;plot(cars, main = "Stopping Distance versus Speed")&lt;br&gt;lines(stats::lowess(cars), &lt;span style='background-color:#ffff7f'&gt;col = thematic_get_option("accent")&lt;/span&gt;)&lt;/code&gt;
 
-&lt;img src="index_files/figure-html/unnamed-chunk-28-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-30-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
@@ -315,90 +362,31 @@ plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25)
 
 &lt;code class ='r hljs remark-code'&gt;par(mfrow = c(1, 2))&lt;br&gt;image(volcano)&lt;br&gt;image(volcano, &lt;span style='background-color:#ffff7f'&gt;col = thematic_get_option("sequential")&lt;/span&gt;)&lt;/code&gt;
 
-&lt;img src="index_files/figure-html/unnamed-chunk-30-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-32-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
-class: darkly
+class: large
 
-### [**thematic**](https://github.com/rstudio/thematic): auto theming
+## Summary
 
-Call `thematic_on()` without any arguments for auto coloring (works w/ any [**shiny** runtime](http://rstudio.github.io/thematic/articles/shiny.html) and [rmarkdown::html_document()](http://rstudio.github.io/thematic/articles/rmarkdown.html))
+* Call `thematic_on()`/`thematic_off()` to enable/disable **thematic**.
 
-&lt;img src="https://i.imgur.com/KewYfYq.gif" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-class: darkly
-
-### [**thematic**](https://github.com/rstudio/thematic): auto theming
-
-Call `thematic_on(font = "auto")` if you know your app/document uses Google Font (or a font that R knows about).
-
-&lt;img src="https://i.imgur.com/yG5uTlY.gif" width="100%" style="display: block; margin: auto;" /&gt;
-
----
-class: darkly
-
-### [**thematic**](https://github.com/rstudio/thematic): auto theming
-
-Auto theming also works in RStudio ([RStudio 1.4 or higher](http://rstudio.github.io/thematic/articles/rstudio.html), which is _very_ new, and currently has [known bugs](https://github.com/rstudio/rstudio/issues/6679), is required for Google Fonts). Here is my setup with `thematic_on(font = "Fira Sans Condensed")`
-
-&lt;img src="rstudio.png" width="88%" style="display: block; margin: auto;" /&gt;
-
----
-class: dark-mode 
-
-**thematic** resolves auto values at plot time, so it works with [**bootstraplib**'s real-time themer](https://rstudio.github.io/bootstraplib/articles/recipes.html)!
-
-
-
-
-&lt;code class ='r hljs remark-code'&gt;library(bootstraplib)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = &lt;span style='background-color:#444;color:white'&gt;"#444"&lt;/span&gt;, fg = &lt;span style='background-color:#e4e4e4;color:black'&gt;"#e4e4e4"&lt;/span&gt;)&lt;br&gt;bs_theme_accent_colors(primary = &lt;span style='background-color:#e39777;color:white'&gt;"#e39777"&lt;/span&gt;)&lt;br&gt;thematic_on(font = "auto")&lt;br&gt;bs_theme_preview()&lt;/code&gt;
-
-
-<iframe src="https://player.vimeo.com/video/411238499?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
----
-class: middle, center
-
-## RStudio Cloud Demo
-
-Follow along at &lt;https://bit.ly/thematic-cloud&gt;
-
-&lt;div&gt;
-  &lt;a href="https://rstudio.cloud/project/1208127" target="_blank"&gt;
-    &lt;img src="thematic-cloud.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"&gt;
-  &lt;/a&gt;
-&lt;/div&gt;
-
----
-## TODO
-
-* Mention `auto_preferences_set()`
-  * non-HTML **rmarkdown**
-  * Useful for more complicated projects (like this one!)
-
-* Get into `shiny::getCurrentOutputInfo()`
-  * Talk about how (htmlwidget) developers can leverage this
+* By default, `"auto"` colors are enabled...this generally works if:
+  * A **shiny** runtime is generating the plots.
+  * Plots are generated when `rmarkdown::html_document()` is rendered (this won't work with conflicting custom CSS, [but there's a workaround](https://rstudio.github.io/thematic/articles/rmarkdown.html)).
+  * Inside RStudio.
   
-* `ggplotly()`?
-
----
-## Future work
-
-This work is part of an larger initiate to enable better theming experience in **shiny**, **rmarkdown**, etc. Keep on the lookout for:
-
-* Shiny
-* R Markdown
-* DT
-* plotly
-* flexdashboard
+* Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R).
+  * For Google Fonts, you'll also need **ragg** or **showtext** installed and some other setup (see the respective [Shiny](https://rstudio.github.io/thematic/articles/shiny.html), [R Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html), and [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html) articles)
+  
+* Provide values directly to `thematic_on()` and/or `auto_defaults_set()` to customize.
 
 ---
 class: center, middle
 
 ## Thank you! Any questions?
 
-### Slides: &lt;https://talks.cpsievert.me&gt;
+### Slides: &lt;https://bit.ly/thematic-talk&gt;
 
 ### Learn more: &lt;https://rstudio.github.io/thematic&gt;
 
