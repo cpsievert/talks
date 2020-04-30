@@ -11,26 +11,29 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
 thematic_on()
 last_plot()
 
-plotly::ggplotly()
+# Let's change the RStudio theme and re-plot...
+# thematic picks up on the changes!
+rstudioapi::applyTheme("Tomorrow Night Bright")
+last_plot()
 
-# Now any future plot will be themed
+# Base plots are also auto-themed
 hist(rnorm(100))
 
 # Until we turn it off 
 thematic_off()
 
-# No longer themed
+# Until they're not
 hist(rnorm(100))
 
-# Have you ever styled a shiny app and wish your R plots reflected that styling?
+# Without thematic, R plots won't reflect the app's CSS styles :(
 runApp("apps/01")
 
-# Now you can!
+# ...but they will with thematic! :)
 thematic_on()
 runApp("apps/01")
 
 
-# Also, if your app uses a Google Font, and you want R plots to use that same font...
+# If the app uses a Google Font, and you want R plots to use that same font...
 thematic_on(font = "auto")
 runApp("apps/02")
 
@@ -38,9 +41,12 @@ runApp("apps/02")
 # (try changing the background/foreground/primary/font)
 library(bootstraplib)
 bs_theme_new()
+bs_theme_base_colors(bg = "#0C0C0C", fg = "#E4E4E4")
+bs_theme_accent_colors(primary = "#e39777")
+bs_theme_fonts("Roboto Condensed")
 bs_theme_preview()
 
 
 # auto theming in rmarkdown::html_document()
+# (press Knit after opening to see the result)
 file.edit("reports/darkly.Rmd")
-file.edit("reports/superhero.Rmd")
