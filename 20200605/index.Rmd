@@ -183,7 +183,7 @@ class: contrast
 
 ### A big problem: R plots are unaware of CSS
 
-<img src="cranwhales.svg" width="85%" />
+<img src="cranwhales.svg" width="88%" />
 
 ---
 class: contrast
@@ -191,7 +191,7 @@ class: contrast
 ### ...but they can be with thematic's auto-theming!
 
 <div align="center">
-  <img src="cranwhales-themed.png" width="73%" />
+  <img src="cranwhales-themed.png" width="72%" />
 </div>
 
 ---
