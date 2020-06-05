@@ -195,6 +195,24 @@ class: contrast
 </div>
 
 ---
+class: contrast
+
+### Another problem: R plots are unaware of RStudio themes
+
+<div align="center">
+  <img src="rstudio.png" width="100%">
+</div>
+
+---
+class: contrast
+
+### ...but they can be with thematic's auto-theming!
+
+<div align="center">
+  <img src="rstudio-thematic.png" width="100%">
+</div>
+
+---
 class: middle, center
 
 ## RStudio Cloud Demo
@@ -213,12 +231,15 @@ class: large, contrast, middle
 
 ## When should I use auto-theming?
 
-* Auto theming is "guaranteed" to work in a **shiny** runtime.
+* Best used in a **shiny** runtime.
+  * Works regardless of _how_ you style the page.
 
-* Some other scenarios where it _can_ work:
-  * A `rmarkdown::html_document()`.
-  * In RStudio's plot viewer pane.
-  * Auto value "defaults" are set via `auto_config_set()`
+* Some other scenarios where it can work:
+    * In RStudio's plot viewer pane
+    * In `rmarkdown::html_document()`
+        * Use **bootstraplib**, not inline CSS, to style the page
+    * Auto value "defaults" are provided via `auto_config_set()`
+        * Useful for custom non-HTML output formats
 
 * When auto-theming "fails", it defaults to the usual white background + black foreground.
   
