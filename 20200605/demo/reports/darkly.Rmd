@@ -1,20 +1,21 @@
 ---
 title: "Thematic demo"
 output: 
-  html_document:
-    theme: darkly
+  html_document
 ---
 
 ```{r setup, include=FALSE}
-thematic::thematic_on(font = "Pacifico")
-knitr::opts_chunk$set(dev = "svg")
+library(bootstraplib)
+bs_theme_base_colors(bg = "black", fg = "white")
+bs_theme_accent_colors(primary = "salmon")
+thematic::thematic_rmd()
 ```
 
 ## {.tabset .tabset-pills}
 
 ### ggplot2 
 
-```{r, message=FALSE}
+```{r, message=FALSE, echo = FALSE}
 library(ggplot2)
 ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
   geom_point(alpha = 0.2) +
@@ -24,13 +25,13 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
 
 ### Lattice 
 
-```{r}
+```{r echo = FALSE}
 lattice::show.settings()
 ```
 
 ### Base
 
-```{r}
+```{r echo = FALSE}
 pairs(
   iris[,1:4], pch = 19, 
   col = iris$Species, lower.panel = NULL

@@ -416,32 +416,37 @@ plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25)
 &lt;img src="index_files/figure-html/unnamed-chunk-32-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
-class: contrast, middle, center
+class: contrast
 
-## Future work
+## Future work for thematic
 
-* Get **thematic** to play nicely with "complete" **ggplot2** themes (e.g., `theme_minimal()`, `ggthemes::theme_tufte()`, ).
+* Get **thematic** to play nicely with "complete" **ggplot2** themes (e.g., `theme_minimal()`, `ggthemes::theme_tufte()`, `ggthemes::theme_fivethirtyeight()`, etc).
 
 * Get `plotly::ggplotly()` (and maybe `plotly::plot_ly()`) playing nicely with **thematic**.
+
+* Documentation improvements
 
 * Submit to CRAN
 
 ---
 class: large
 
-## Summary
+### Summary
 
-* Call `thematic_on()`/`thematic_off()` to enable/disable **thematic**.
+* `thematic_on()` (and `thematic_off()`) to use **thematic** in a global fashion
 
-* By default, `"auto"` colors are enabled...this generally works if:
-  * A **shiny** runtime is generating the plots.
-  * Inside `rmarkdown::html_document()`.
-  * Inside RStudio.
+* `thematic_shiny()`/`thematic_rmd()` to use globally for a particular **shiny** app or **rmarkdown** document
+
+* Check out `thematic_with_theme()` to use **thematic** in a local fashion
+
+* By default, `"auto"` colors are enabled...this generally works when:
+  * A **shiny** runtime is generating the plots
+  * Inside `rmarkdown::html_document()` (custom styling should to be done via **bootstraplib**, not inline CSS)
+  * Inside RStudio
   
-* Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R).
-  * For Google Fonts, you'll also need **ragg** or **showtext** installed and some other setup (see the respective [Shiny](https://rstudio.github.io/thematic/articles/shiny.html), [R Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html), and [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html) articles)
+* Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R)
   
-* Provide values directly to `thematic_on()` and/or `auto_config_set()` if auto-theming fails to do what you expect.
+* If auto-theming "fails", provide non-auto values directly to `thematic_on()` and/or `auto_config_set()`
 
 ---
 class: center, middle

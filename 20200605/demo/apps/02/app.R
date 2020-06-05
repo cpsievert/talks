@@ -2,6 +2,8 @@ library(shiny)
 library(ggplot2)
 library(thematic)
 
+thematic_shiny(font = "auto")
+
 shinyApp(
   ui = fluidPage(
     tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet"),
