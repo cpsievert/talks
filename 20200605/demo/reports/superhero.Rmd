@@ -1,0 +1,38 @@
+---
+title: "Thematic demo"
+output: 
+  html_document:
+    theme: superhero
+---
+
+```{r setup, include=FALSE}
+thematic::thematic_on()
+knitr::opts_chunk$set(dev = "svg")
+```
+
+## {.tabset .tabset-pills}
+
+### ggplot2 
+
+```{r, message=FALSE}
+library(ggplot2)
+ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
+```
+
+### Lattice 
+
+```{r}
+lattice::show.settings()
+```
+
+### Base
+
+```{r}
+pairs(
+  iris[,1:4], pch = 19, 
+  col = iris$Species, lower.panel = NULL
+)
+```
