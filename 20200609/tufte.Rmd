@@ -1,0 +1,31 @@
+---
+title: "Tufte Handout"
+output: tufte::tufte_html
+---
+
+```{r setup, include=FALSE}
+ggplot2::theme_set(ggthemes::theme_tufte())
+thematic::thematic_on(
+  bg = "#FFFFF8", fg = "#111111", 
+  accent = "#DD1144", font = "Merriweather"
+)
+```
+
+Diamonds carat versus price by cut
+
+```{r, message=FALSE, echo = FALSE}
+library(ggplot2)
+ggplot(diamonds, aes(carat, price)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_wrap(~cut)
+```
+
+Car weight versus miles per gallon
+
+```{r echo = FALSE}
+ggplot(mtcars, aes(wt, mpg)) +
+  ggrepel::geom_text_repel(
+    aes(color = factor(cyl), label = row.names(mtcars))
+  )
+```

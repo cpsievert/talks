@@ -26,16 +26,8 @@ class: middle, center
 
 ### Slides: https://bit.ly/thematic-show-tell
 
-`r icon::fa_twitter()` [@cpsievert](https://twitter.com/cpsievert)
+### Website: <https://rstudio.github.io/thematic/>
 
-`r icon::fa_github()` [@cpsievert](https://github.com/cpsievert)
-
-`r icon::fa_globe()` [cpsievert.me](https://cpsievert.me) 
-
-
-.footnote[
-Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
-]
 
 
 ```{r setup, echo = FALSE, message = FALSE}
@@ -143,8 +135,6 @@ For auto-theming in **rmarkdown**, you'll currently need:
 remotes::install_github("rstudio/rmarkdown#1706")
 ```
 
-#### Learn more <https://rstudio.github.io/thematic/>
-
 
 ---
 class: contrast
@@ -162,6 +152,16 @@ class: contrast
   <img src="cranwhales-darkly.png" width="82%" />
 </div>
 
+---
+class: contrast
+
+### Solution: `thematic::thematic_on()`
+
+<div align="right">
+  <img src="cranwhales-darkly.png" width="82%" />
+</div>
+
+
 
 ---
 class: contrast
@@ -172,29 +172,19 @@ class: contrast
   <img src="cranwhales-darkly-thematic.png" width="82%" />
 </div>
 
-
 ---
 class: contrast
 
-### `shinythemes::shinytheme("superhero")`
+### Works with _any_ HTML/CSS
 
 <div align="right">
-  <img src="cranwhales-superhero.png" width="82%" />
+  <img src="cranwhales-darkly-thematic.png" width="82%" />
 </div>
 
 ---
 class: contrast
 
-### Works with _any_ HTML/CSS styling in **shiny**
-
-<div align="right">
-  <img src="cranwhales-custom.png" width="82%" />
-</div>
-
----
-class: contrast
-
-#### Custom styling with **bootstraplib**!
+### Write custom CSS in R with **bootstraplib**!
 
 <div align="center">
   <img src="cranwhales-custom-code.svg" width="100%" />
@@ -212,14 +202,50 @@ class: contrast
 ---
 class: contrast
 
-### Works with any **shiny** runtime and/or `html_document()`
+### Can even work w/ `html_document()` (independent of **shiny**)
 
 <img src="html-document.svg" width="100%" />
 
 ---
 class: contrast
 
+### What about non-HTML documents?
+
+<div align="center">
+  <img src="tufte.svg" width="90%" />
+</div>
+
+---
+class: contrast
+
+### Provide colors & fonts to `thematic_on()`
+
+<div align="center">
+  <img src="tufte-thematic.svg" width="100%" />
+</div>
+
+---
+class: contrast
+
+### Can also work with complete ggplot2 themes!
+
+<div align="center">
+  <img src="tufte-thematic-ggthemes.svg" width="95%" />
+</div>
+
+---
+class: contrast
+
 ### Problem: R plots know nothing about RStudio themes ...😞
+
+<div align="center">
+  <img src="rstudio.png" width="100%">
+</div>
+
+---
+class: contrast
+
+### Solution: `thematic::thematic_on()`
 
 <div align="center">
   <img src="rstudio.png" width="100%">
@@ -239,9 +265,10 @@ class: large
 
 ### Summary
 
-* `thematic_on()` (and `thematic_off()`) to use **thematic** in a global fashion
+* Call `thematic_on()` to make your R plots CSS/theme aware in **shiny**, **rmarkdown**, and RStudio! 🎉 
 
-* `thematic_shiny()`/`thematic_rmd()` to use globally for a particular **shiny** app or **rmarkdown** document
+* If auto-theming doesn't work for you, provide colors & fonts to `thematic_on()`
+  * Any [Google Font](https://fonts.google.com/) works "out-of-the-box" (no install needed)
 
 ---
 class: center, middle
@@ -256,11 +283,5 @@ class: center, middle
 
 `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
 `r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
-`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
 `r icon::fa_globe()` <https://cpsievert.me/>
-
-
-.footnote[
-Slides made possible thanks to [**xaringan**](https://github.com/yihui/xaringan) and [**flair**](https://github.com/kbodwin/flair)
-]
 

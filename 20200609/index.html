@@ -20,16 +20,8 @@ class: middle, center
 
 ### Slides: https://bit.ly/thematic-show-tell
 
-<i class="fab  fa-twitter "></i> [@cpsievert](https://twitter.com/cpsievert)
+### Website: &lt;https://rstudio.github.io/thematic/&gt;
 
-<i class="fab  fa-github "></i> [@cpsievert](https://github.com/cpsievert)
-
-<i class="fas  fa-globe "></i> [cpsievert.me](https://cpsievert.me) 
-
-
-.footnote[
-Slides released under &lt;a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'&gt;Creative Commons&lt;/a&gt;
-]
 
 
 
@@ -61,8 +53,6 @@ For auto-theming in **rmarkdown**, you'll currently need:
 remotes::install_github("rstudio/rmarkdown#1706")
 ```
 
-#### Learn more &lt;https://rstudio.github.io/thematic/&gt;
-
 
 ---
 class: contrast
@@ -80,6 +70,16 @@ class: contrast
   &lt;img src="cranwhales-darkly.png" width="82%" /&gt;
 &lt;/div&gt;
 
+---
+class: contrast
+
+### Solution: `thematic::thematic_on()`
+
+&lt;div align="right"&gt;
+  &lt;img src="cranwhales-darkly.png" width="82%" /&gt;
+&lt;/div&gt;
+
+
 
 ---
 class: contrast
@@ -90,29 +90,19 @@ class: contrast
   &lt;img src="cranwhales-darkly-thematic.png" width="82%" /&gt;
 &lt;/div&gt;
 
-
 ---
 class: contrast
 
-### `shinythemes::shinytheme("superhero")`
+### Works with _any_ HTML/CSS
 
 &lt;div align="right"&gt;
-  &lt;img src="cranwhales-superhero.png" width="82%" /&gt;
+  &lt;img src="cranwhales-darkly-thematic.png" width="82%" /&gt;
 &lt;/div&gt;
 
 ---
 class: contrast
 
-### Works with _any_ HTML/CSS styling in **shiny**
-
-&lt;div align="right"&gt;
-  &lt;img src="cranwhales-custom.png" width="82%" /&gt;
-&lt;/div&gt;
-
----
-class: contrast
-
-#### Custom styling with **bootstraplib**!
+### Write custom CSS in R with **bootstraplib**!
 
 &lt;div align="center"&gt;
   &lt;img src="cranwhales-custom-code.svg" width="100%" /&gt;
@@ -130,14 +120,50 @@ class: contrast
 ---
 class: contrast
 
-### Works with any **shiny** runtime and/or `html_document()`
+### Can even work w/ `html_document()` (independent of **shiny**)
 
 &lt;img src="html-document.svg" width="100%" /&gt;
 
 ---
 class: contrast
 
+### What about non-HTML documents?
+
+&lt;div align="center"&gt;
+  &lt;img src="tufte.svg" width="90%" /&gt;
+&lt;/div&gt;
+
+---
+class: contrast
+
+### Provide colors &amp; fonts to `thematic_on()`
+
+&lt;div align="center"&gt;
+  &lt;img src="tufte-thematic.svg" width="100%" /&gt;
+&lt;/div&gt;
+
+---
+class: contrast
+
+### Can also work with complete ggplot2 themes!
+
+&lt;div align="center"&gt;
+  &lt;img src="tufte-thematic-ggthemes.svg" width="95%" /&gt;
+&lt;/div&gt;
+
+---
+class: contrast
+
 ### Problem: R plots know nothing about RStudio themes ...😞
+
+&lt;div align="center"&gt;
+  &lt;img src="rstudio.png" width="100%"&gt;
+&lt;/div&gt;
+
+---
+class: contrast
+
+### Solution: `thematic::thematic_on()`
 
 &lt;div align="center"&gt;
   &lt;img src="rstudio.png" width="100%"&gt;
@@ -157,9 +183,10 @@ class: large
 
 ### Summary
 
-* `thematic_on()` (and `thematic_off()`) to use **thematic** in a global fashion
+* Call `thematic_on()` to make your R plots CSS/theme aware in **shiny**, **rmarkdown**, and RStudio! 🎉 
 
-* `thematic_shiny()`/`thematic_rmd()` to use globally for a particular **shiny** app or **rmarkdown** document
+* If auto-theming doesn't work for you, provide colors &amp; fonts to `thematic_on()`
+  * Any [Google Font](https://fonts.google.com/) works "out-of-the-box" (no install needed)
 
 ---
 class: center, middle
@@ -174,13 +201,7 @@ class: center, middle
 
 <i class="fab  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
 <i class="fab  fa-github "></i> &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
-<i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
 <i class="fas  fa-globe "></i> &lt;https://cpsievert.me/&gt;
-
-
-.footnote[
-Slides made possible thanks to [**xaringan**](https://github.com/yihui/xaringan) and [**flair**](https://github.com/kbodwin/flair)
-]
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
