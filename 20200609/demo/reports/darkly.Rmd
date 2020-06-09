@@ -1,0 +1,41 @@
+---
+title: "Thematic demo"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(bootstraplib)
+bs_theme_base_colors(
+  bg = "black", fg = "white"
+
+)
+bs_theme_accent_colors(primary = "salmon")
+thematic::thematic_on()
+```
+
+## {.tabset .tabset-pills}
+
+### ggplot2 
+
+```{r, message=FALSE, echo = FALSE}
+library(ggplot2)
+ggplot(diamonds, aes(carat, price)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth() +
+  facet_wrap(~cut)
+```
+
+### Lattice 
+
+```{r echo = FALSE}
+lattice::show.settings()
+```
+
+### Base
+
+```{r echo = FALSE}
+pairs(
+  iris[,1:4], pch = 19, 
+  col = iris$Species, lower.panel = NULL
+)
+```

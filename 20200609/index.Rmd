@@ -1,0 +1,266 @@
+---
+title: "thematic: plot theming made easieR"
+venue: "RStudio work week show & tell"
+type: "invited"
+recording: "none"
+output:
+  xaringan::moon_reader:
+    chakra: "../templates/remarkjs/libs/remark-latest.min.js"
+    seal: false
+    nature:
+      # approx the golden ratio
+      ratio: '14.6:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      navigation:
+        scroll: false
+author: "Carson Sievert"
+date: ""
+---
+class: middle, center
+
+# thematic: plot theming made easieR
+
+### Carson Sievert
+
+### Slides: https://bit.ly/thematic-show-tell
+
+`r icon::fa_twitter()` [@cpsievert](https://twitter.com/cpsievert)
+
+`r icon::fa_github()` [@cpsievert](https://github.com/cpsievert)
+
+`r icon::fa_globe()` [cpsievert.me](https://cpsievert.me) 
+
+
+.footnote[
+Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
+]
+
+
+```{r setup, echo = FALSE, message = FALSE}
+library(thematic)
+library(ggplot2)
+library(lattice)
+library(flair)
+knitr::opts_chunk$set(
+  message = FALSE,
+  comment = "#>",
+  collapse = TRUE,
+  fig.align = "center",
+  out.width = "100%",
+  fig.asp = 1,
+  #cache = TRUE,
+  #fig.retina = 2,
+  dev = "svg"
+)
+include_vimeo <- function(id, width = "100%", height = "450") {
+  url <- sprintf("https://player.vimeo.com/video/%s?title=0&byline=0&portrait=0", id)
+  htmltools::tags$iframe(
+    src = url,
+    width = width,
+    height = height,
+    frameborder = "0",
+    seamless = "seamless",
+    webkitAllowFullScreen = NA,
+    mozallowfullscreen = NA,
+    allowFullScreen = NA
+  )
+}
+auto_config_set(auto_config(
+  bg = "#002B36", fg = "#FDF6E3", 
+  accent = "#2AA198", 
+  # 2 is better for non-ragg
+  font = font_spec("Roboto Condensed", 2)
+))
+```
+
+```{scss, echo = FALSE}
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+body {
+  font-family: Roboto Condensed;
+}
+h1, h2, h3 {
+  font-family: Roboto Condensed;
+}
+.remark-slide-content {
+  background-color: #002B36;
+  color: #FDF6E3;
+  a {
+    color: #2AA198;
+  }
+  &.darkly {
+    background-color: #222;
+    color: #FFF;
+    a {
+      color: #0CE3AC;
+    }
+  }
+  &.dark-mode {
+    background-color:  #444;
+    color: #e4e4e4;
+    a {
+      color: #e39777;
+    }
+  }
+  
+  &.lucid {
+    background-color: #3D4752;
+    color: #FFFFFF;
+  }
+  
+  &.large {
+    font-size: 1.5rem
+  }
+  
+  &.contrast {
+    background-color: #FFFFFF;
+    color: black;
+  }
+}
+```
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming for **ggplot2**, **lattice**, and **base** R graphics
+
+
+Not yet on CRAN, but install it now with:
+
+```r
+remotes::install_github("rstudio/thematic")
+library(thematic)
+```
+
+For auto-theming in **shiny**, you'll currently need:
+
+```r
+remotes::install_github("rstudio/shiny")
+```
+
+For auto-theming in **rmarkdown**, you'll currently need:
+
+```r
+remotes::install_github("rstudio/rmarkdown#1706")
+```
+
+#### Learn more <https://rstudio.github.io/thematic/>
+
+
+---
+class: contrast
+
+### Problem: R plots know nothing about CSS
+
+<img src="cranwhales.svg" width="100%" />
+
+---
+class: contrast
+
+### `shinythemes::shinytheme("darkly")` ... 😞
+
+<div align="right">
+  <img src="cranwhales-darkly.png" width="82%" />
+</div>
+
+
+---
+class: contrast
+
+### Solution: `thematic::thematic_on()` ...🎉
+
+<div align="right">
+  <img src="cranwhales-darkly-thematic.png" width="82%" />
+</div>
+
+
+---
+class: contrast
+
+### `shinythemes::shinytheme("superhero")`
+
+<div align="right">
+  <img src="cranwhales-superhero.png" width="82%" />
+</div>
+
+---
+class: contrast
+
+### Works with _any_ HTML/CSS styling in **shiny**
+
+<div align="right">
+  <img src="cranwhales-custom.png" width="82%" />
+</div>
+
+---
+class: contrast
+
+#### Custom styling with **bootstraplib**!
+
+<div align="center">
+  <img src="cranwhales-custom-code.svg" width="100%" />
+</div>
+
+---
+class: contrast
+
+### Realtime-theming with **bootstraplib**
+
+<div align="center">
+  <img src="realtime-theming.gif" width="100%" />
+</div>
+
+---
+class: contrast
+
+### Works with any **shiny** runtime and/or `html_document()`
+
+<img src="html-document.svg" width="100%" />
+
+---
+class: contrast
+
+### Problem: R plots know nothing about RStudio themes ...😞
+
+<div align="center">
+  <img src="rstudio.png" width="100%">
+</div>
+
+---
+class: contrast
+
+### Solution: `thematic::thematic_on()` ...🎉
+
+<div align="center">
+  <img src="rstudio-thematic.png" width="100%">
+</div>
+
+---
+class: large
+
+### Summary
+
+* `thematic_on()` (and `thematic_off()`) to use **thematic** in a global fashion
+
+* `thematic_shiny()`/`thematic_rmd()` to use globally for a particular **shiny** app or **rmarkdown** document
+
+---
+class: center, middle
+
+## Thank you!
+
+### Slides: <https://bit.ly/thematic-show-tell>
+
+### Learn more: <https://rstudio.github.io/thematic>
+
+#### Contact
+
+`r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
+`r icon::fa_envelope()` <cpsievert1@gmail.com> <br />
+`r icon::fa_globe()` <https://cpsievert.me/>
+
+
+.footnote[
+Slides made possible thanks to [**xaringan**](https://github.com/yihui/xaringan) and [**flair**](https://github.com/kbodwin/flair)
+]
+
