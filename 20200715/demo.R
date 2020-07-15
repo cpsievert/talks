@@ -3,7 +3,7 @@ library(bootstraplib)
 library(shiny)
 library(plotly)
 
-# Notice how each theme change generates R code to reproduce it
+# Each theme change generates R code to reproduce it
 thematic_shiny(font = "auto")
 bs_theme_preview()
 
@@ -15,20 +15,52 @@ p <- ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
 
 p
 
-# Enable auto coloring 'globally'
+# Enables auto coloring for _every future plot_
 thematic_on()
 p
 
-# Bonus: also works with ggplotly()
-ggplotly(p)
-
-# Let's change the RStudio theme and re-plot...
-# thematic picks up on the changes!
+# Change the RStudio theme and re-plot...
 rstudioapi::applyTheme("Tomorrow Night 80s")
 p
 
 rstudioapi::applyTheme("Tomorrow Night Bright")
 p
+
+# thematic can also work with different 
+theme_set(theme_minimal())
+p
+
+# even more minimal
+theme_set(ggthemes::theme_tufte())
+p
+
+# go back to the default
+theme_set(theme_gray())
+p
+
+
+
+# Works with lattice graphics
+xyplot(
+  decrease ~ treatment, OrchardSprays, groups = rowpos,
+  type = "a", auto.key = list(space = "right", points = FALSE, lines = TRUE)
+)
+
+# Base graphics
+plot(1:10, 1:10)
+
+# And also ggplotly()!
+ggplotly(p)
+
+
+# Note that all variants of thematic_on() have a handful of controls...
+?thematic_on
+
+# Main colors default to 'auto', but you can also specify them
+# (more on this later)
+thematic_on(bg = "darkblue", fg = "skyblue", accent = "orange")
+p
+
 
 # To disable thematic
 thematic_off()

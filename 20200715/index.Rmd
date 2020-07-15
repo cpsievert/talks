@@ -409,24 +409,26 @@ class: contrast
 .panelset[
 
 .panel[.panel-name[Code]
-```{r flatly2, eval = FALSE, echo = FALSE}
+```{r solar, eval = FALSE, echo = FALSE}
 library(shiny)
 library(bootstraplib)
 shinyOptions(bootstraplib = TRUE)
-bs_theme_new(bootswatch = "flatly")
+bs_theme_new(bootswatch = "solar")
 ui <- navbarPage("Theming demo app", ...)
 ```
 
 ```{r, echo = FALSE}
-decorate("flatly2", eval = FALSE) %>%
-  flair('bootswatch = "flatly"') 
+decorate("solar", eval = FALSE) %>%
+  flair('bootswatch = "solar"') 
 ```
+
+Meaning you can use a Bootstrap 4 only theme (e.g., solar, [sketchy](https://bootswatch.com/sketchy), [minty](https://bootswatch.com/minty), etc)
 
 ]
 
 .panel[.panel-name[Result]
 
-![](flatly.png)
+![](solar.png)
 
 ]
 
@@ -607,7 +609,7 @@ decorate("custom-thematic", eval = FALSE) %>%
 
 * __thematic__'s [auto-theming](https://rstudio.github.io/thematic/articles/auto.html) essentially translates CSS styles into new R defaults. It works:
   * Regardless of _how_ you style the Shiny app
-  * With RStudio and R Markdown (if styling is done via **bootstraplib**)
+  * With RStudio and R Markdown (although, custom CSS styles must come from **bootstraplib**)
 ]
 ]
 
@@ -615,7 +617,7 @@ decorate("custom-thematic", eval = FALSE) %>%
 ---
 class: contrast
 
-### Can also detect and render custom fonts! 🎉 
+### Auto colors _and fonts_! 🎉 
 
 .panelset[
 
@@ -659,7 +661,7 @@ Works as long as either:
 ---
 class: contrast
 
-### 'Real-time' theming
+### Now, with bootstraplib's 'real-time' themer ✨ 
 
 .panelset[
 
@@ -694,19 +696,24 @@ decorate("preview", eval = FALSE) %>%
 ]
 ]
 
-
----
-class: contrast
-
-### Styling R Markdown's `html_document()`
-
-<img src="html-document.svg" width="100%" >
-
-
 ---
 class: middle, center
 
 # Demo
+
+---
+class: contrast
+
+### 'Auto-theming' in R Markdown's `html_document()`
+
+<img src="html-document.svg" width="100%" >
+
+---
+class: contrast
+
+### 'Custom-theming' in other output formats
+
+<img src="tufte.svg" width="100%" >
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots

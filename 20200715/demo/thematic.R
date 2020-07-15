@@ -13,8 +13,7 @@ p
 
 # Bonus: also works with ggplotly()
 ggplotly(p)
-
-
+  
 # Let's change the RStudio theme and re-plot...
 # thematic picks up on the changes!
 rstudioapi::applyTheme("Tomorrow Night 80s")
@@ -41,7 +40,4 @@ runApp("apps/01")
 plot(1:10)
 
 
-# Notice how each change generate R code to reproduce the change
-library(bootstraplib)
-thematic_shiny(font = "auto")
-bs_theme_preview()
+

@@ -285,13 +285,15 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;bootswatch = "flatly"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;bootswatch = "solar"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+
+Meaning you can use a Bootstrap 4 only theme (e.g., solar, [sketchy](https://bootswatch.com/sketchy), [minty](https://bootswatch.com/minty), etc)
 
 ]
 
 .panel[.panel-name[Result]
 
-![](flatly.png)
+![](solar.png)
 
 ]
 
@@ -429,7 +431,7 @@ class: contrast
 
 * __thematic__'s [auto-theming](https://rstudio.github.io/thematic/articles/auto.html) essentially translates CSS styles into new R defaults. It works:
   * Regardless of _how_ you style the Shiny app
-  * With RStudio and R Markdown (if styling is done via **bootstraplib**)
+  * With RStudio and R Markdown (although, custom CSS styles must come from **bootstraplib**)
 ]
 ]
 
@@ -437,7 +439,7 @@ class: contrast
 ---
 class: contrast
 
-### Can also detect and render custom fonts! 🎉 
+### Auto colors _and fonts_! 🎉 
 
 .panelset[
 
@@ -466,7 +468,7 @@ Works as long as either:
 ---
 class: contrast
 
-### 'Real-time' theming
+### Now, with bootstraplib's 'real-time' themer ✨ 
 
 .panelset[
 
@@ -490,22 +492,24 @@ class: contrast
 ]
 ]
 
-
----
-class: contrast
-
-### Styling R Markdown's `html_document()`
-
-&lt;img src="html-document.svg" width="100%" &gt;
-
-
 ---
 class: middle, center
 
 # Demo
 
-Follow along on RStudio Cloud &lt;https://bit.ly/thematic-cloud&gt;
+---
+class: contrast
 
+### 'Auto-theming' in R Markdown's `html_document()`
+
+&lt;img src="html-document.svg" width="100%" &gt;
+
+---
+class: contrast
+
+### 'Custom-theming' in other output formats
+
+&lt;img src="tufte.svg" width="100%" &gt;
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
