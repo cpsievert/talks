@@ -1,5 +1,5 @@
 ---
-title: "thematic: plot theming made easieR"
+title: "Styling Shiny & R Markdown with bootstraplib & thematic"
 venue: "noRth conference"
 type: "invited"
 recording: "none"
@@ -20,9 +20,9 @@ date: ""
 ---
 class: middle, center
 
-# thematic: plot theming made easieR
+# Styling Shiny & R Markdown with bootstraplib & thematic
 
-### Carson Sievert
+### Carson Sievert, Software Engineer @ RStudio
 
 ### Slides: https://bit.ly/noRth2020
 
@@ -34,10 +34,6 @@ class: middle, center
 
 `r icon::fa_envelope()` <cpsievert1@gmail.com> 
 
-
-.footnote[
-Slides released under <a href='https://github.com/cpsievert/talks/blob/gh-pages/LICENSE'>Creative Commons</a>
-]
 
 
 ```{r setup, echo = FALSE, message = FALSE}
@@ -69,6 +65,10 @@ include_vimeo <- function(id, width = "100%", height = "450") {
     allowFullScreen = NA
   )
 }
+xaringanExtra::use_panelset()
+xaringanExtra::style_panelset(
+  panel_tab_font_family = "Fira Code, Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace"
+)
 auto_config_set(auto_config(
   bg = "#002B36", fg = "#FDF6E3", 
   accent = "#2AA198", 
@@ -78,12 +78,12 @@ auto_config_set(auto_config(
 ```
 
 ```{scss, echo = FALSE}
-@import url(https://fonts.googleapis.com/css?family=Pacifico);
+@import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans);
 body {
-  font-family: Roboto Condensed;
+  font-family: IBM Plex Sans;
 }
 h1, h2, h3 {
-  font-family: Roboto Condensed;
+  font-family: IBM Plex Sans;
 }
 .remark-slide-content {
   background-color: #002B36;
@@ -118,97 +118,45 @@ h1, h2, h3 {
   &.contrast {
     background-color: #FFFFFF;
     color: black;
+    a {
+      color: #74AADB;
+    }
   }
 }
 ```
 
 ---
-## [**thematic**](https://github.com/rstudio/thematic): simplified theming for **ggplot2**, **lattice**, and **base** R graphics
+class: contrast, large
 
+## New tools for styling Shiny & R Markdown
 
-Not yet on CRAN, but install it now with:
+__bootstraplib__: tools for styling HTML from R (e.g., Shiny apps, `rmarkdown::html_document()`, etc)
+
+```r
+remotes::install_github("rstudio/bootstraplib")
+```
+
+__thematic__: simplified theming of R plots (e.g., **ggplot2**, **lattice**, **base**)
 
 ```r
 remotes::install_github("rstudio/thematic")
-library(thematic)
 ```
 
-For auto-theming in **shiny**, you'll currently need:
+.footnote[
+Documentation:
 
-```r
-remotes::install_github("rstudio/shiny")
-```
-
-For auto-theming in **rmarkdown**, you'll currently need:
-
-```r
-remotes::install_github("rstudio/rmarkdown#1706")
-```
-
-#### Learn more <https://rstudio.github.io/thematic/>
+<https://rstudio.github.io/bootstraplib> <br/>
+<https://rstudio.github.io/thematic>
+]
 
 ---
 class: contrast
 
-### R graphics can be made interactive w/ **shiny** (and/or **plotly**)!
+## Running code examples
 
-<div align="center">
-  <img src="isee.gif" width="95%" />
-</div>
+#### <span style="color:red">WARNING: much of this is a work-in-progress and may change!</span>
 
-#### <https://shiny.rstudio.com/gallery/isee.html>
-
----
-class: contrast
-
-### Another example 
-
-<div align="center">
-  <img src="ames-explorer.gif" width="95%" />
-</div>
-
-#### <https://github.com/rpodcast/ames_explorer>
-
----
-class: contrast
-
-### A big problem: R plots are unaware of CSS
-
-<img src="cranwhales.svg" width="88%" />
-
----
-class: contrast
-
-### ...but they can be with thematic's auto-theming!
-
-<div align="center">
-  <img src="cranwhales-themed.png" width="72%" />
-</div>
-
----
-class: contrast
-
-### Another problem: R plots are unaware of RStudio themes
-
-<div align="center">
-  <img src="rstudio.png" width="100%">
-</div>
-
----
-class: contrast
-
-### ...but they can be with thematic's auto-theming!
-
-<div align="center">
-  <img src="rstudio-thematic.png" width="100%">
-</div>
-
----
-class: middle, center
-
-## RStudio Cloud Demo
-
-Visit the demo at <https://bit.ly/thematic-cloud>
+On RStudio Cloud (<https://bit.ly/thematic-cloud>)
 
 <div>
   <a href="https://rstudio.cloud/project/1208127" target="_blank">
@@ -217,24 +165,548 @@ Visit the demo at <https://bit.ly/thematic-cloud>
 </div>
 
 
+Or, locally 
+
+```r
+library(remotes)
+install_github("rstudio/shiny@demo/bootstraplib")
+install_github("rstudio/rmarkdown#1706")
+install_github("rstudio/DT@sass")
+install_github("ropensci/plotly")
+install.packages(c('shinythemes', 'ggplot2', 'lattice'))
+```
+
 ---
-class: large, contrast, middle
+class: large
 
-## When should I use auto-theming?
+## Approaches to styling Shiny & R Markdown
 
-* Best used in a **shiny** runtime.
-  * Works regardless of _how_ you style the page.
+1. __I'm just happy it works__ (accept the defaults)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. __I want specific fonts/colors/styles__ (custom CSS)
 
-* Some other scenarios where it can work:
-    * In RStudio's plot viewer pane
-    * In `rmarkdown::html_document()`
-        * Use **bootstraplib**, not inline CSS, to style the page
-    * Auto value "defaults" are provided via `auto_config_set()`
-        * Useful for custom non-HTML output formats
 
-* When auto-theming "fails", it defaults to the usual white background + black foreground.
+---
+class: large
+
+## Approaches to styling Shiny & R Markdown
+
+1. [__I'm just happy it works__ (accept the defaults)](#6)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. __I want specific fonts/colors/styles__ (custom CSS)
+
+---
+class: contrast
+
+### Example app with default styling
+
+.panelset[
+
+.panel[.panel-name[Code]
+```r
+library(shiny)
+ui <- navbarPage("Theming demo app", ...)
+```
+
+Imagine the `...` has a bunch of shiny UI (e.g., `selectInput()`, `sliderInput()`, `wellPanel()`, etc)
+]
+
+.panel[.panel-name[Result]
+
+![](default.png)
+
+]
+
+]
+
+
+---
+class: large
+
+## Approaches to styling Shiny & R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. [__I want a different 'pre-packaged' look__ (**shinythemes**)](#8)
+3. __I want specific fonts/colors/styles__ (custom CSS)
+
+---
+class: contrast
+
+### Flatly theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r flatly, eval = FALSE, echo = FALSE}
+library(shiny)
+ui <- navbarPage(
+  "Theming demo app", ..., 
+  theme = shinythemes::shinytheme("flatly")
+)
+```
+
+```{r, echo = FALSE}
+decorate("flatly", eval = FALSE) %>%
+  flair('shinythemes::shinytheme("flatly")')
+```
+]
+
+.panel[.panel-name[Result]
+
+![](flatly.png)
+
+]
+]
+
+---
+class: contrast
+
+### Darkly theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r darkly, eval = FALSE, echo = FALSE}
+library(shiny)
+ui <- navbarPage(
+  "Theming demo app", ..., 
+  theme = shinythemes::shinytheme("darkly")
+)
+```
+
+```{r, echo = FALSE}
+decorate("darkly", eval = FALSE) %>%
+  flair('shinythemes::shinytheme("darkly")')
+```
+
+]
+
+.panel[.panel-name[Result]
+
+![](darkly.png)
+
+]
+]
+
+---
+class: contrast
+
+### Superhero theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r superhero, eval = FALSE, echo = FALSE}
+library(shiny)
+ui <- navbarPage(
+  "Theming demo app", ..., 
+  theme = shinythemes::shinytheme("superhero")
+)
+```
+
+```{r, echo = FALSE}
+decorate("superhero", eval = FALSE) %>%
+  flair('shinythemes::shinytheme("superhero")')
+```
+
+]
+
+.panel[.panel-name[Result]
+
+![](superhero.png)
+
+]
+
+]
+
+---
+class: large
+
+## Approaches to styling Shiny & R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. [__I want specific fonts/colors/styles__  (custom CSS)](#12)
+  * Writing custom CSS to override styles is tedious and error prone!
   
-* Auto-theming is optional, avoid it entirely by providing colors (and/or fonts) directly in `thematic_on()`.
+.footnote[
+See also Joe Cheng's [recent rstudio::conf talk](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
+]
+
+
+---
+class: large
+
+## Approaches to styling Shiny & R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. [__I want specific fonts/colors/styles__  (custom CSS)](#12)
+  * Writing custom CSS to override styles is tedious and error prone!
+  * Instead, use __bootstraplib__ to customize Bootstrap CSS using simple R functions.
+
+.footnote[
+See also Joe Cheng's [recent rstudio::conf talk](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
+]
+
+
+---
+class: contrast
+
+### To use bootstraplib with shiny, do:
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r bootstraplib, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new()
+ui <- navbarPage("Theming demo app", ...)
+```
+
+```{r, echo = FALSE}
+decorate("bootstraplib", eval = FALSE) %>%
+  flair('library(bootstraplib)') %>%
+  flair('shinyOptions(bootstraplib = TRUE)') %>%
+  flair('bs_theme_new()') 
+```
+
+This'll upgrade Bootstrap (the underlying CSS framework) from 3 to 4
+]
+
+.panel[.panel-name[Bootstrap 3]
+```{r bootstraplib3, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new(version = 3)
+ui <- navbarPage("Theming demo app", ...)
+```
+
+```{r, echo = FALSE}
+decorate("bootstraplib3", eval = FALSE) %>%
+  flair('version = 3') 
+```
+
+If, for some reason, you still want Bootstrap 3 (shiny's current default)
+]
+
+.panel[.panel-name[Result]
+
+![](default.png)
+
+]
+]
+
+
+---
+class: contrast
+
+### Like shinythemes, can specify a 'pre-packaged' theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r flatly2, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new(bootswatch = "flatly")
+ui <- navbarPage("Theming demo app", ...)
+```
+
+```{r, echo = FALSE}
+decorate("flatly2", eval = FALSE) %>%
+  flair('bootswatch = "flatly"') 
+```
+
+]
+
+.panel[.panel-name[Result]
+
+![](flatly.png)
+
+]
+
+
+]
+
+
+
+---
+class: contrast
+
+### Customize the main colors
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r custom, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new()
+bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")
+bs_theme_accent_colors(primary = "#2AA198")
+ui <- navbarPage("Theming demo app", ...)
+```
+
+```{r, echo = FALSE}
+decorate("custom", eval = FALSE) %>%
+  flair('bs_theme_base_colors') %>%
+  flair('bs_theme_accent_colors') %>%
+  flair('"#002B36"', background = "#002B36", color = "white") %>%
+  flair('"#EEE8D5"', background = "#EEE8D5") %>%
+  flair('"#2AA198"', background = "#2AA198", color = "white")
+```
+
+]
+
+.panel[.panel-name[Result]
+
+![](custom.png)
+
+]
+
+
+]
+
+
+---
+class: contrast
+
+### Customize the fonts
+
+.panelset[
+
+.panel[.panel-name[Code]
+```{r custom-fonts, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new()
+bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")
+bs_theme_accent_colors(primary = "#2AA198")
+bs_theme_fonts("Fira Code")
+ui <- navbarPage(
+  "Theming demo app", ...,
+  tags$link(href = "https://fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")
+)
+```
+
+```{r, echo = FALSE}
+decorate("custom-fonts", eval = FALSE) %>%
+  flair_rx('bs_theme_fonts.*') %>%
+  flair_rx('.*googleapis.*')
+```
+
+[See here](https://rstudio.github.io/bootstraplib/articles/recipes.html#fonts-1) for more on how to properly import font files
+
+]
+
+.panel[.panel-name[Result]
+
+![](custom-fonts.png)
+
+]
+]
+
+---
+class: contrast
+
+### 'Core' Shiny input widgets reflect bootstraplib theme
+
+.panelset[
+
+.panel[.panel-name[selectInput()]
+
+<br>
+<div align="center">
+ <img src="custom-select.png" width="50%" />
+</div>
+
+]
+
+.panel[.panel-name[sliderInput()]
+
+<br>
+<div align="center">
+ <img src="custom-slider.png" width="60%" />
+</div>
+
+]
+
+.panel[.panel-name[dateInput()]
+
+<br>
+<div align="center">
+ <img src="custom-date.png" width="35%" />
+</div>
+
+]
+
+.panel[.panel-name[textInput()/numericInput()]
+
+<br>
+<div align="center">
+ <img src="custom-input.png" width="50%" />
+</div>
+
+]
+
+]
+
+---
+class: contrast
+
+### Oh no, R plots are unaware of the app's styling 😞
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+![](custom-plots.png)
+]
+]
+
+
+---
+class: contrast
+
+### thematic to the rescue! 🎉 
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+![](custom-thematic.png)
+
+]
+
+.panel[.panel-name[Code]
+```{r custom-thematic, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new()
+bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")
+bs_theme_accent_colors(primary = "#2AA198")
+thematic::thematic_shiny()
+ui <- navbarPage(
+  "Theming demo app", ...,
+  tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")
+)
+```
+
+```{r, echo = FALSE}
+decorate("custom-thematic", eval = FALSE) %>%
+  flair_rx('thematic::thematic.*')
+```
+
+* __thematic__'s [auto-theming](https://rstudio.github.io/thematic/articles/auto.html) essentially translates CSS styles into new R defaults. It works:
+  * Regardless of _how_ you style the Shiny app
+  * With RStudio and R Markdown (if styling is done via **bootstraplib**)
+]
+]
+
+
+---
+class: contrast
+
+### Can also detect and render custom fonts! 🎉 
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+![](custom-thematic-fonts.png)
+
+]
+
+.panel[.panel-name[Code]
+```{r custom-thematic-fonts, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new()
+bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")
+bs_theme_accent_colors(primary = "#2AA198")
+bs_theme_fonts("Fira Code")
+thematic::thematic_shiny(font = "auto")
+ui <- navbarPage(
+  "Theming demo app", ...,
+  tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")
+)
+```
+
+```{r, echo = FALSE}
+decorate("custom-thematic-fonts", eval = FALSE) %>%
+  flair_rx('font = "auto"')
+```
+
+Works as long as either:
+
+1. R can already render the font.
+2. The font is Google Font (and **showtext** is installed)
+
+]
+]
+
+
+
+---
+class: contrast
+
+### 'Real-time' theming
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+<br>
+```{r, echo = FALSE}
+include_vimeo("411238499")
+```
+
+]
+
+.panel[.panel-name[Code]
+
+```{r preview, eval = FALSE, echo = FALSE}
+library(shiny)
+library(bootstraplib)
+shinyOptions(bootstraplib = TRUE)
+bs_theme_new()
+thematic::thematic_shiny(font = "auto")
+bs_theme_preview()
+```
+
+```{r, echo = FALSE}
+decorate("preview", eval = FALSE) %>%
+  flair_rx('bs_theme_preview')
+```
+
+* `bs_theme_preview()` gives you a demo app with the real-time themer
+* To run any app with the themer, use `run_with_themer()`
+
+]
+]
+
+
+---
+class: contrast
+
+### Styling R Markdown's `html_document()`
+
+<img src="html-document.svg" width="100%" >
+
+
+---
+class: middle, center
+
+# Demo
 
 ---
 ## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
@@ -781,37 +1253,18 @@ image(volcano, col = thematic_get_option("sequential"))
 ```
 
 ---
-class: contrast
-
-## Future work for thematic
-
-* Get **thematic** to play nicely with "complete" **ggplot2** themes (e.g., `theme_minimal()`, `ggthemes::theme_tufte()`, `ggthemes::theme_fivethirtyeight()`, etc).
-
-* Get `plotly::ggplotly()` (and maybe `plotly::plot_ly()`) playing nicely with **thematic**.
-
-* Documentation improvements
-
-* Submit to CRAN
-
----
 class: large
 
 ### Summary
 
-* `thematic_on()` (and `thematic_off()`) to use **thematic** in a global fashion
+* Use **bootstraplib** to style HTML in Shiny & R Markdown.
+    * Or just to simply use Bootstrap 4 (instead of 3).
+    * Specify custom colors and fonts with `bs_theme_base_colors()`, `bs_theme_accent_colors()`, & `bs_theme_fonts()`
+    * Even more customization is available via `bs_theme_add_variables()`
 
-* `thematic_shiny()`/`thematic_rmd()` to use globally for a particular **shiny** app or **rmarkdown** document
-
-* Check out `thematic_with_theme()` to use **thematic** in a local fashion
-
-* By default, `"auto"` colors are enabled...this generally works when:
-  * A **shiny** runtime is generating the plots
-  * Inside `rmarkdown::html_document()` (custom styling should to be done via **bootstraplib**, not inline CSS)
-  * Inside RStudio
-  
-* Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R)
-  
-* If auto-theming "fails", provide non-auto values directly to `thematic_on()` and/or `auto_config_set()`
+* Use **thematic** for easier theming of R plots
+    * Works with **ggplot2**, `plotly::ggplotly()`, **lattice**, and **base** R graphics.
+    * Auto-theming (i.e., translating CSS to R defaults) works great on Shiny, but can also specify colors and fonts directly in **thematic**.
 
 ---
 class: center, middle
@@ -820,9 +1273,8 @@ class: center, middle
 
 ### Slides: <https://bit.ly/noRth2020>
 
-### Learn more: <https://rstudio.github.io/thematic>
-
-#### Contact
+### <https://rstudio.github.io/bootstraplib>
+### <https://rstudio.github.io/thematic>
 
 `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />
 `r icon::fa_github()` <a href='https://github.com/cpsievert'>@cpsievert</a> <br />
@@ -831,6 +1283,7 @@ class: center, middle
 
 
 .footnote[
-Slides made possible thanks to [**xaringan**](https://github.com/yihui/xaringan) and [**flair**](https://github.com/kbodwin/flair)
+<br>
+Slides made possible thanks to [**xaringan**](https://github.com/yihui/xaringan), [**xaringanExtra**](https://github.com/gadenbuie/xaringanExtra), and [**flair**](https://github.com/kbodwin/flair)
 ]
 
