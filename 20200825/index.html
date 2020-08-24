@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Styling Shiny &amp; R Markdown with bootstraplib &amp; thematic</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Carson Sievert" />
+    <script src="index_files/header-attrs-2.4.0/header-attrs.js"></script>
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="index_files/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+    <link href="index_files/panelset-0.0.18/panelset.css" rel="stylesheet" />
+    <script src="index_files/panelset-0.0.18/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center
+
+# Styling Shiny &amp; R Markdown with bootstraplib &amp; thematic
+
+### Carson Sievert, Software Engineer @ RStudio
+
+### Slides: https://bit.ly/biogen2020
+
+<i class="fab  fa-twitter "></i> [@cpsievert](https://twitter.com/cpsievert)
+
+<i class="fab  fa-github "></i> [@cpsievert](https://github.com/cpsievert)
+
+<i class="fas  fa-globe "></i> [cpsievert.me](https://cpsievert.me) 
+
+<i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; 
+
+
+
+<style>.panelset {
+  --panel-tab-font-family: Fira Code, Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+}</style>
+
+&lt;style type="text/css"&gt;
+@import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans);body{font-family:IBM Plex Sans}h1,h2,h3{font-family:IBM Plex Sans}.remark-slide-content{background-color:#002B36;color:#FDF6E3}.remark-slide-content a{color:#2AA198}.remark-slide-content.darkly{background-color:#222;color:#FFF}.remark-slide-content.darkly a{color:#0CE3AC}.remark-slide-content.dark-mode{background-color:#444;color:#e4e4e4}.remark-slide-content.dark-mode a{color:#e39777}.remark-slide-content.lucid{background-color:#3D4752;color:#FFFFFF}.remark-slide-content.large{font-size:1.5rem}.remark-slide-content.contrast{background-color:#FFFFFF;color:black}.remark-slide-content.contrast a{color:#74AADB}
+&lt;/style&gt;
+
+---
+class: contrast, large
+
+## New tools for styling Shiny &amp; R Markdown
+
+__bootstraplib__: tools for styling HTML from R (e.g., Shiny apps, `rmarkdown::html_document()`, etc)
+
+```r
+remotes::install_github("rstudio/bootstraplib")
+```
+
+__thematic__: simplified theming of R plots (e.g., **ggplot2**, **lattice**, **base**)
+
+```r
+remotes::install_github("rstudio/thematic")
+```
+
+.footnote[
+Documentation:
+
+&lt;https://rstudio.github.io/bootstraplib&gt; &lt;br/&gt;
+&lt;https://rstudio.github.io/thematic&gt;
+]
+
+---
+class: contrast
+
+## Running code examples
+
+#### &lt;span style="color:red"&gt;WARNING: much of this is a work-in-progress and may change!&lt;/span&gt;
+
+On RStudio Cloud (&lt;https://bit.ly/thematic-cloud&gt;)
+
+&lt;div&gt;
+  &lt;a href="https://rstudio.cloud/project/1208127" target="_blank"&gt;
+    &lt;img src="thematic-cloud.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+
+Or, locally 
+
+```r
+library(remotes)
+install_github("rstudio/shiny@demo/bootstraplib")
+install_github("rstudio/rmarkdown#1706")
+install_github("rstudio/DT@sass")
+install_github("ropensci/plotly")
+install.packages(c('shinythemes', 'ggplot2', 'lattice'))
+```
+
+---
+class: large
+
+## Approaches to styling Shiny &amp; R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. __I want specific fonts/colors/styles__ (custom CSS)
+
+
+---
+class: large
+
+## Approaches to styling Shiny &amp; R Markdown
+
+1. [__I'm just happy it works__ (accept the defaults)](#6)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. __I want specific fonts/colors/styles__ (custom CSS)
+
+---
+class: contrast
+
+### Example app with default styling
+
+.panelset[
+
+.panel[.panel-name[Code]
+```r
+library(shiny)
+ui &lt;- navbarPage("Theming demo app", ...)
+```
+
+Imagine the `...` has a bunch of shiny UI (e.g., `selectInput()`, `sliderInput()`, `wellPanel()`, etc)
+]
+
+.panel[.panel-name[Result]
+
+![](default.png)
+
+]
+
+]
+
+
+---
+class: large
+
+## Approaches to styling Shiny &amp; R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. [__I want a different 'pre-packaged' look__ (**shinythemes**)](#8)
+3. __I want specific fonts/colors/styles__ (custom CSS)
+
+---
+class: contrast
+
+### Flatly theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ..., &lt;br&gt;&amp;nbsp;&amp;nbsp;theme = &lt;span style='background-color:#ffff7f'&gt;shinythemes::shinytheme("flatly")&lt;/span&gt;&lt;br&gt;)&lt;/code&gt;
+]
+
+.panel[.panel-name[Result]
+
+![](flatly.png)
+
+]
+]
+
+---
+class: contrast
+
+### Darkly theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ..., &lt;br&gt;&amp;nbsp;&amp;nbsp;theme = &lt;span style='background-color:#ffff7f'&gt;shinythemes::shinytheme("darkly")&lt;/span&gt;&lt;br&gt;)&lt;/code&gt;
+
+]
+
+.panel[.panel-name[Result]
+
+![](darkly.png)
+
+]
+]
+
+---
+class: contrast
+
+### Superhero theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ..., &lt;br&gt;&amp;nbsp;&amp;nbsp;theme = &lt;span style='background-color:#ffff7f'&gt;shinythemes::shinytheme("superhero")&lt;/span&gt;&lt;br&gt;)&lt;/code&gt;
+
+]
+
+.panel[.panel-name[Result]
+
+![](superhero.png)
+
+]
+
+]
+
+---
+class: large
+
+## Approaches to styling Shiny &amp; R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. [__I want specific fonts/colors/styles__  (custom CSS)](#12)
+  * Writing custom CSS to override styles is tedious and error prone!
+  
+.footnote[
+See also Joe Cheng's [recent rstudio::conf talk](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
+]
+
+
+---
+class: large
+
+## Approaches to styling Shiny &amp; R Markdown
+
+1. __I'm just happy it works__ (accept the defaults)
+2. __I want a different 'pre-packaged' look__ (**shinythemes**)
+3. [__I want specific fonts/colors/styles__  (custom CSS)](#12)
+  * Writing custom CSS to override styles is tedious and error prone!
+  * Instead, use __bootstraplib__ to customize Bootstrap CSS using simple R functions.
+
+.footnote[
+See also Joe Cheng's [recent rstudio::conf talk](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
+]
+
+
+---
+class: contrast
+
+### To use bootstraplib with shiny, do:
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;library(bootstraplib)&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;shinyOptions(bootstraplib = TRUE)&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_new()&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+
+This'll upgrade Bootstrap (the underlying CSS framework) from 3 to 4
+]
+
+.panel[.panel-name[Bootstrap 3]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;version = 3&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+
+If, for some reason, you still want Bootstrap 3 (shiny's current default)
+]
+
+.panel[.panel-name[Result]
+
+![](default.png)
+
+]
+]
+
+
+---
+class: contrast
+
+### Like shinythemes, can specify a 'pre-packaged' theme
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;bootswatch = "solar"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+
+Meaning you can use a Bootstrap 4 only theme (e.g., solar, [sketchy](https://bootswatch.com/sketchy), [minty](https://bootswatch.com/minty), etc)
+
+]
+
+.panel[.panel-name[Result]
+
+![](solar.png)
+
+]
+
+
+]
+
+
+
+---
+class: contrast
+
+### Customize the main colors
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_base_colors&lt;/span&gt;(bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, fg = &lt;span style='background-color:#EEE8D5'&gt;"#EEE8D5"&lt;/span&gt;)&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_accent_colors&lt;/span&gt;(primary = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+
+]
+
+.panel[.panel-name[Result]
+
+![](custom.png)
+
+]
+
+
+]
+
+
+---
+class: contrast
+
+### Customize the fonts
+
+.panelset[
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_fonts("Fira Code")&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt; &amp;nbsp;tags$link(href = "https://fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;/span&gt;&lt;br&gt;)&lt;/code&gt;
+
+[See here](https://rstudio.github.io/bootstraplib/articles/recipes.html#fonts-1) for more on how to properly import font files
+
+]
+
+.panel[.panel-name[Result]
+
+![](custom-fonts.png)
+
+]
+]
+
+---
+class: contrast
+
+### 'Core' Shiny input widgets reflect bootstraplib theme
+
+.panelset[
+
+.panel[.panel-name[selectInput()]
+
+&lt;br&gt;
+&lt;div align="center"&gt;
+ &lt;img src="custom-select.png" width="50%" /&gt;
+&lt;/div&gt;
+
+]
+
+.panel[.panel-name[sliderInput()]
+
+&lt;br&gt;
+&lt;div align="center"&gt;
+ &lt;img src="custom-slider.png" width="60%" /&gt;
+&lt;/div&gt;
+
+]
+
+.panel[.panel-name[dateInput()]
+
+&lt;br&gt;
+&lt;div align="center"&gt;
+ &lt;img src="custom-date.png" width="35%" /&gt;
+&lt;/div&gt;
+
+]
+
+.panel[.panel-name[textInput()/numericInput()]
+
+&lt;br&gt;
+&lt;div align="center"&gt;
+ &lt;img src="custom-input.png" width="50%" /&gt;
+&lt;/div&gt;
+
+]
+
+]
+
+---
+class: contrast
+
+### Oh no, R plots are unaware of the app's styling 😞
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+![](custom-plots.png)
+]
+]
+
+
+---
+class: contrast
+
+### thematic to the rescue! 🎉 
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+![](custom-thematic.png)
+
+]
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;thematic::thematic_shiny()&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&amp;nbsp;&amp;nbsp;tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;br&gt;)&lt;/code&gt;
+
+* __thematic__'s [auto-theming](https://rstudio.github.io/thematic/articles/auto.html) essentially translates CSS styles into new R defaults. It works:
+  * Regardless of _how_ you style the Shiny app
+  * With RStudio and R Markdown (although, custom CSS styles must come from **bootstraplib**)
+]
+]
+
+
+---
+class: contrast
+
+### Auto colors _and fonts_! 🎉 
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+![](custom-thematic-fonts.png)
+
+]
+
+.panel[.panel-name[Code]
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;bs_theme_fonts("Fira Code")&lt;br&gt;thematic::thematic_shiny(&lt;span style='background-color:#ffff7f'&gt;font = "auto"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&amp;nbsp;&amp;nbsp;tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;br&gt;)&lt;/code&gt;
+
+Works as long as either:
+
+1. R can already render the font.
+2. The font is Google Font (and **showtext** is installed)
+
+]
+]
+
+
+
+---
+class: contrast
+
+### Now, with bootstraplib's 'real-time' themer ✨ 
+
+.panelset[
+
+.panel[.panel-name[Result]
+
+&lt;br&gt;
+<iframe src="https://player.vimeo.com/video/411238499?title=0&amp;byline=0&amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+]
+
+.panel[.panel-name[Code]
+
+
+
+
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;thematic::thematic_shiny(font = "auto")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_preview&lt;/span&gt;()&lt;/code&gt;
+
+* `bs_theme_preview()` gives you a demo app with the real-time themer
+* To run any app with the themer, use `run_with_themer()`
+
+]
+]
+
+---
+class: middle, center
+
+# Demo
+
+---
+class: contrast
+
+### 'Auto-theming' in R Markdown's `html_document()`
+
+&lt;img src="html-document.svg" width="100%" &gt;
+
+---
+class: contrast
+
+### 'Custom-theming' in non-HTML output formats
+
+&lt;img src="tufte.svg" width="100%" &gt;
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+The main color settings are `bg`, `fg`, `accent` (they default to `"auto"`).
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point() + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth()&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-15-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+(BTW, the values here intentionally match the CSS of my slides)
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Also specify any `font` known to R or any [Google Font](https://fonts.google.com/)&lt;sup&gt;1&lt;/sup&gt; (e.g., &lt;span style="font-family:Pacifico"&gt;Pacifico&lt;/span&gt;)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "&lt;span style='background-color:#ffff7f'&gt;Pacifico&lt;/span&gt;"&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point() + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth()&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-17-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.footnote[
+1. Requires **showtext** or **ragg** to be installed, and potential other "setup" (for details, see &lt;https://rstudio.github.io/thematic&gt;)
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Use `font_spec()` to control other font settings (e.g., `scale`)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font=font_spec("Pacifico", &lt;span style='background-color:#ffff7f'&gt;scale=2&lt;/span&gt;)&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point() + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth()&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.footnote[
+1. Requires **showtext** or **ragg** to be installed, and potential other "setup" (for details, see &lt;https://rstudio.github.io/thematic&gt;)
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+**thematic** informs `theme()` _defaults_ (i.e., plot specific code takes priority)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Pacifico"&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point() + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth() + &lt;br&gt;&amp;nbsp;&amp;nbsp;theme(axis.title = element_text(color = &lt;span style='background-color:#6C71C4;color:white'&gt;"#6C71C4"&lt;/span&gt;))&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-21-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+**thematic** informs `theme()` _and geom_ defaults
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#D33682;color:white'&gt;"#D33682"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Pacifico"&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(color = &lt;span style='background-color:#586E75;color:white'&gt;"#586E75"&lt;/span&gt;) + &lt;br&gt;&amp;nbsp;&amp;nbsp;geom_smooth() + &lt;br&gt;&amp;nbsp;&amp;nbsp;theme(axis.title = element_text(color = &lt;span style='background-color:#6C71C4;color:white'&gt;"#6C71C4"&lt;/span&gt;))&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-23-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Uses `bg`, `fg`, `accent` to construct a new default for sequential colorscales.
+
+.pull-left[
+
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed"&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(aes(&lt;span style='background-color:#ffff7f'&gt;color = cyl&lt;/span&gt;))&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-25-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Customize with `sequential_gradient()` (here is `fg` -&gt; `accent`)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed",&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;span style='background-color:#ffff7f'&gt;sequential=sequential_gradient(1,0)&lt;/span&gt;&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(aes(&lt;span style='background-color:#ffff7f'&gt;color = cyl&lt;/span&gt;))&lt;/code&gt;
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-27-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.footnote[
+For more examples, see the [customization article](http://rstudio.github.io/thematic/articles/customize.html).
+]
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Opt-out with `NA`.
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed",&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;span style='background-color:#ffff7f'&gt;sequential = NA&lt;/span&gt;&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(aes(color = cyl))&lt;/code&gt;
+
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-29-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Also sets qualitative colorscale defaults to [Okabe-Ito](https://jfly.uni-koeln.de/color/) (colour-blind safe)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed"&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(aes(&lt;span style='background-color:#ffff7f'&gt;color=factor(cyl)&lt;/span&gt;))&lt;/code&gt;
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-31-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Customize with any vector of color codes
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed",&lt;br&gt;&amp;nbsp;&amp;nbsp;qualitative = c(&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style='background-color:#1B9E77;color:white'&gt;"#1B9E77"&lt;/span&gt;, &lt;span style='background-color:#D95F02;color:white'&gt;"#D95F02"&lt;/span&gt;, &lt;span style='background-color:#7570B3;color:white'&gt;"#7570B3"&lt;/span&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;)&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(aes(&lt;span style='background-color:#ffff7f'&gt;color=factor(cyl)&lt;/span&gt;))&lt;/code&gt;
+
+For **ggplot2**, `qualitative` is only relevant if there are enough colors to encode the levels.
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-33-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Opt-out with `NA`
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed",&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;span style='background-color:#ffff7f'&gt;qualitative = NA&lt;/span&gt;&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;geom_point(aes(&lt;span style='background-color:#ffff7f'&gt;color=factor(cyl)&lt;/span&gt;))&lt;/code&gt;
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-35-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+[**thematic**](https://github.com/rstudio/thematic) works with **ggplot2** (and extensions)
+
+.pull-left[
+
+
+
+&lt;code class ='r hljs remark-code'&gt;thematic_on(&lt;br&gt;&amp;nbsp;&amp;nbsp;bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;fg = "#FDF6E3", &lt;br&gt;&amp;nbsp;&amp;nbsp;accent = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;,&lt;br&gt;&amp;nbsp;&amp;nbsp;font = "Roboto Condensed"&lt;br&gt;)&lt;br&gt;library(ggplot2)&lt;br&gt;ggplot(mtcars, aes(wt, mpg)) +&lt;br&gt;&amp;nbsp;&amp;nbsp;&lt;span style='background-color:#ffff7f'&gt;ggrepel::geom_text_repel&lt;/span&gt;(&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;aes(color = factor(cyl), label = row.names(mtcars))&lt;br&gt;&amp;nbsp;&amp;nbsp;)&lt;/code&gt;
+]
+
+.pull-right[
+&lt;img src="index_files/figure-html/unnamed-chunk-37-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Also **lattice** graphics:
+
+
+
+
+&lt;code class ='r hljs remark-code'&gt;&lt;span style='background-color:#ffff7f'&gt;lattice&lt;/span&gt;::show.settings()&lt;/code&gt;
+
+&lt;img src="index_files/figure-html/unnamed-chunk-39-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+Also **base** graphics:
+
+
+```r
+par(mfrow = c(1, 2))
+hist(rnorm(100))
+plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-40-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+...but, for accents, you'll have to inform `col`
+
+
+
+
+&lt;code class ='r hljs remark-code'&gt;plot(cars, main = "Stopping Distance versus Speed")&lt;br&gt;lines(stats::lowess(cars), &lt;span style='background-color:#ffff7f'&gt;col = thematic_get_option("accent")&lt;/span&gt;)&lt;/code&gt;
+
+&lt;img src="index_files/figure-html/unnamed-chunk-42-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+## [**thematic**](https://github.com/rstudio/thematic): simplified theming of R plots
+
+...and same for sequential colorscales
+
+
+
+
+&lt;code class ='r hljs remark-code'&gt;par(mfrow = c(1, 2))&lt;br&gt;image(volcano)&lt;br&gt;image(volcano, &lt;span style='background-color:#ffff7f'&gt;col = thematic_get_option("sequential")&lt;/span&gt;)&lt;/code&gt;
+
+&lt;img src="index_files/figure-html/unnamed-chunk-44-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+class: large
+
+### Summary
+
+* Use **bootstraplib** to style HTML in Shiny &amp; R Markdown.
+    * Or just to simply use Bootstrap 4 (instead of 3).
+    * Specify custom colors and fonts with `bs_theme_base_colors()`, `bs_theme_accent_colors()`, &amp; `bs_theme_fonts()`
+    * Even more customization is available via `bs_theme_add_variables()`
+
+* Use **thematic** for easier theming of R plots
+    * Works with **ggplot2**, `plotly::ggplotly()`, **lattice**, and **base** R graphics.
+    * Auto-theming (i.e., translating CSS to R defaults) works great on Shiny, but can also specify colors and fonts directly in **thematic**.
+
+---
+class: center, middle
+
+## Thank you! Any questions?
+
+### Slides: &lt;https://bit.ly/biogen2020&gt;
+
+### &lt;https://rstudio.github.io/bootstraplib&gt;
+### &lt;https://rstudio.github.io/thematic&gt;
+
+<i class="fab  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fab  fa-github "></i> &lt;a href='https://github.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;
+<i class="fas  fa-envelope "></i> &lt;cpsievert1@gmail.com&gt; &lt;br /&gt;
+<i class="fas  fa-globe "></i> &lt;https://cpsievert.me/&gt;
+
+
+.footnote[
+&lt;br&gt;
+Slides made possible thanks to [**xaringan**](https://github.com/yihui/xaringan), [**xaringanExtra**](https://github.com/gadenbuie/xaringanExtra), and [**flair**](https://github.com/kbodwin/flair)
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "14.6:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
