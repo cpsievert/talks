@@ -4,7 +4,7 @@
     <title>Styling Shiny &amp; R Markdown with bootstraplib &amp; thematic</title>
     <meta charset="utf-8" />
     <meta name="author" content="Carson Sievert" />
-    <script src="index_files/header-attrs-2.4.3/header-attrs.js"></script>
+    <script src="index_files/header-attrs-2.5.0/header-attrs.js"></script>
     <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link href="index_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
@@ -174,9 +174,8 @@ class: inverse, middle, large
   * R Markdown and `{DT}`
   * Your package? Get in touch for help!
   
-* Will never work with:
-    * Anything rendered by R instead by the browser (e.g., `plotOutput()`).
-        * But, you can use `{thematic}` to "translate" CSS to R plots!
+* Doesn't work with things not rendered by web browser (e.g., `plotOutput()`).
+  * Use `{thematic}` to "translate" CSS to R plots!
 
 ---
 
@@ -546,6 +545,28 @@ fluidPage(
 &lt;/div&gt;
 ]
 ]
+
+---
+### Dynamic theming in Shiny!
+
+```r
+dark &lt;- bs_theme(bg = "black", fg = "white")
+light &lt;- bs_theme()
+ui &lt;- fluidPage(
+  theme = light, 
+  checkboxInput("dark_mode", "Dark mode", FALSE)
+)
+server &lt;- function(input, output, session) {
+  observe(session$setCurrentTheme(
+    if (input$dark_mode) dark else light
+  ))
+}
+shinyApp(ui, server)
+```
+
+&lt;img src="dark-mode.gif" width="50%" style="display: block; margin: auto;" /&gt;
+
+Very new and experimental ([learn more](https://rstudio.github.io/bootstraplib/theming.html#dynamic-shiny))!
 
 ---
 ### Use your theme inside R Markdown

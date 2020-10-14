@@ -241,9 +241,8 @@ class: inverse, middle, large
   * R Markdown and `{DT}`
   * Your package? Get in touch for help!
   
-* Will never work with:
-    * Anything rendered by R instead by the browser (e.g., `plotOutput()`).
-        * But, you can use `{thematic}` to "translate" CSS to R plots!
+* Doesn't work with things not rendered by web browser (e.g., `plotOutput()`).
+  * Use `{thematic}` to "translate" CSS to R plots!
 
 ---
 
@@ -663,6 +662,30 @@ fluidPage(
 </div>
 ]
 ]
+
+---
+### Dynamic theming in Shiny!
+
+```r
+dark <- bs_theme(bg = "black", fg = "white")
+light <- bs_theme()
+ui <- fluidPage(
+  theme = light, 
+  checkboxInput("dark_mode", "Dark mode", FALSE)
+)
+server <- function(input, output, session) {
+  observe(session$setCurrentTheme(
+    if (input$dark_mode) dark else light
+  ))
+}
+shinyApp(ui, server)
+```
+
+```{r, echo = FALSE, out.width="50%"}
+knitr::include_graphics("dark-mode.gif")
+```
+
+Very new and experimental ([learn more](https://rstudio.github.io/bootstraplib/theming.html#dynamic-shiny))!
 
 ---
 ### Use your theme inside R Markdown
