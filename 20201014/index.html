@@ -162,17 +162,17 @@ bs_theme_preview(bs_theme(
 ---
 class: inverse, middle, large
 
-### `bs_theme()` limitations
+### Tempering `bs_theme()` expectations
 
-* Works now with:
-  * Any HTML that doesn't clash with Bootstrap CSS
+* "Just works" with:
+  * HTML that doesn't clash with Bootstrap CSS styling
 
-* Works soon with:
-  * All of Shiny (e.g., `navbarPage()`, `sliderInput()`, etc)
-  * R Markdown and `{DT}`
-  * Your package? Get in touch for help!
+* "Just works" soon with:
+  * _All_ of Shiny (e.g., `navbarPage()`, `sliderInput()`, etc)
+  * `rmarkdown::html_document()`, `DT::datatable()`, other popular `{htmlwidgets}`
+  * Your [custom component](https://rstudio.github.io/bootstraplib/theming.html)?
   
-* Doesn't work with things not rendered by web browser (e.g., `plotOutput()`).
+* Can't work with things not rendered by web browser (e.g., `plotOutput()`).
   * Use `{thematic}` to "translate" CSS to R plots!
 
 ---
@@ -421,7 +421,7 @@ Beware, Sass variables can be quite different across `versions`!
 ---
 ### What's Sass? What's a Sass variable?
 
-* Sass is a more powerful way to write CSS. 
+* Sass is a more powerful way to write CSS (i.e., style HTML)
 * Sass variables provide "high-level controls" over CSS
 
 &lt;div align="center"&gt;
@@ -502,10 +502,10 @@ person &lt;- function(name, title, company) {
 }
 
 fluidPage(
-  theme = bs_theme(bg = "#002B36", fg = "#EEE8D5") %&gt;%
-    bs_add_rules(sass::sass_file("person.scss")),
   person("Andrew Carnegie", "Owner", "Carnegie Steel Company"),
-  person("John D. Rockefeller", "Chairman", "Standard Oil")
+  person("John D. Rockefeller", "Chairman", "Standard Oil"),
+  theme = bs_theme(bg = "#002B36", fg = "#EEE8D5") %&gt;%
+*    bs_add_rules(sass::sass_file("person.scss"))
 )
 ```
 ]
@@ -545,7 +545,7 @@ fluidPage(
 ]
 
 ---
-### Dynamic theming in Shiny!
+### Dynamic theming in Shiny w/ `setCurrentTheme()`!
 
 ```r
 dark &lt;- bs_theme(bg = "black", fg = "white")
