@@ -1,6 +1,8 @@
 library(shiny)
 library(ggplot2)
 
+thematic::thematic_shiny()
+
 shinyApp(
   ui = fluidPage(
     theme = shinythemes::shinytheme("superhero"),

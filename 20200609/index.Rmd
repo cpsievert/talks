@@ -184,7 +184,7 @@ class: contrast
 ---
 class: contrast
 
-### Write custom CSS in R with **bootstraplib**!
+### Write custom CSS in R with **bslib**!
 
 <div align="center">
   <img src="cranwhales-custom-code.svg" width="100%" />
@@ -193,7 +193,7 @@ class: contrast
 ---
 class: contrast
 
-### Realtime-theming with **bootstraplib**
+### Realtime-theming with **bslib**
 
 <div align="center">
   <img src="realtime-theming.gif" width="100%" />

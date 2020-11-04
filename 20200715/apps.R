@@ -1,6 +1,6 @@
-load_all("../bootstraplib"); load_all("../shiny"); load_all("../DT")
+load_all("../bslib"); load_all("../shiny"); load_all("../DT")
 
-shinyOptions(bootstraplib = TRUE)
+shinyOptions(bslib = TRUE)
 
 bs_theme_new()
 bs_theme_add(rules = "label { font-weight: 700} ")
@@ -21,8 +21,8 @@ bs_theme_accent_colors("#DF6919")
 bs_theme_add(rules = "label { font-weight: 700} ")
 bs_theme_preview(with_themer = FALSE)
 
-load_all("../bootstraplib"); load_all("../shiny"); load_all("../DT")
-shinyOptions(bootstraplib = TRUE)
+load_all("../bslib"); load_all("../shiny"); load_all("../DT")
+shinyOptions(bslib = TRUE)
 bs_theme_new()
 bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")
 bs_theme_accent_colors(primary = "#2AA198")

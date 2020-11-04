@@ -2,22 +2,26 @@ library(thematic)
 library(ggplot2)
 library(shiny)
 
-ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
+p <- ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
   geom_point(alpha = 0.2) +
   geom_smooth() +
   facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
 
 # Auto theme plot based on current plotting environment
 thematic_on()
-last_plot()
+p
+
+# Bonus: also works with ggplotly()
+ggplotly(p)
+
 
 # Let's change the RStudio theme and re-plot...
 # thematic picks up on the changes!
-rstudioapi::applyTheme("Tomorrow Night Bright")
-last_plot()
-
 rstudioapi::applyTheme("Tomorrow Night 80s")
-last_plot()
+p
+
+rstudioapi::applyTheme("Tomorrow Night Bright")
+p
 
 # Any plot is not auto-themed
 hist(rnorm(100))
@@ -49,13 +53,10 @@ file.edit("apps/03/app.R")
 # Access styles for any shiny output!
 file.edit("apps/04/app.R")
 
-# bootstraplib: more customizable than shinythemes and less painful than CSS
-# https://rstudio.github.io/bootstraplib
-library(bootstraplib)
-# thematic_shiny(font = "auto")
-bs_theme_preview(auto_theme = FALSE)
+library(bslib)
+thematic_shiny(font = "auto")
+bs_theme_preview()
 
-
-# Auto-theming in rmarkdown::html_document() via bootstraplib
+# Auto-theming in rmarkdown::html_document() via bslib
 # (press Knit after opening to see the result)
 file.edit("reports/darkly.Rmd")

@@ -1,5 +1,5 @@
 ---
-title: "Styling Shiny & R Markdown with bootstraplib & thematic"
+title: "Styling Shiny & R Markdown with bslib & thematic"
 venue: "R/Pharma 2020"
 type: "invited"
 recording: "none"
@@ -20,7 +20,7 @@ date: ""
 ---
 class: middle, center, inverse
 
-# Styling Shiny & R Markdown with `{bootstraplib}` & `{thematic}`
+# Styling Shiny & R Markdown with `{bslib}` & `{thematic}`
 
 ### Carson Sievert, Software Engineer @ RStudio
 
@@ -108,8 +108,8 @@ class: large, middle
 
 ### New R 📦s for styling Shiny & R Markdown
 
-__`{bootstraplib}`__: tools for styling HTML from R (e.g., Shiny apps, `rmarkdown::html_document()`, etc) 
-  * [rstudio.github.io/bootstraplib](https://rstudio.github.io/bootstraplib)
+__`{bslib}`__: tools for styling HTML from R (e.g., Shiny apps, `rmarkdown::html_document()`, etc) 
+  * [rstudio.github.io/bslib](https://rstudio.github.io/bslib)
 
 __`{thematic}`__: simplified theming of R plots (`{ggplot2}`, `{lattice}`, & `{base}`)
   * [rstudio.github.io/thematic](https://rstudio.github.io/thematic)
@@ -117,17 +117,17 @@ __`{thematic}`__: simplified theming of R plots (`{ggplot2}`, `{lattice}`, & `{b
 Not yet on CRAN (give it about a month or so)
 
 ```r
-remotes::install_github(c("rstudio/bootstraplib", "rstudio/thematic"))
+remotes::install_github(c("rstudio/bslib", "rstudio/thematic"))
 ```
 
 ---
 class: large
 
-### Start using `{bootstraplib}` with Shiny
+### Start using `{bslib}` with Shiny
 
 ```r
 library(shiny)
-library(bootstraplib)
+library(bslib)
 
 ui <- fluidPage(
 *  theme = bs_theme(),
@@ -147,7 +147,7 @@ class: large
 
 ```r
 library(shiny)
-library(bootstraplib)
+library(bslib)
 
 ui <- fluidPage(
 *  theme = bs_theme(version = "4+3"),
@@ -167,7 +167,7 @@ class: large
 
 ```r
 library(shiny)
-library(bootstraplib)
+library(bslib)
 
 # In the past, this was shinythemes::shinythemes("darkly")
 ui <- fluidPage(
@@ -239,7 +239,7 @@ class: inverse, middle, large
 * "Just works" soon with:
   * _All_ of Shiny (e.g., `navbarPage()`, `sliderInput()`, etc)
   * `rmarkdown::html_document()`, `DT::datatable()`, other popular `{htmlwidgets}`
-  * Your [custom component](https://rstudio.github.io/bootstraplib/articles/theming.html#themable-components-1)?
+  * Your [custom component](https://rstudio.github.io/bslib/articles/theming.html#themable-components-1)?
   
 * Can't work with things not rendered by web browser (e.g., `plotOutput()`).
   * Use `{thematic}` to "translate" CSS to R plots!
@@ -492,7 +492,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ---
 class: inverse, middle, center
 
-## That's enough about `{thematic}`, back to `{bootstraplib}`
+## That's enough about `{thematic}`, back to `{bslib}`
 
 BTW, `{thematic}` also makes it easy to control `qualitative` and `sequential` colorscales.  
 
@@ -514,7 +514,7 @@ include_vimeo("465527125")
 ### More targetted theming
 
 * The main colors and fonts "cascade" to 100s of other theming defaults 
-* Can also set more specific styles via [Bootstrap Sass variables](https://getbootstrap.com/docs/4.4/getting-started/theming/#variable-defaults) (e.g., [`$progress-bar-bg`]((https://github.com/rstudio/bootstraplib/blob/0e936d/inst/lib/bootstrap/scss/_variables.scss#L1003))
+* Can also set more specific styles via [Bootstrap Sass variables](https://getbootstrap.com/docs/4.4/getting-started/theming/#variable-defaults) (e.g., [`$progress-bar-bg`]((https://github.com/rstudio/bslib/blob/0e936d/inst/lib/bootstrap/scss/_variables.scss#L1003))
 
 ```r
 bs_theme(
@@ -578,7 +578,7 @@ knitr::include_graphics("tab-after.png")
 ]
 
 .footnote[
-See more examples at <https://rstudio.github.io/bootstraplib/articles/recipes.html>
+See more examples at <https://rstudio.github.io/bslib/articles/recipes.html>
 ]
 
 ---
@@ -601,7 +601,7 @@ knitr::include_graphics("tab-centered.png")
 ```
 
 .footnote[
-See more examples at <https://rstudio.github.io/bootstraplib/articles/recipes.html>
+See more examples at <https://rstudio.github.io/bslib/articles/recipes.html>
 ]
 
 ---
@@ -685,7 +685,7 @@ shinyApp(ui, server)
 knitr::include_graphics("dark-mode.gif")
 ```
 
-Very new and experimental ([learn more](https://rstudio.github.io/bootstraplib/articles/theming.html#dynamic-shiny))!
+Very new and experimental ([learn more](https://rstudio.github.io/bslib/articles/theming.html#dynamic-shiny))!
 
 ---
 ### Use your theme inside R Markdown
@@ -725,7 +725,7 @@ output:
 --- 
 
 `r ''````{r, echo = FALSE}
-library(bootstraplib)
+library(bslib)
 *bs_global_add_rules(".nav { @extend .justify-content-center; }")
 ```
 
@@ -740,7 +740,7 @@ class: large
 
 ### Summary
 
-* Use `{bootstraplib}` to style HTML in Shiny & R Markdown.
+* Use `{bslib}` to style HTML in Shiny & R Markdown.
     * Upgrades to Bootstrap 4 by default (can also `version = 3`).
     * Customize main colors and fonts with `bs_theme()`.
       * Also new defaults for more specific Sass variables
@@ -760,7 +760,7 @@ class: center, middle
 
 ### Slides: <https://bit.ly/r-pharma2020>
 
-### <https://rstudio.github.io/bootstraplib>
+### <https://rstudio.github.io/bslib>
 ### <https://rstudio.github.io/thematic>
 
 `r icon::fa_twitter()` <a href='https://twitter.com/cpsievert'>@cpsievert</a> <br />

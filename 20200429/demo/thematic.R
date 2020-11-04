@@ -37,9 +37,9 @@ runApp("apps/01")
 thematic_on(font = "auto")
 runApp("apps/02")
 
-# bootstraplib: the modern approach to theming shiny apps
+# bslib: the modern approach to theming shiny apps
 # (try changing the background/foreground/primary/font)
-library(bootstraplib)
+library(bslib)
 bs_theme_new()
 bs_theme_base_colors(bg = "#0C0C0C", fg = "#E4E4E4")
 bs_theme_accent_colors(primary = "#e39777")

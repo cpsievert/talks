@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Styling Shiny &amp; R Markdown with bootstraplib &amp; thematic</title>
+    <title>Styling Shiny &amp; R Markdown with bslib &amp; thematic</title>
     <meta charset="utf-8" />
     <meta name="author" content="Carson Sievert" />
     <script src="index_files/header-attrs-2.4.0/header-attrs.js"></script>
@@ -16,7 +16,7 @@
 
 class: middle, center
 
-# Styling Shiny &amp; R Markdown with bootstraplib &amp; thematic
+# Styling Shiny &amp; R Markdown with bslib &amp; thematic
 
 ### Carson Sievert, Software Engineer @ RStudio
 
@@ -45,10 +45,10 @@ class: contrast, large
 
 ## New tools for styling Shiny &amp; R Markdown
 
-__bootstraplib__: tools for styling HTML from R (e.g., Shiny apps, `rmarkdown::html_document()`, etc)
+__bslib__: tools for styling HTML from R (e.g., Shiny apps, `rmarkdown::html_document()`, etc)
 
 ```r
-remotes::install_github("rstudio/bootstraplib")
+remotes::install_github("rstudio/bslib")
 ```
 
 __thematic__: simplified theming of R plots (e.g., **ggplot2**, **lattice**, **base**)
@@ -60,7 +60,7 @@ remotes::install_github("rstudio/thematic")
 .footnote[
 Documentation:
 
-&lt;https://rstudio.github.io/bootstraplib&gt; &lt;br/&gt;
+&lt;https://rstudio.github.io/bslib&gt; &lt;br/&gt;
 &lt;https://rstudio.github.io/thematic&gt;
 ]
 
@@ -84,7 +84,7 @@ Or, locally
 
 ```r
 library(remotes)
-install_github("rstudio/shiny@demo/bootstraplib")
+install_github("rstudio/shiny@demo/bslib")
 install_github("rstudio/rmarkdown#1706")
 install_github("rstudio/DT@sass")
 install_github("ropensci/plotly")
@@ -234,7 +234,7 @@ class: large
 2. __I want a different 'pre-packaged' look__ (**shinythemes**)
 3. [__I want specific fonts/colors/styles__  (custom CSS)](#12)
   * Writing custom CSS to override styles is tedious and error prone!
-  * Instead, use __bootstraplib__ to customize Bootstrap CSS using simple R functions.
+  * Instead, use __bslib__ to customize Bootstrap CSS using simple R functions.
 
 .footnote[
 See also Joe Cheng's [recent rstudio::conf talk](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
@@ -244,7 +244,7 @@ See also Joe Cheng's [recent rstudio::conf talk](https://rstudio.com/resources/r
 ---
 class: contrast
 
-### To use bootstraplib with shiny, do:
+### To use bslib with shiny, do:
 
 .panelset[
 
@@ -252,7 +252,7 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;library(bootstraplib)&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;shinyOptions(bootstraplib = TRUE)&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_new()&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;library(bslib)&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;shinyOptions(bslib = TRUE)&lt;/span&gt;&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_new()&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
 
 This'll upgrade Bootstrap (the underlying CSS framework) from 3 to 4
 ]
@@ -261,7 +261,7 @@ This'll upgrade Bootstrap (the underlying CSS framework) from 3 to 4
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;version = 3&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;version = 3&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
 
 If, for some reason, you still want Bootstrap 3 (shiny's current default)
 ]
@@ -285,7 +285,7 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;bootswatch = "solar"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new(&lt;span style='background-color:#ffff7f'&gt;bootswatch = "solar"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
 
 Meaning you can use a Bootstrap 4 only theme (e.g., solar, [sketchy](https://bootswatch.com/sketchy), [minty](https://bootswatch.com/minty), etc)
 
@@ -313,7 +313,7 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_base_colors&lt;/span&gt;(bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, fg = &lt;span style='background-color:#EEE8D5'&gt;"#EEE8D5"&lt;/span&gt;)&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_accent_colors&lt;/span&gt;(primary = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_base_colors&lt;/span&gt;(bg = &lt;span style='background-color:#002B36;color:white'&gt;"#002B36"&lt;/span&gt;, fg = &lt;span style='background-color:#EEE8D5'&gt;"#EEE8D5"&lt;/span&gt;)&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_accent_colors&lt;/span&gt;(primary = &lt;span style='background-color:#2AA198;color:white'&gt;"#2AA198"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage("Theming demo app", ...)&lt;/code&gt;
 
 ]
 
@@ -338,9 +338,9 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_fonts("Fira Code")&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt; &amp;nbsp;tags$link(href = "https://fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;/span&gt;&lt;br&gt;)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_fonts("Fira Code")&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt; &amp;nbsp;tags$link(href = "https://fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;/span&gt;&lt;br&gt;)&lt;/code&gt;
 
-[See here](https://rstudio.github.io/bootstraplib/articles/recipes.html#fonts-1) for more on how to properly import font files
+[See here](https://rstudio.github.io/bslib/articles/recipes.html#fonts-1) for more on how to properly import font files
 
 ]
 
@@ -354,7 +354,7 @@ class: contrast
 ---
 class: contrast
 
-### 'Core' Shiny input widgets reflect bootstraplib theme
+### 'Core' Shiny input widgets reflect bslib theme
 
 .panelset[
 
@@ -427,11 +427,11 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;thematic::thematic_shiny()&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&amp;nbsp;&amp;nbsp;tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;br&gt;)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;thematic::thematic_shiny()&lt;/span&gt;&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&amp;nbsp;&amp;nbsp;tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;br&gt;)&lt;/code&gt;
 
 * __thematic__'s [auto-theming](https://rstudio.github.io/thematic/articles/auto.html) essentially translates CSS styles into new R defaults. It works:
   * Regardless of _how_ you style the Shiny app
-  * With RStudio and R Markdown (although, custom CSS styles must come from **bootstraplib**)
+  * With RStudio and R Markdown (although, custom CSS styles must come from **bslib**)
 ]
 ]
 
@@ -453,7 +453,7 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;bs_theme_fonts("Fira Code")&lt;br&gt;thematic::thematic_shiny(&lt;span style='background-color:#ffff7f'&gt;font = "auto"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&amp;nbsp;&amp;nbsp;tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;br&gt;)&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")&lt;br&gt;bs_theme_accent_colors(primary = "#2AA198")&lt;br&gt;bs_theme_fonts("Fira Code")&lt;br&gt;thematic::thematic_shiny(&lt;span style='background-color:#ffff7f'&gt;font = "auto"&lt;/span&gt;)&lt;br&gt;ui &lt;- navbarPage(&lt;br&gt;&amp;nbsp;&amp;nbsp;"Theming demo app", ...,&lt;br&gt;&amp;nbsp;&amp;nbsp;tags$link(href = "//fonts.googleapis.com/css?family=Fira+Code", rel = "stylesheet")&lt;br&gt;)&lt;/code&gt;
 
 Works as long as either:
 
@@ -468,7 +468,7 @@ Works as long as either:
 ---
 class: contrast
 
-### Now, with bootstraplib's 'real-time' themer ✨ 
+### Now, with bslib's 'real-time' themer ✨ 
 
 .panelset[
 
@@ -484,7 +484,7 @@ class: contrast
 
 
 
-&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bootstraplib)&lt;br&gt;shinyOptions(bootstraplib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;thematic::thematic_shiny(font = "auto")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_preview&lt;/span&gt;()&lt;/code&gt;
+&lt;code class ='r hljs remark-code'&gt;library(shiny)&lt;br&gt;library(bslib)&lt;br&gt;shinyOptions(bslib = TRUE)&lt;br&gt;bs_theme_new()&lt;br&gt;thematic::thematic_shiny(font = "auto")&lt;br&gt;&lt;span style='background-color:#ffff7f'&gt;bs_theme_preview&lt;/span&gt;()&lt;/code&gt;
 
 * `bs_theme_preview()` gives you a demo app with the real-time themer
 * To run any app with the themer, use `run_with_themer()`
@@ -507,7 +507,7 @@ class: contrast
 ---
 class: contrast
 
-### 'Custom-theming' in other output formats
+### 'Custom-theming' in non-HTML output formats
 
 &lt;img src="tufte.svg" width="100%" &gt;
 
@@ -789,7 +789,7 @@ class: large
 
 ### Summary
 
-* Use **bootstraplib** to style HTML in Shiny &amp; R Markdown.
+* Use **bslib** to style HTML in Shiny &amp; R Markdown.
     * Or just to simply use Bootstrap 4 (instead of 3).
     * Specify custom colors and fonts with `bs_theme_base_colors()`, `bs_theme_accent_colors()`, &amp; `bs_theme_fonts()`
     * Even more customization is available via `bs_theme_add_variables()`
@@ -805,7 +805,7 @@ class: center, middle
 
 ### Slides: &lt;https://bit.ly/noRth2020&gt;
 
-### &lt;https://rstudio.github.io/bootstraplib&gt;
+### &lt;https://rstudio.github.io/bslib&gt;
 ### &lt;https://rstudio.github.io/thematic&gt;
 
 <i class="fab  fa-twitter "></i> &lt;a href='https://twitter.com/cpsievert'&gt;@cpsievert&lt;/a&gt; &lt;br /&gt;

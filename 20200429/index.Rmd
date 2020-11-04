@@ -832,11 +832,11 @@ class: contrast, middle, center
 
 # Where can I learn more about modern approaches to styling in shiny and rmarkdown?
 
-The new [**bootstraplib** package](https://rstudio.github.io/bootstraplib/index.html) makes it possible to style **shiny** and **rmarkdown** in R (via **sass**) instead of CSS.
+The new [**bslib** package](https://rstudio.github.io/bslib/index.html) makes it possible to style **shiny** and **rmarkdown** in R (via **sass**) instead of CSS.
 
-Check out [this article](https://rstudio.github.io/bootstraplib/articles/recipes.html) for a good sense of where things are (more to come).
+Check out [this article](https://rstudio.github.io/bslib/articles/recipes.html) for a good sense of where things are (more to come).
 
-(BTW, **bootstraplib** is what makes auto-theming in `html_document()` feasible) 
+(BTW, **bslib** is what makes auto-theming in `html_document()` feasible) 
 
 ---
 class: large

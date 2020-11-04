@@ -49,12 +49,13 @@ file.edit("apps/03/app.R")
 # Access styles for any shiny output!
 file.edit("apps/04/app.R")
 
-# bootstraplib: more customizable than shinythemes and less painful than CSS
-# https://rstudio.github.io/bootstraplib
-library(bootstraplib)
+# bslib: more customizable than shinythemes and less painful than CSS
+# https://rstudio.github.io/bslib
+library(bslib)
+# thematic_shiny(font = "auto")
 bs_theme_preview(auto_theme = FALSE)
 
 
-# Auto-theming in rmarkdown::html_document() via bootstraplib
+# Auto-theming in rmarkdown::html_document() via bslib
 # (press Knit after opening to see the result)
 file.edit("reports/darkly.Rmd")

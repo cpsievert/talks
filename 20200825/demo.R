@@ -1,5 +1,5 @@
 library(thematic)
-library(bootstraplib)
+library(bslib)
 library(shiny)
 library(plotly)
 

@@ -5,7 +5,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-library(bootstraplib)
+library(bslib)
 bs_theme_base_colors(bg = "black", fg = "white")
 bs_theme_accent_colors(primary = "salmon")
 thematic::thematic_rmd()

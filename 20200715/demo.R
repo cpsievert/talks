@@ -1,11 +1,15 @@
 library(thematic)
-library(bootstraplib)
+library(bslib)
 library(shiny)
 library(plotly)
 
 # Each theme change generates R code to reproduce it
 thematic_shiny(font = "auto")
+bs_theme_new()
+bs_theme_base_colors(bg = "#0C0B0B", fg = "#FBF5F5")
+bs_theme_accent_colors(primary = "#E700FF")
 bs_theme_preview()
+
 
 # Currently thematic is *not* enabled
 p <- ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +

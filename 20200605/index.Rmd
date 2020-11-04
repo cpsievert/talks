@@ -237,7 +237,7 @@ class: large, contrast, middle
 * Some other scenarios where it can work:
     * In RStudio's plot viewer pane
     * In `rmarkdown::html_document()`
-        * Use **bootstraplib**, not inline CSS, to style the page
+        * Use **bslib**, not inline CSS, to style the page
     * Auto value "defaults" are provided via `auto_config_set()`
         * Useful for custom non-HTML output formats
 
@@ -815,7 +815,7 @@ class: large
 
 * By default, `"auto"` colors are enabled...this generally works when:
   * A **shiny** runtime is generating the plots
-  * Inside `rmarkdown::html_document()` (custom styling should to be done via **bootstraplib**, not inline CSS)
+  * Inside `rmarkdown::html_document()` (custom styling should to be done via **bslib**, not inline CSS)
   * Inside RStudio
   
 * Use `thematic_on(font = "auto")` to enable auto fonts...this generally works if it resolves to a Google Font (or font known to R)
