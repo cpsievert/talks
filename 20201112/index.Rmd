@@ -108,7 +108,7 @@ class: large, middle
 
 ### New R 📦s for theming Shiny & R Markdown
 
-__`{bslib}`__: simplified theming of HTML from R via Bootstrap CSS
+__`{bslib}`__: simplified theming of web content via Bootstrap
   * [rstudio.github.io/bslib](https://rstudio.github.io/bslib)
 
 __`{thematic}`__: simplified theming of R plots (`{ggplot2}`, `{lattice}`, & `{base}`)
@@ -130,7 +130,7 @@ library(shiny)
 library(bslib)
 
 ui <- fluidPage(
-*  theme = bs_theme(),
+* theme = bs_theme(),
   ...
 )
 ```
@@ -150,12 +150,13 @@ library(shiny)
 library(bslib)
 
 ui <- fluidPage(
-*  theme = bs_theme(version = 4),
+* theme = bs_theme(version = 4),
   ...
 )
 ```
 
 * Special compatibility layer helps most Shiny apps & R Markdown docs upgrade to Bootstrap 4.
+
 * Upgrading may break some apps (try `version = 3` in that case).
 
 ---
@@ -199,6 +200,20 @@ knitr::include_graphics("darkly-preview.png")
 bs_theme(
   bg = "black", fg = "white", primary = "red",
   base_font = font_google("Grandstander")
+)
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("custom1.png")
+```
+
+---
+#### `font_google()` makes it easy to import Google Font files
+
+```r
+bs_theme(
+  bg = "black", fg = "white", primary = "red",
+* base_font = font_google("Grandstander")
 )
 ```
 
@@ -504,7 +519,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 ```
 
 .bg-light-yellow.black-70.b--yellow.ba.bw2.br3.shadow-5.ph4.mt5[
-`"auto"` can work with `bs_theme()` in `rmarkdown::html_document()`
+`"auto"` can work with `{bslib}` in `rmarkdown::html_document()`
 ]
 ]
 
