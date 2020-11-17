@@ -1,5 +1,5 @@
 ---
-title: "Theming Shiny & R Markdown with thematic & bslib"
+title: "Shiny v1.6 preview: improvements to caching and theming"
 venue: "J&J Shiny Day"
 type: "invited"
 recording: "none"
@@ -20,7 +20,7 @@ date: ""
 ---
 class: middle, center, inverse
 
-# Theming Shiny & R Markdown with `{thematic}` & `{bslib}`
+# Shiny v1.6 preview: improvements to caching and theming
 
 ### Carson Sievert, Software Engineer @ RStudio
 
@@ -103,22 +103,291 @@ h1, h2, h3 {
 }
 ```
 
+
 ---
-class: large, middle
+class: large
+
+### Shiny v1.6 major features
+
+* New `shiny::bindCache()` function
+   * Persistent caching for any `reactive()` or `render*()` function
+
+* Improved theming support
+   * All of Shiny may now be (properly) themed via new `{bslib}` & `{thematic}` packages
+    
+* Accessibility improvements and many bug fixes
+   * See the NEWS [here](https://github.com/rstudio/shiny/blob/master/NEWS.md)
+
+.footnote[
+Try v1.6 out today with:
+
+```r
+remotes::install_github("rstudio/shiny")
+```
+]
+
+---
+class: large
+
+### Shiny v1.6 major features
+
+* <span style="font-size:2rem; font-weight:700">New `shiny::bindCache()` function</span>
+   * __Persistent caching for any `reactive()` or `render*()` function__
+
+* Improved theming support
+   * All of Shiny may now be (properly) themed via new `{bslib}` & `{thematic}` packages
+    
+* Accessibility improvements and many bug fixes
+   * See the NEWS [here](https://github.com/rstudio/shiny/blob/master/NEWS.md)
+
+.footnote[
+Try v1.6 out today with:
+
+```r
+remotes::install_github("rstudio/shiny")
+```
+]
+
+---
+class: large
+
+### A minimal example
+
+.pull-left[
+```r
+library(shiny)
+ui <- fluidPage(
+  sliderInput("x", "x", 0, 10, 5),
+  sliderInput("y", "y", 0, 10, 5),
+  verbatimTextOutput("val")
+)
+server <- function(input, output) {
+  r <- reactive({
+    Sys.sleep(2)
+    input$x + input$y
+  })
+  output$val <- renderPrint(r())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+<img src="transient.gif" width="80%" />
+]
+
+* Everytime `x` or `y` changes, `r()` re-executes.
+
+---
+class: large
+
+### A minimal example
+
+.pull-left[
+```r
+library(shiny)
+ui <- fluidPage(
+  sliderInput("x", "x", 0, 10, 5),
+  sliderInput("y", "y", 0, 10, 5),
+  verbatimTextOutput("val")
+)
+server <- function(input, output) {
+  r <- reactive({
+    Sys.sleep(2)
+    input$x + input$y
+  })
+  output$val <- renderPrint(r())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+<img src="transient.gif" width="80%" />
+]
+
+* Everytime `x` or `y` changes, `r()` re-executes.
+* `r()` can recall its _most recent_ value (transient), but not its entire _history_ (persistent)
+
+---
+class: large
+
+### bindCache(): persistent caching!
+
+.pull-left[
+```r
+library(shiny)
+ui <- fluidPage(
+  sliderInput("x", "x", 0, 10, 5),
+  sliderInput("y", "y", 0, 10, 5),
+  verbatimTextOutput("val")
+)
+server <- function(input, output) {
+  r <- reactive({
+    Sys.sleep(2) 
+    input$x + input$y
+  }) %>%
+*   bindCache(input$x, input$y)
+  output$val <- renderPrint(r())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+<img src="persistent.gif" width="80%" />
+]
+
+* Provide `bindCache()` a reactive and its input value(s).
+
+---
+class: large
+
+### bindCache(): persistent caching!
+
+.pull-left[
+```r
+library(shiny)
+ui <- fluidPage(
+  sliderInput("x", "x", 0, 10, 5),
+  sliderInput("y", "y", 0, 10, 5),
+  verbatimTextOutput("val")
+)
+server <- function(input, output) {
+  r <- reactive({
+    Sys.sleep(2) 
+    input$x + input$y
+  }) %>%
+*   bindCache(input$x, input$y)
+  output$val <- renderPrint(r())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+<img src="persistent.gif" width="80%" />
+]
+
+* Provide `bindCache()` a reactive and its input value(s).
+* `r()` can now retrieve `x+y` from cache! 🎉
+
+
+---
+class: large
+
+### bindCache(): persistent caching!
+
+.pull-left[
+```r
+library(shiny)
+ui <- fluidPage(
+  sliderInput("x", "x", 0, 10, 5),
+  sliderInput("y", "y", 0, 10, 5),
+  verbatimTextOutput("val")
+)
+server <- function(input, output) {
+  r <- reactive({
+    Sys.sleep(2) 
+    input$x + input$y
+  }) %>%
+*   bindCache(input$x, input$y)
+  output$val <- renderPrint(r())
+}
+
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+<img src="persistent.gif" width="80%" />
+]
+
+* Provide `bindCache()` a reactive and its input value(s).
+* `r()` can now retrieve `x+y` from cache! 🎉
+* Cache is configurable & can be shared across sessions (see `?bindCache`)
+  * Can vastly improve performance, especially in multi-user settings!
+
+---
+class: large
+
+### bindCache() also works with render functions
+
+.pull-left[
+```r
+# requires dev version of plotly
+# remotes::install_github("ropensci/plotly")
+library(plotly)
+ui <- fluidPage(
+  selectizeInput(
+    "cities", "Select a city", 
+    choices = unique(txhousing$city)
+  ),
+  plotlyOutput("p")
+)
+server <- function(input, output, ...) {
+  output$p <- renderPlotly({
+    Sys.sleep(2)
+    plot_ly(txhousing, x = ~date, y = ~median) %>%
+      filter(city %in% input$cities) %>%
+      group_by(city) %>%
+      add_lines()
+  }) %>% 
+*   bindCache(input$cities)
+}
+shinyApp(ui, server)
+```
+]
+
+.pull-right[
+<img src="plotly-cache.gif" width="100%" />
+]
+
+Some custom output bindings may need updating to cache correctly (see `?bindCache`). Let us know if you run into issues!
+
+---
+class: large
+
+### Shiny v1.6 major features
+
+* New `shiny::bindCache()` function
+   * Persistent caching for any `reactive()` or `render*()` function
+
+* <span style="font-size:2rem; font-weight:700">Improved theming support</span>
+   * __All of Shiny may now be (properly) themed via new `{bslib}` & `{thematic}` packages__
+    
+* Accessibility improvements and many bug fixes
+   * See the NEWS [here](https://github.com/rstudio/shiny/blob/master/NEWS.md)
+
+.footnote[
+Try v1.6 out today with:
+
+```r
+remotes::install_github("rstudio/shiny")
+```
+]
+
+---
+class: large, middle, inverse
 
 ### New R 📦s for theming Shiny & R Markdown
 
-__`{bslib}`__: simplified theming of web content via Bootstrap
+__`{bslib}`__: tools for customizing Bootstrap CSS from R
   * [rstudio.github.io/bslib](https://rstudio.github.io/bslib)
 
 __`{thematic}`__: simplified theming of R plots (`{ggplot2}`, `{lattice}`, & `{base}`)
   * [rstudio.github.io/thematic](https://rstudio.github.io/thematic)
 
-Not yet on CRAN (give it about a month or so)
+Also not yet on CRAN
 
 ```r
 remotes::install_github(c("rstudio/bslib", "rstudio/thematic"))
 ```
+
 
 ---
 class: large
@@ -588,17 +857,18 @@ include_vimeo("465527125")
 ### Implement your own theming widgets w/ `setCurrentTheme()`
 
 ```r
-dark <- bs_theme(bg = "black", fg = "white", primary = "purple")
-light <- bs_theme()
 ui <- fluidPage(
-  theme = light, 
+  theme = bs_theme(), 
   checkboxInput("dark_mode", "Dark mode", FALSE)
 )
 server <- function(input, output, session) {
-  observe({
-*   new_theme <- if (input$dark_mode) dark else light
-*   session$setCurrentTheme(new_theme)
-  })
+  observe(session$setCurrentTheme({
+    if (input$dark_mode) {
+      bs_theme(bg = "black", fg = "white", primary = "purple")
+    } else {
+      bs_theme()
+    }
+  }))
 }
 shinyApp(ui, server)
 ```
@@ -607,11 +877,162 @@ shinyApp(ui, server)
 knitr::include_graphics("dark-mode.gif")
 ```
 
+---
+### More targetted theming
+
+Main colors (e.g., `bg`, `fg`, etc) "cascade" to 100s of other settings, all of which can be set via [Bootstrap Sass variables](https://getbootstrap.com/docs/4.4/getting-started/theming/#variable-defaults) (e.g., [`$progress-bar-bg`]((https://github.com/rstudio/bslib/blob/0e936d/inst/lib/bootstrap/scss/_variables.scss#L1003))
+
+```r
+bs_theme(
+  bg = "#002B36", fg = "#EEE8D5", 
+  "progress-bar-bg" = "orange"
+)
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("progress-orange.png")
+```
+
+---
+### What's a Sass variable?
+
+* Sass is a more powerful way to write CSS (i.e., style HTML)
+* Sass variables provide "high-level controls" over CSS
+
+<div align="center">
+  <img src="sass.png" width="80%" />
+</div>
+
+* `bs_theme()` works by overriding Bootstrap Sass variable defaults. 
+
+Learn more about [Sass](https://sass-lang.com) and the `{sass}` 📦 at <https://rstudio.github.io/sass>
+
+---
+### Leverage the power of Bootstrap 4
+
+Customize [spacing](https://getbootstrap.com/docs/4.4/utilities/spacing/), [borders](https://getbootstrap.com/docs/4.4/utilities/borders/), modify [colors](https://getbootstrap.com/docs/4.4/utilities/colors/), and more!
+
+.pull-left[
+```r
+tabsetPanel(
+  tabPanel("One", "No padding"),
+  tabPanel("Two", "No padding")
+)
+```
+```{r, echo = FALSE}
+knitr::include_graphics("tab-before.png")
+```
+]
+
+.pull-right[
+```r
+tabsetPanel(
+  tabPanel(
+    "One", "With padding",
+*    class = "p-3 border border-top-0 rounded-bottom"
+  ),
+  tabPanel("Two", "No padding")
+)
+```
+```{r, echo = FALSE}
+knitr::include_graphics("tab-after.png")
+```
+]
+
+.footnote[
+See more examples at <https://rstudio.github.io/bslib/articles/recipes.html>
+]
+
+---
+### Leverage the power of Sass
+
+Add [Sass rules](https://sass-lang.com/documentation/style-rules) to do things like `@extend` all [navs to be centered](https://getbootstrap.com/docs/4.4/components/navs/#horizontal-alignment)
+
+```r
+fluidPage(
+  theme = bs_theme() %>%
+*   bs_add_rules(".nav { @extend .justify-content-center; }"),
+  tabsetPanel(
+    tabPanel("One", "Centered w/ padding", class = "p-3 border border-top-0 rounded-bottom"),
+    tabPanel("Two", "No padding")
+  )
+)
+```
+```{r, echo = FALSE}
+knitr::include_graphics("tab-centered.png")
+```
+
+.footnote[
+See more examples at <https://rstudio.github.io/bslib/articles/recipes.html>
+]
+
+---
+### Create custom, themable, components
+
+.panelset[
+.panel[.panel-name[R Code]
+
+```r
+person <- function(name, title, company) {
+  div(
+    class = "person",
+    h3(class = "name", name),
+    div(class = "title", title),
+    div(class = "company", company)
+  )
+}
+
+fluidPage(
+  person("Andrew Carnegie", "Owner", "Carnegie Steel Company"),
+  person("John D. Rockefeller", "Chairman", "Standard Oil"),
+  theme = bs_theme(bg = "#002B36", fg = "#EEE8D5") %>%
+*    bs_add_rules(sass::sass_file("person.scss"))
+)
+```
+]
+.panel[.panel-name[Sass Code]
+```scss
+.person {
+  display: inline-block;
+  padding: $spacer;
+  border: $border-width solid $border-color;
+  @include border-radius;
+  @include box-shadow;
+  outline: 0;
+  width: 300px;
+  @include media-breakpoint-down(sm) {
+    display: block;
+    width: auto;
+    margin-right: $grid-gutter-width;
+  }
+  margin: $grid-gutter-width;
+  margin-right: 0;
+  .title { font-weight: bold; }
+  .title, .company { color: $gray-600; }
+}
+.person:last-of-type {
+  margin-right: $grid-gutter-width;
+}
+
+```
+]
+
+.panel[.panel-name[Result]
+`r ''`
+<div align="center">
+  <img src="person.png" width="60%" />
+</div>
+]
+]
+
 
 ---
 class: large
 
-### Summary
+### In summary
+
+* Use `shiny::bindCache()` to persistently cache reactive expressions
+    * See `?bindCache` for more details
 
 * Use `bslib::bs_theme()` to theme Shiny & R Markdown.
     * Upgrades to Bootstrap 4 by default (can also `version = 3`).
@@ -619,8 +1040,6 @@ class: large
     * Use Bootswatch and/or design your own custom themes.
     
     * Use `bs_theme_preview()`/`bs_themer()` to quickly preview and update themes.
-    
-    * See [this theming article](https://rstudio.github.io/bslib/articles/theming.html) for more detailed theming tips & tricks.
 
 * Use `{thematic}` for easier theming of R plots
     * Works with `{ggplot2}`, `plotly::ggplotly()`, `{lattice}`, and `{base}` R graphics.
