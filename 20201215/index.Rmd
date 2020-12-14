@@ -1,0 +1,6 @@
+---
+title: "Custom themes in Shiny & R Markdown with bslib & thematic"
+venue: "rstudio::global(2020L)"
+type: "invited"
+recording: "none"
+---
