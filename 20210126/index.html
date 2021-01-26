@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Shiny v1.6 overview: improvements to caching and theming</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Carson Sievert" />
+    <script src="index_files/header-attrs-2.6.6/header-attrs.js"></script>
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="index_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="index_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center, inverse
+
+# Shiny v1.6 overview: improvements to caching and theming
+
+### Carson Sievert, Software Engineer @ RStudio
+
+&lt;carson@rstudio.com&gt; 
+
+
+
+
+&lt;style type="text/css"&gt;
+@import url(https://fonts.googleapis.com/css?family=IBM+Plex+Sans);@import url(https://fonts.googleapis.com/css?family=Roboto+Slab);@import url(https://fonts.googleapis.com/css?family=Open+Sans);body{font-family:Open Sans, sans-serif}h1,h2,h3{font-family:Roboto Slab, serif}.remark-slide-content.large{font-size:1.5rem}.remark-slide-content.dark-mode{font-family:Roboto Slab;background-color:#444;color:#e4e4e4}.remark-slide-content.dark-mode a{color:#e39777}
+&lt;/style&gt;
+
+
+---
+class: large
+
+### Shiny v1.6 major features
+
+
+* New `shiny::bindCache()` function
+   * Persistent caching for any `reactive()` or `render*()` function
+
+* Improved theming support
+   * All of Shiny may now be (properly) themed via new `{bslib}` package
+    
+* Accessibility improvements and many bug fixes
+   * See the NEWS [here](https://github.com/rstudio/shiny/blob/master/NEWS.md)
+
+
+.footnote[
+v1.6 is out now, blog post coming this week:
+
+```r
+install.packages("shiny")
+```
+]
+
+---
+## bindCache() in a nutshell
+
+* Similar to `renderCachedPlot()`, `bindCache()` needs the input(s) to a "pure" calculation:
+
+```r
+r &lt;- reactive({
+  input$x + input$y
+}) %&gt;%
+*  bindCache(input$x, input$y)
+```
+
+---
+## bindCache() in a nutshell
+
+* Similar to `renderCachedPlot()`, `bindCache()` needs the input(s) to a "pure" calculation:
+
+```r
+r &lt;- reactive({
+  input$x + input$y
+}) %&gt;%
+*  bindCache(input$x, input$y)
+```
+
+* Should work with most existing `render*()` functions (some might need updates):
+
+```r
+output$p &lt;- renderPlotly({
+  plot_ly(dat) %&gt;% 
+    filter(city %in% input$cities) %&gt;% 
+    add_lines(time, population)
+}) %&gt;%
+*  bindCache(input$cities)
+```
+
+---
+## bindCache() in a nutshell
+
+* Similar to `renderCachedPlot()`, `bindCache()` needs the input(s) to a "pure" calculation:
+
+```r
+r &lt;- reactive({
+  input$x + input$y
+}) %&gt;%
+*  bindCache(input$x, input$y)
+```
+
+* Should work with most existing `render*()` functions (some might need updates):
+
+```r
+output$p &lt;- renderPlotly({
+  plot_ly(dat) %&gt;% 
+    filter(city %in% input$cities) %&gt;% 
+    add_lines(time, population)
+}) %&gt;%
+*  bindCache(input$cities)
+```
+
+* Same entry-point for cache configuring (now also supports [`{cachem}` objects](http://cachem.r-lib.org/))
+
+```r
+shinyOptions(cache = cachem::cache_disk("./cache"))
+```
+
+---
+class: large
+
+### Start using `{bslib}` with Shiny
+
+```r
+library(shiny)
+library(bslib)
+
+ui &lt;- fluidPage(
+* theme = bs_theme(),
+  ...
+)
+```
+
+* `fluidPage()`, `navbarPage()`, `bootstrapPage()`, etc. all have this `theme` argument, which now accepts `bslib::bs_theme()` objects.
+  
+---
+class: large
+
+### By default, upgrades app from Bootstrap 3 to 4
+
+```r
+library(shiny)
+library(bslib)
+
+ui &lt;- fluidPage(
+* theme = bs_theme(version = 4),
+  ...
+)
+```
+
+* Special compatibility layer helps most Shiny apps &amp; R Markdown docs upgrade to Bootstrap 4.
+
+* Upgrading may break some apps (try `version = 3` in that case).
+
+---
+class: large
+
+### Continue using Bootswatch themes
+
+```r
+library(shiny)
+library(bslib)
+
+# In the past, this was shinythemes::shinythemes("darkly")
+ui &lt;- fluidPage(
+* theme = bs_theme(bootswatch = "darkly"),
+  ...
+)
+```
+
+
+* Now you can use [Bootswatch](https://bootswatch.com/3/darkly) with BS4 or BS3 (just change `version`).
+  * Bootswatch 4 has some new themes (e.g., [solar](https://bootswatch.com/solar) and [minty](https://bootswatch.com/minty))
+
+---
+#### Custom theming!
+
+```r
+bs_theme(
+  bg = "#202123", fg = "#B8BCC2", primary = "#EA80FC",
+  base_font = font_google("Grandstander")
+)
+```
+
+&lt;img src="material.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+`font_google()`, by default, tries to download, cache, and bundle the font files in one shot.
+
+```r
+bs_theme(
+  bg = "#202123", fg = "#B8BCC2", primary = "#EA80FC",
+ *base_font = font_google("Grandstander")
+)
+```
+
+&lt;img src="material.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+## How does custom theming actually work?
+
+* `bs_theme()` works by overriding [Bootstrap Sass variable defaults](https://getbootstrap.com/docs/4.0/getting-started/theming/#variable-defaults). 
+
+&lt;div align="center"&gt;
+  &lt;img src="sass.png" width="80%" /&gt;
+&lt;/div&gt;
+
+
+* Shiny will compile Sass -&gt; CSS at run-time when necessary.
+  * Can be costly, but `options(sass.cache)` is `TRUE` by default, and we default to app sub-directory on hosted platforms (see `sass::sass_cache_context_dir()` for details).
+  
+---
+### Bootstrap Sass provides 100s of variables!
+
+Main colors (e.g., `bg`, `fg`, etc) "cascade" to 100s of other settings, all of which can be set via [Bootstrap Sass variables](https://getbootstrap.com/docs/4.4/getting-started/theming/#variable-defaults) (e.g., [`$progress-bar-bg`]((https://github.com/rstudio/bslib/blob/0e936d/inst/lib/bootstrap/scss/_variables.scss#L1003))
+
+```r
+bs_theme(
+  bg = "#002B36", fg = "#EEE8D5", 
+  "progress-bar-bg" = "orange"
+)
+```
+
+&lt;img src="progress-orange.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+.footnote[
+We're currently working on searchable table(s) of variables https://github.com/rstudio/bslib/pull/238
+]
+
+---
+### Use with `rmarkdown::html_document`
+
+```yaml
+--- 
+output:
+  html_document:
+    theme:
+      bg: "#202123"
+      fg: "#B8BCC2"
+      primary: "#EA80FC"
+      base_font: !expr bslib::font_google("Grandstander")
+--- 
+```
+
+* Currently requires dev version of R Markdown `remotes::install_github("rstudio/rmarkdown")`
+
+* In theory, any output format building on `html_document` (or `html_document_base`) should automatically gain `{bslib}` support.
+
+* Some output formats (e.g. `{flexdashboard}`) need updates to restructure their harded-coded CSS to Sass.
+
+---
+### Use real-time theming w/ any Shiny app
+
+Call `bs_themer()` in the server code (also works with a `runtime: shiny` R Markdown doc)
+
+&lt;iframe src="https://player.vimeo.com/video/465527125?title=0&amp;amp;byline=0&amp;amp;portrait=0" width="100%" height="450" frameborder="0" seamless="seamless" webkitAllowFullScreen mozallowfullscreen allowFullScreen&gt;&lt;/iframe&gt;
+
+
+---
+### Implement your own theming widgets w/ `setCurrentTheme()`
+
+```r
+ui &lt;- fluidPage(
+  theme = bs_theme(), 
+  checkboxInput("dark_mode", "Dark mode", FALSE)
+)
+server &lt;- function(input, output, session) {
+  observe(session$setCurrentTheme({
+    if (input$dark_mode) {
+      bs_theme(bg = "black", fg = "white", primary = "purple")
+    } else {
+      bs_theme()
+    }
+  }))
+}
+shinyApp(ui, server)
+```
+
+&lt;img src="dark-mode.gif" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, center
+
+### Thanks! Any questions?
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="../templates/remarkjs/libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "14.6:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
