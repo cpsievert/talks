@@ -359,3 +359,5 @@ knitr::include_graphics("dark-mode.gif")
 class: middle, center
 
 ### Thanks! Any questions?
+
+Slides https://talks.cpsievert.me/20210126
