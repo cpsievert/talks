@@ -89,7 +89,7 @@ class: inverse
 <br/>
 <br/>
 
-## Solution: bring them to R
+## Solution: bring them to R, Python, etc
 
 
 ---
@@ -122,6 +122,33 @@ background-size: contain
 ---
 background-image: url(htmlwidgets-gallery.png)
 background-size: contain
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h3><a href="http://gallery.htmlwidgets.org">gallery.htmlwidgets.org</a></h3>
 
 <!--
 class: principles
@@ -169,18 +196,16 @@ include_vimeo("315707813", height = 420)
 ```
 
 ---
+class: principles
+
 ### plotly: an advanced htmlwidget
 
-All plots come pre-packaged with simple interaction (e.g., tooltip, zoom, and legend filter).
 
-```r
-library(plotly)
-plot_ly(diamonds, x = ~cut, color = ~clarity)
-```
+* All plots come pre-packaged with "within-widget" interaction (e.g., tooltip, zoom, and legend filter).
 
-```{r, echo = FALSE}
-include_vimeo("315707813", height = 420)
-```
+* `{shiny}` provides the tools to implement any type of other interactivity that you want.
+
+* `{plotly}` has two ways to share information across widgets (with or without `{shiny}`).
 
 ---
 ### shiny: create a web UI to re-execute R code
@@ -347,59 +372,45 @@ bscols(p, DT::datatable(sd))
 * Most [`{crosstalk}`-compatible widgets](https://rstudio.github.io/crosstalk/widgets.html) only support this sort of "simple transient selection". 
 * However, when linking multiple `{plotly}` widgets via `{crosstalk}`, you can do a lot more!
 
-
 ---
-### Texas housing prices
+### Generalized selection in plotly
 
 ```r
-library(dplyr)
 library(plotly)
-tx <- txhousing %>%
-  select(city, year, month, median) %>%
-  filter(city %in% c("Galveston", "Midland", "Odessa", "South Padre Island"))
-tx
+*tx <- SharedData$new(txhousing, ~city)
+p <- ggplot(tx) + geom_line(aes(date, median, group = city))
+gg <- ggplotly(p)
+*highlight(gg, on = "plotly_click")
 ```
 
-```r
-#> # A tibble: 748 x 4
-#>         city  year month median
-#>        <chr> <int> <int>  <dbl>
-#>  1 Galveston  2000     1  95000
-#>  2 Galveston  2000     2 100000
-#>  3 Galveston  2000     3  98300
-#>  4 Galveston  2000     4 111100
-#>  5 Galveston  2000     5  89200
-#>  6 Galveston  2000     6 108600
-#>  7 Galveston  2000     7  99000
-#>  8 Galveston  2000     8  96200
-#>  9 Galveston  2000     9 104000
-#> 10 Galveston  2000    10 118800
-#> # ... with 738 more rows
-```
+<div align="center">
+<a href="txhighlight.html"><img src="txhighlight.png" width="100%"></a>
+</div>
 
 ---
-### Generalized selection
+### Persistent selection and search
 
 ```r
-*TX <- SharedData$new(tx, ~year)
-p <- ggplot(TX, aes(month, median, group = year)) + geom_line() +
-  facet_wrap(~city, ncol = 2)
-ggplotly(p)
+*highlight(gg, on = "plotly_hover", persistent = T, selectize = T, dynamic = T)
 ```
 
-<iframe src="txhousing-2.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+<div align="center">
+<a href="txmodes.html"><img src="txmodes.png" width="100%"></a>
+</div>
 
 ---
-### Persist, color, and search indirectly
+### Works with facetting
 
 ```r
 TX <- SharedData$new(tx, ~year)
 p <- ggplot(TX, aes(month, median, group = year)) + geom_line() +
-  facet_wrap(~city, ncol = 2)
-*highlight(ggplotly(p), persistent = TRUE, dynamic = TRUE, selectize = TRUE)
+*  facet_wrap(~city, ncol = 2)
+highlight(ggplotly(p), persistent = T, selectize = T, dynamic = T)
 ```
 
-<iframe src="txhousing-1.html" width="100%" height="450" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
+<div align="center">
+<a href="txhousing-1.html"><img src="txhousing-1.png" width="100%"></a>
+</div>
 
 ---
 background-image: url(https://i.imgur.com/Id2nVFG.gif)
@@ -439,11 +450,23 @@ demo("crosstalk-highlight-pipeline", package = "plotly")
 <iframe src="txmissing.html" width="100%" height="485" scrolling="no" seamless="seamless" frameBorder="0"> </iframe>
 
 ---
-class: bottom, left 
-background-image: url(../20171207/pipeline.svg)
+background-image: url(pipeline.svg)
 background-size: contain
+class: bottom, left 
 
-## The 'data pipeline'
+## "Linking as a <br> database query"
+
+---
+background-image: url(pipeline.svg)
+background-size: contain
+class: bottom, left 
+
+.pull-left[
+```sql
+SELECT * FROM table 
+  WHERE city == "South Padre Island"
+```
+]
 
 ---
 ### Works with 'aggregated' traces
