@@ -1,0 +1,7 @@
+---
+title: "Tools for making faster and better looking 
+Shiny apps"
+venue: "World Bank's R Shiny Day"
+type: "keynote"
+recording: "none"
+---
