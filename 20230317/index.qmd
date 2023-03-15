@@ -1,0 +1,298 @@
+---
+format: 
+  revealjs:
+    theme: [default, custom.scss]
+    revealjs-plugins:
+      - fullscreen
+---
+
+```{r, include=FALSE}
+library(knitr)
+library(htmltools)
+library(bslib)
+
+render_as_iframe <- function(x, options, ...) {
+  lbl <- opts_current$get("label")
+  doc_name <- sub("[.]Rmd", "", knitr::current_input())
+  lbl_dir <- file.path("examples", doc_name, lbl)
+  if (!dir.exists(lbl_dir)) {
+    dir.create(lbl_dir, recursive = TRUE)
+  }
+  file <- file.path(lbl_dir, paste0(lbl, ".html"))  
+  tryCatch(
+    save_html(x, file),
+    error = function(e) {
+      stop("Don't know how to render ", class(x)[[1]], " as an <iframe>")
+    }
+  )
+  include_url(file)
+}
+
+knitr::opts_hooks$set(as_iframe = function(opts) {
+  opts$render <- render_as_iframe
+  opts$out.width <- "100%"
+  opts$out.extra <- paste0(
+    'seamless="seamless" frameBorder="0" loading="lazy"'
+  )
+  opts
+})
+
+opts_chunk$set(message = FALSE, echo = TRUE, as_iframe = TRUE)
+```
+
+# Towards the next generation of Shiny UI {background-image="ship.webp" background-size="contain" style='--r-heading-color: white; color: white;'}
+
+Carson Sievert  
+Software Engineer, Posit  
+[bit.ly/bslib-dashboard-slides](https://bit.ly/bslib-dashboard-slides)
+
+
+## `{bslib}`: a modern Shiny UI toolkit
+
+1.  Use *any* version of Bootstrap and easily customize CSS.
+
+::: {.incremental}
+2.  Provide modern UI replacements for `{shiny}` and `{shinydashboard}`.
+    -  <b>Currently includes page and layout helpers, sidebars, cards, value boxes, accordions, and more.</b>
+    -  Eventually, it should include more like inputs, tooltips, busy indication, and more.
+    -  We plan on integrating this work into the [Shiny UI editor](https://rstudio.github.io/shinyuieditor/) and [Shiny for Python](https://shiny.rstudio.com/py/).
+:::
+
+
+## Hello `page_*()`
+
+::: {.font-sm}
+Easily upgrade to latest Bootstrap w/ `{bslib}` drop-in replacements for `{shiny}`'s `fluidPage()`, `fixedPage()`, etc (still on Bootstrap 3).
+:::
+
+```{r}
+#| output-location: column
+library(bslib)
+library(shiny)
+
+page_fluid(
+  h1("Hello Bootstrap 5")
+)
+```
+
+## Pin version via `bs_theme()`
+
+::: {.font-sm}
+`page_*()` containers _currently_ default to Bootstrap 5 (via `theme = bs_theme()`). Production apps should consider hard-coding the `version`.
+:::
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "5"
+library(bslib)
+library(shiny)
+
+page_fluid(
+  theme = bs_theme(version = 5),
+  h1("Hello Bootstrap 5")
+)
+```
+
+
+## Bootswatch themes
+
+::: {.font-sm}
+Use `bs_theme()` to easily use [Bootswatch](https://bootswatch.com) themes...
+:::
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "5-7"
+library(bslib)
+library(shiny)
+
+page_fluid(
+  theme = bs_theme(
+    bootswatch = "quartz"
+  ),
+  h1("Hello Bootstrap 5")
+)
+```
+
+
+## Custom themes
+
+::: {.font-sm}
+- Easily choose main colors and fonts 
+    - Use `font_google()` to automatically download, cache, and import [Google Font](https://fonts.google.com/) files.
+:::
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "5-10"
+library(bslib)
+library(shiny)
+
+page_fluid(
+  theme = bs_theme(
+    bg = "#212121", 
+    fg = "white",
+    base_font = font_google(
+      "Indie Flower"
+    )
+  ),
+  h1("Hello Bootstrap 5")
+)
+```
+
+
+## Custom themes
+
+::: {.font-sm}
+There are 100s of [theming variables](https://rstudio.github.io/bslib/articles/bs5-variables.html) to customize.
+:::
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "11"
+library(bslib)
+library(shiny)
+
+page_fluid(
+  theme = bs_theme(
+    bg = "#212121", 
+    fg = "white",
+    base_font = font_google(
+      "Indie Flower"
+    ),
+    "h1-font-size" = "5rem"
+  ),
+  h1("Hello Bootstrap 5")
+)
+```
+
+## Utility Classes
+
+::: {.font-sm}
+[Bootstrap utility classes](https://getbootstrap.com/docs/5.3/utilities/text/) are also quite useful for spacing, alignment, and more. 
+:::
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "14-15"
+library(bslib)
+library(shiny)
+
+page_fluid(
+  theme = bs_theme(
+    bg = "#212121",
+    fg = "white",
+    base_font = font_google(
+      "Indie Flower"
+    ),
+    "h1-font-size" = "5rem"
+  ),
+  h1(
+    class = "text-center", 
+    class = "text-primary",
+    "Hello Bootstrap 5"
+  )
+)
+```
+
+## `{bslib}` components {.smaller .scrollable}
+
+::: {.columns}
+
+::: {.column}
+
+1. `card()`
+    - Group related information with borders and padding.
+
+::: {.fragment}
+2. `layout_column_wrap()`
+    - Wrap a 1d sequence of UI elements into a responsive 2d grid. 
+:::
+
+::: {.fragment}
+3. `sidebar()` + `layout_sidebar()`
+    - Flexible, collapsing, sidebar layout.
+:::
+
+:::
+
+
+::: {.column}
+
+::: {.fragment}
+4. `value_box()`
+    - Highlight a value with a title.
+:::
+
+::: {.fragment}
+5. `accordion()`
+    - Collapsible content panels.
+:::
+
+::: {.fragment}
+6. A more complete grammar of `nav()`-igation components.
+    - Among other things, introduces card-based navs (e.g., `navs_tab_card()`).
+:::
+
+:::
+:::
+
+
+::: {.fragment}
+### That's basically all one needs for a dashboard!
+:::
+
+
+## Let's build a dashboard with `{bslib}`
+
+- Follow along at [bit.ly/bslib-dashboards-cloud-demo](https://bit.ly/bslib-dashboards-cloud-demo)
+
+<br>
+
+::: callout-caution
+
+Much of this is still in development, but if you're brave, try it out:
+
+```{r, eval = FALSE}
+remotes::install_github("rstudio/bslib")
+```
+
+:::
+
+
+## In summary, consider `{bslib}` for your next dashboard {.smaller}
+
+::: {.incremental}
+-  Steeper learning curve than `{shinydashboard}` & `{flexdashboard}`, but you'll gain flexibility, portability, theme-ability, etc.
+- You may miss some `{shinydashboard}` features
+    - Like nav inside a sidebar, but IMO this is an anti-pattern (keep nav in the header and/or card(s)).
+    - As always, we love to hear your feedback, and ideas for new components!
+-  Not everything needs to be dashboard (and/or use Shiny)! We hope these components are generically useful and portable (in R Markdown, static sites, eventually Quarto, etc.)
+:::
+
+## In summary, consider `{bslib}` for your next dashboard
+
+::: callout-caution
+
+Much of this is still in development, but if you're brave, try it out:
+
+```{r, eval = FALSE}
+remotes::install_github("rstudio/bslib")
+```
+
+:::
+
+## Thanks!
+
+-  Learn more at [rstudio.github.io/bslib](https://rstudio.github.io/bslib)
+    - Big doc updates are coming soon.
+
+- Link to cloud project [bit.ly/bslib-dashboards-cloud-demo](https://bit.ly/bslib-dashboards-cloud-demo)
+
+- Twitter/GitHub: [@cpsievert](https://twitter.com/cpsievert)
+
+- Web: [cpsievert.me](https://cpsievert.me)
+
+## {fullscreen=true}
+
+<iframe class="r-stretch" data-src="https://testing-apps.shinyapps.io/flights"></iframe>
