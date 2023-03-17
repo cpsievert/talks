@@ -40,24 +40,52 @@ map_quakes <- leaflet(quake_dat) |>
 # ************************************************
 
 # HTMLWidgets, plotOutput(), etc default to 400px height
-page_fixed(!!!plots)
-
-# They grow/shrink when _direct children_ of a fillable container with opinionated height
-page_fillable( # fillable container
-  !!!plots     # fill items
+page_fixed(
+  plots[[1]], 
+  plots[[2]], 
+  plots[[3]]
 )
 
-# TODO: make this point sticky and maybe give example of the requirement 
+page_fillable( # fillable container
+  plots[[1]],  # fill item
+  plots[[2]],  # fill item
+  plots[[3]]   # fill item
+)
+
+# Same as above
+page_fillable(!!!plots)
+
+
+# NOTE TO SELF: bring up sticky point
 
 # ************************************************
 # Cards ----
 # ************************************************
 
-page_fillable( # fillable 
-  card(        # fill contents (and fillable)
+page_fixed(
+  card(
     card_header("Diamonds"),
-    card_body( # fill (NOT FILLABLE)
-      !!!plots # fill contents
+    card_body(!!!plots)
+  )
+)
+
+
+page_fillable(
+  card(
+    card_header("Diamonds"),
+    card_body(!!!plots)
+  )
+)
+
+
+page_fillable(   # fillable 
+  theme = bs_theme("border-width" = ".25rem"),
+  card(          # fill + fillable
+    class = "border-primary",
+    card_header("Diamonds"),
+    card_body(   # fill (NOT fillable)
+      class = "border border-danger",
+      !!!plots   # fill
     )
   )
 )
@@ -65,8 +93,9 @@ page_fillable( # fillable
 page_fillable(
   card(
     card_header("Diamonds"),
-    card_body_fillable(
-      !!!plots            
+    card_body_fillable( # fill + fillable
+      !!!plots,
+      min_height = 400
     )
   )
 )
@@ -111,6 +140,7 @@ plot_counts <- plot_card(
 # Previewing components ----
 # ************************************************
 
+# No page container necessary (one is added for you)
 plot_counts
 
 
@@ -143,11 +173,13 @@ page_fillable(    # fillable
   layout_sidebar( # fill
     sidebar(bg = "#F1F3F5", !!!filters),
     histograms,
-    plot_counts, 
-    fillable = TRUE # Make main content container fillable
+    plot_counts
   ), 
   padding = 0
 )
+
+# Tip: set layout_sidebar(fillable = TRUE)
+# for filling main content ☝️
 
 
 # ************************************************
@@ -161,6 +193,22 @@ page_fillable(
     sidebar(bg = "#F1F3F5", !!!filters),
     histograms,
     plot_counts,
+    plot_card(
+      map_quakes, 
+      "Not diamonds data!"
+    ),
+    fillable = TRUE
+  ),
+  padding = 0
+)
+
+
+# Helps a bit, but not an ideal layout
+page_fillable(
+  layout_sidebar(
+    sidebar(bg = "#F1F3F5", !!!filters),
+    histograms,
+    plot_counts,
     fillable = TRUE
   ),
   plot_card(
@@ -169,12 +217,8 @@ page_fillable(
   )
 )
 
-# NOTE TO SELF: move plot_card() down
 
-# ************************************************
 # Tip: layout_sidebar() integrates nicely w/ card()
-# ************************************************
-
 card_quakes <- card(
   full_screen = TRUE,
   card_header("Earthquake locations"),
@@ -206,11 +250,24 @@ page_navbar(
   nav("Earthquakes", card_quakes)
 )
 
-# ************************************************
-# Tip: can also put multiple tabs in a card.
-# https://rstudio.github.io/bslib/articles/cards.html#multiple-tabs
-# ************************************************
+# Can also "share" the same sidebar across pages
+page_navbar(
+  title = "Shared sidebar",
+  sidebar = sidebar(bg = "#F1F3F5", !!!filters),
+  nav("Price", plots[[1]]),
+  nav("Carat", plots[[2]]),
+  nav("Counts", plots[[3]])
+)
 
+# Change page_navbar() to navs_tab_card()
+# to get a card instead
+navs_tab_card(
+  title = "Sidebar demo",
+  sidebar = sidebar(bg = "#F1F3F5", !!!filters),
+  nav("Price", plots[[1]]),
+  nav("Carat", plots[[2]]),
+  nav("Counts", plots[[3]])
+)
 
 
 # ************************************************
@@ -285,25 +342,4 @@ accordion(
 # Histoslider ----
 # ************************************************
 
-library(histoslider)
-library(dplyr)
-
-ui <- page_fixed(
-  layout_sidebar(
-    sidebar(
-      input_histoslider("carat", "Carat", diamonds$carat)
-    ),
-    plotlyOutput("price")
-  )
-)
-
-server <- function(input, output) {
-  output$price <- renderPlotly({
-    diamonds |>
-      filter(between(carat, input$carat[1], input$carat[2])) |>
-      plot_ly(x = ~price) |>
-        add_histogram()
-  })
-}
-
-shinyApp(ui, server)
+shiny::runApp("demo-histoslider.R")

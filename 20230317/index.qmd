@@ -40,12 +40,23 @@ knitr::opts_hooks$set(as_iframe = function(opts) {
 opts_chunk$set(message = FALSE, echo = TRUE, as_iframe = TRUE)
 ```
 
-# Towards the next generation of Shiny UI {background-image="ship.webp" background-size="contain" style='--r-heading-color: white; color: white;'}
+# Towards the next generation of Shiny UI {.title-slide background-image="ship.webp" background-size="contain"}
 
 Carson Sievert  
 Software Engineer, Posit  
 [bit.ly/bslib-dashboard-slides](https://bit.ly/bslib-dashboard-slides)
 
+# Towards the next generation of Shiny UI {.title-slide .title-slide-strike background-image="ship.webp" background-size="contain"}
+
+::: {style='visibility:hidden;'}
+Carson Sievert
+Software Engineer, Posit
+[bit.ly/bslib-dashboard-slides](https://bit.ly/bslib-dashboard-slides)
+:::
+
+::: {style='font-size:3rem; font-weight:700; margin-top:-4rem;'}
+How to make a dashboard with `{bslib}`
+:::
 
 ## `{bslib}`: a modern Shiny UI toolkit
 
@@ -53,9 +64,8 @@ Software Engineer, Posit
 
 ::: {.incremental}
 2.  Provide modern UI replacements for `{shiny}` and `{shinydashboard}`.
-    -  <b>Currently includes page and layout helpers, sidebars, cards, value boxes, accordions, and more.</b>
-    -  Eventually, it should include more like inputs, tooltips, busy indication, and more.
-    -  We plan on integrating this work into the [Shiny UI editor](https://rstudio.github.io/shinyuieditor/) and [Shiny for Python](https://shiny.rstudio.com/py/).
+    -  <b>Currently includes cards, sidebars, value boxes, accordions, page/layout helpers, and more.</b>
+    -  We plan on integrating this work into the [Shiny for Python](https://shiny.rstudio.com/py/) and [Shiny UI editor](https://rstudio.github.io/shinyuieditor/).
 :::
 
 
@@ -118,7 +128,7 @@ page_fluid(
 ## Custom themes
 
 ::: {.font-sm}
-- Easily choose main colors and fonts 
+- Easily choose main colors and fonts (and 100s of other [theming variables](https://rstudio.github.io/bslib/articles/bs5-variables.html)).
     - Use `font_google()` to automatically download, cache, and import [Google Font](https://fonts.google.com/) files.
 :::
 
@@ -141,31 +151,6 @@ page_fluid(
 ```
 
 
-## Custom themes
-
-::: {.font-sm}
-There are 100s of [theming variables](https://rstudio.github.io/bslib/articles/bs5-variables.html) to customize.
-:::
-
-```{r}
-#| output-location: column
-#| code-line-numbers: "11"
-library(bslib)
-library(shiny)
-
-page_fluid(
-  theme = bs_theme(
-    bg = "#212121", 
-    fg = "white",
-    base_font = font_google(
-      "Indie Flower"
-    ),
-    "h1-font-size" = "5rem"
-  ),
-  h1("Hello Bootstrap 5")
-)
-```
-
 ## Utility Classes
 
 ::: {.font-sm}
@@ -174,7 +159,7 @@ page_fluid(
 
 ```{r}
 #| output-location: column
-#| code-line-numbers: "14-15"
+#| code-line-numbers: "13-14"
 library(bslib)
 library(shiny)
 
@@ -184,8 +169,7 @@ page_fluid(
     fg = "white",
     base_font = font_google(
       "Indie Flower"
-    ),
-    "h1-font-size" = "5rem"
+    )
   ),
   h1(
     class = "text-center", 
@@ -195,54 +179,6 @@ page_fluid(
 )
 ```
 
-## `{bslib}` components {.smaller .scrollable}
-
-::: {.columns}
-
-::: {.column}
-
-1. `card()`
-    - Group related information with borders and padding.
-
-::: {.fragment}
-2. `layout_column_wrap()`
-    - Wrap a 1d sequence of UI elements into a responsive 2d grid. 
-:::
-
-::: {.fragment}
-3. `sidebar()` + `layout_sidebar()`
-    - Flexible, collapsing, sidebar layout.
-:::
-
-:::
-
-
-::: {.column}
-
-::: {.fragment}
-4. `value_box()`
-    - Highlight a value with a title.
-:::
-
-::: {.fragment}
-5. `accordion()`
-    - Collapsible content panels.
-:::
-
-::: {.fragment}
-6. A more complete grammar of `nav()`-igation components.
-    - Among other things, introduces card-based navs (e.g., `navs_tab_card()`).
-:::
-
-:::
-:::
-
-
-::: {.fragment}
-### That's basically all one needs for a dashboard!
-:::
-
-
 ## Let's build a dashboard with `{bslib}`
 
 - Follow along at [bit.ly/bslib-dashboards-cloud-demo](https://bit.ly/bslib-dashboards-cloud-demo)
@@ -251,7 +187,7 @@ page_fluid(
 
 ::: callout-caution
 
-Much of this is still in development, but if you're brave, try it out:
+Sidebars and accordions are still in development, but if you're brave, try them out:
 
 ```{r, eval = FALSE}
 remotes::install_github("rstudio/bslib")
@@ -260,21 +196,59 @@ remotes::install_github("rstudio/bslib")
 :::
 
 
+<!--
+## `{bslib}` components {.smaller .scrollable}
+
+::: {.columns}
+
+::: {.column}
+1. `card()`
+    - Group related information with borders and padding.
+2. `sidebar()` + `layout_sidebar()`
+    - Flexible, collapsing, sidebar layout.
+3. `value_box()`
+    - Highlight a value with a title.
+:::
+
+::: {.column}
+4. `accordion()`
+    - Collapsible content panels.
+5. `layout_column_wrap()`
+    - Wrap a 1d sequence of UI elements into a responsive 2d grid. 
+6. A more complete grammar of `nav()`-igation components.
+    - Among other things, introduces card-based navs (e.g., `navs_tab_card()`).
+:::
+
+:::
+
+::: {.fragment}
+### That's basically all one needs for a dashboard!
+:::
+-->
+
+
 ## In summary, consider `{bslib}` for your next dashboard {.smaller}
 
-::: {.incremental}
--  Steeper learning curve than `{shinydashboard}` & `{flexdashboard}`, but you'll gain flexibility, portability, theme-ability, etc.
+::: {.fragment}
+-  Steeper learning curve than `{shinydashboard}` & `{flexdashboard}`
+    - More theme-able, composable, extensible, and portable.
+:::
+
+::: {.fragment}
 - You may miss some `{shinydashboard}` features
-    - Like nav inside a sidebar, but IMO this is an anti-pattern (keep nav in the header and/or card(s)).
-    - As always, we love to hear your feedback, and ideas for new components!
--  Not everything needs to be dashboard (and/or use Shiny)! We hope these components are generically useful and portable (in R Markdown, static sites, eventually Quarto, etc.)
+    - As always, we love to hear your feedback, and ideas for improvements!
+:::
+
+::: {.fragment}
+-  Not everything needs to be dashboard (and/or use Shiny)! 
+    - We hope these components are generically useful and portable (in R Markdown, static sites, eventually Quarto, etc.)
 :::
 
 ## In summary, consider `{bslib}` for your next dashboard
 
 ::: callout-caution
 
-Much of this is still in development, but if you're brave, try it out:
+Sidebars and accordions are still in development, but if you're brave, try them out:
 
 ```{r, eval = FALSE}
 remotes::install_github("rstudio/bslib")
@@ -285,7 +259,7 @@ remotes::install_github("rstudio/bslib")
 ## Thanks!
 
 -  Learn more at [rstudio.github.io/bslib](https://rstudio.github.io/bslib)
-    - Big doc updates are coming soon.
+    - Expect doc improvements in the coming weeks.
 
 - Link to cloud project [bit.ly/bslib-dashboards-cloud-demo](https://bit.ly/bslib-dashboards-cloud-demo)
 

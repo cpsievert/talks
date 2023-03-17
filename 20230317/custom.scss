@@ -26,10 +26,10 @@ iframe {
   font-size: 1.75rem;
 }
 
-.d-block {
-  display: block;
+.title-slide *:not(a, code) {
+  color: white !important;
 }
 
-.d-none {
-  display: none;
+.title-slide-strike h1 {
+  text-decoration: line-through;
 }

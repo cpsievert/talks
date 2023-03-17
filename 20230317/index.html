@@ -387,12 +387,22 @@
     <div class="slides">
 
 
-<section>
-<section id="towards-the-next-generation-of-shiny-ui" class="title-slide slide level1 center" data-background-image="ship.webp" data-background-size="contain" style="--r-heading-color: white; color: white;">
+<section id="towards-the-next-generation-of-shiny-ui" class="title-slide slide level1 center" data-background-image="ship.webp" data-background-size="contain">
 <h1>Towards the next generation of Shiny UI</h1>
 <p>Carson Sievert<br>
 Software Engineer, Posit<br>
 <a href="https://bit.ly/bslib-dashboard-slides">bit.ly/bslib-dashboard-slides</a></p>
+</section>
+
+<section>
+<section id="towards-the-next-generation-of-shiny-ui-1" class="title-slide slide level1 title-slide-strike center" data-background-image="ship.webp" data-background-size="contain">
+<h1>Towards the next generation of Shiny UI</h1>
+<div style="visibility:hidden;">
+<p>Carson Sievert Software Engineer, Posit <a href="https://bit.ly/bslib-dashboard-slides">bit.ly/bslib-dashboard-slides</a></p>
+</div>
+<div style="font-size:3rem; font-weight:700; margin-top:-4rem;">
+<p>How to make a dashboard with <code>{bslib}</code></p>
+</div>
 </section>
 <section id="bslib-a-modern-shiny-ui-toolkit" class="slide level2">
 <h2><code>{bslib}</code>: a modern Shiny UI toolkit</h2>
@@ -403,9 +413,8 @@ Software Engineer, Posit<br>
 <ol start="2" type="1">
 <li class="fragment">Provide modern UI replacements for <code>{shiny}</code> and <code>{shinydashboard}</code>.
 <ul>
-<li class="fragment"><b>Currently includes page and layout helpers, sidebars, cards, value boxes, accordions, and more.</b></li>
-<li class="fragment">Eventually, it should include more like inputs, tooltips, busy indication, and more.</li>
-<li class="fragment">We plan on integrating this work into the <a href="https://rstudio.github.io/shinyuieditor/">Shiny UI editor</a> and <a href="https://shiny.rstudio.com/py/">Shiny for Python</a>.</li>
+<li class="fragment"><b>Currently includes cards, sidebars, value boxes, accordions, page/layout helpers, and more.</b></li>
+<li class="fragment">We plan on integrating this work into the <a href="https://shiny.rstudio.com/py/">Shiny for Python</a> and <a href="https://rstudio.github.io/shinyuieditor/">Shiny UI editor</a>.</li>
 </ul></li>
 </ol>
 </div>
@@ -475,7 +484,7 @@ Software Engineer, Posit<br>
 <h2>Custom themes</h2>
 <div class="font-sm">
 <ul>
-<li>Easily choose main colors and fonts
+<li>Easily choose main colors and fonts (and 100s of other <a href="https://rstudio.github.io/bslib/articles/bs5-variables.html">theming variables</a>).
 <ul>
 <li>Use <code>font_google()</code> to automatically download, cache, and import <a href="https://fonts.google.com/">Google Font</a> files.</li>
 </ul></li>
@@ -502,33 +511,6 @@ Software Engineer, Posit<br>
 </div>
 </div>
 </section>
-<section id="custom-themes-1" class="slide level2">
-<h2>Custom themes</h2>
-<div class="font-sm">
-<p>There are 100s of <a href="https://rstudio.github.io/bslib/articles/bs5-variables.html">theming variables</a> to customize.</p>
-</div>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(bslib)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">page_fluid</span>(</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="at">theme =</span> <span class="fu">bs_theme</span>(</span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">bg =</span> <span class="st">"#212121"</span>, </span>
-<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">fg =</span> <span class="st">"white"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8"></a>    <span class="at">base_font =</span> <span class="fu">font_google</span>(</span>
-<span id="cb5-9"><a href="#cb5-9"></a>      <span class="st">"Indie Flower"</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>    ),</span>
-<span id="cb5-11"><a href="#cb5-11"></a>    <span class="st">"h1-font-size"</span> <span class="ot">=</span> <span class="st">"5rem"</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>  ),</span>
-<span id="cb5-13"><a href="#cb5-13"></a>  <span class="fu">h1</span>(<span class="st">"Hello Bootstrap 5"</span>)</span>
-<span id="cb5-14"><a href="#cb5-14"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<iframe src="examples/index.rmarkdown/unnamed-chunk-6/unnamed-chunk-6.html" width="100%" height="400px" data-external="1" seamless="seamless" frameborder="0" loading="lazy">
-</iframe>
-</div>
-</div>
-</section>
 <section id="utility-classes" class="slide level2">
 <h2>Utility Classes</h2>
 <div class="font-sm">
@@ -536,86 +518,27 @@ Software Engineer, Posit<br>
 </div>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="14-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(bslib)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">page_fluid</span>(</span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">theme =</span> <span class="fu">bs_theme</span>(</span>
-<span id="cb6-6"><a href="#cb6-6"></a>    <span class="at">bg =</span> <span class="st">"#212121"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7"></a>    <span class="at">fg =</span> <span class="st">"white"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8"></a>    <span class="at">base_font =</span> <span class="fu">font_google</span>(</span>
-<span id="cb6-9"><a href="#cb6-9"></a>      <span class="st">"Indie Flower"</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>    ),</span>
-<span id="cb6-11"><a href="#cb6-11"></a>    <span class="st">"h1-font-size"</span> <span class="ot">=</span> <span class="st">"5rem"</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a>  ),</span>
-<span id="cb6-13"><a href="#cb6-13"></a>  <span class="fu">h1</span>(</span>
-<span id="cb6-14"><a href="#cb6-14"></a>    <span class="at">class =</span> <span class="st">"text-center"</span>, </span>
-<span id="cb6-15"><a href="#cb6-15"></a>    <span class="at">class =</span> <span class="st">"text-primary"</span>,</span>
-<span id="cb6-16"><a href="#cb6-16"></a>    <span class="st">"Hello Bootstrap 5"</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a>  )</span>
-<span id="cb6-18"><a href="#cb6-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="13-14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(bslib)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">page_fluid</span>(</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="at">theme =</span> <span class="fu">bs_theme</span>(</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">bg =</span> <span class="st">"#212121"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">fg =</span> <span class="st">"white"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="at">base_font =</span> <span class="fu">font_google</span>(</span>
+<span id="cb5-9"><a href="#cb5-9"></a>      <span class="st">"Indie Flower"</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>    )</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  ),</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  <span class="fu">h1</span>(</span>
+<span id="cb5-13"><a href="#cb5-13"></a>    <span class="at">class =</span> <span class="st">"text-center"</span>, </span>
+<span id="cb5-14"><a href="#cb5-14"></a>    <span class="at">class =</span> <span class="st">"text-primary"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="st">"Hello Bootstrap 5"</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>  )</span>
+<span id="cb5-17"><a href="#cb5-17"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
-<iframe src="examples/index.rmarkdown/unnamed-chunk-7/unnamed-chunk-7.html" width="100%" height="400px" data-external="1" seamless="seamless" frameborder="0" loading="lazy">
+<iframe src="examples/index.rmarkdown/unnamed-chunk-6/unnamed-chunk-6.html" width="100%" height="400px" data-external="1" seamless="seamless" frameborder="0" loading="lazy">
 </iframe>
 </div>
-</div>
-</section>
-<section id="bslib-components" class="slide level2 smaller scrollable">
-<h2><code>{bslib}</code> components</h2>
-<div class="columns">
-<div class="column">
-<ol type="1">
-<li><code>card()</code>
-<ul>
-<li>Group related information with borders and padding.</li>
-</ul></li>
-</ol>
-<div class="fragment">
-<ol start="2" type="1">
-<li><code>layout_column_wrap()</code>
-<ul>
-<li>Wrap a 1d sequence of UI elements into a responsive 2d grid.</li>
-</ul></li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="3" type="1">
-<li><code>sidebar()</code> + <code>layout_sidebar()</code>
-<ul>
-<li>Flexible, collapsing, sidebar layout.</li>
-</ul></li>
-</ol>
-</div>
-</div><div class="column">
-<div class="fragment">
-<ol start="4" type="1">
-<li><code>value_box()</code>
-<ul>
-<li>Highlight a value with a title.</li>
-</ul></li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="5" type="1">
-<li><code>accordion()</code>
-<ul>
-<li>Collapsible content panels.</li>
-</ul></li>
-</ol>
-</div>
-<div class="fragment">
-<ol start="6" type="1">
-<li>A more complete grammar of <code>nav()</code>-igation components.
-<ul>
-<li>Among other things, introduces card-based navs (e.g., <code>navs_tab_card()</code>).</li>
-</ul></li>
-</ol>
-</div>
-</div>
-</div>
-<div class="fragment">
-<!-- -->
-<h3 id="thats-basically-all-one-needs-for-a-dashboard">That’s basically all one needs for a dashboard!</h3>
 </div>
 </section>
 <section id="lets-build-a-dashboard-with-bslib" class="slide level2">
@@ -633,25 +556,67 @@ Software Engineer, Posit<br>
 <p><strong>Danger</strong></p>
 </div>
 <div class="callout-content">
-<p>Much of this is still in development, but if you’re brave, try it out:</p>
+<p>Sidebars and accordions are still in development, but if you’re brave, try them out:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"rstudio/bslib"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"rstudio/bslib"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 </div>
+<!--
+## `{bslib}` components {.smaller .scrollable}
+
+::: {.columns}
+
+::: {.column}
+1. `card()`
+    - Group related information with borders and padding.
+2. `sidebar()` + `layout_sidebar()`
+    - Flexible, collapsing, sidebar layout.
+3. `value_box()`
+    - Highlight a value with a title.
+:::
+
+::: {.column}
+4. `accordion()`
+    - Collapsible content panels.
+5. `layout_column_wrap()`
+    - Wrap a 1d sequence of UI elements into a responsive 2d grid. 
+6. A more complete grammar of `nav()`-igation components.
+    - Among other things, introduces card-based navs (e.g., `navs_tab_card()`).
+:::
+
+:::
+
+::: {.fragment}
+### That's basically all one needs for a dashboard!
+:::
+-->
 </section>
 <section id="in-summary-consider-bslib-for-your-next-dashboard" class="slide level2 smaller">
 <h2>In summary, consider <code>{bslib}</code> for your next dashboard</h2>
-<div>
+<div class="fragment">
 <ul>
-<li class="fragment">Steeper learning curve than <code>{shinydashboard}</code> &amp; <code>{flexdashboard}</code>, but you’ll gain flexibility, portability, theme-ability, etc.</li>
-<li class="fragment">You may miss some <code>{shinydashboard}</code> features
+<li>Steeper learning curve than <code>{shinydashboard}</code> &amp; <code>{flexdashboard}</code>
 <ul>
-<li class="fragment">Like nav inside a sidebar, but IMO this is an anti-pattern (keep nav in the header and/or card(s)).</li>
-<li class="fragment">As always, we love to hear your feedback, and ideas for new components!</li>
+<li>More theme-able, composable, extensible, and portable.</li>
 </ul></li>
-<li class="fragment">Not everything needs to be dashboard (and/or use Shiny)! We hope these components are generically useful and portable (in R Markdown, static sites, eventually Quarto, etc.)</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>You may miss some <code>{shinydashboard}</code> features
+<ul>
+<li>As always, we love to hear your feedback, and ideas for improvements!</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Not everything needs to be dashboard (and/or use Shiny)!
+<ul>
+<li>We hope these components are generically useful and portable (in R Markdown, static sites, eventually Quarto, etc.)</li>
+</ul></li>
 </ul>
 </div>
 </section>
@@ -666,9 +631,9 @@ Software Engineer, Posit<br>
 <p><strong>Danger</strong></p>
 </div>
 <div class="callout-content">
-<p>Much of this is still in development, but if you’re brave, try it out:</p>
+<p>Sidebars and accordions are still in development, but if you’re brave, try them out:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"rstudio/bslib"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"rstudio/bslib"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -679,7 +644,7 @@ Software Engineer, Posit<br>
 <ul>
 <li><p>Learn more at <a href="https://rstudio.github.io/bslib">rstudio.github.io/bslib</a></p>
 <ul>
-<li>Big doc updates are coming soon.</li>
+<li>Expect doc improvements in the coming weeks.</li>
 </ul></li>
 <li><p>Link to cloud project <a href="https://bit.ly/bslib-dashboards-cloud-demo">bit.ly/bslib-dashboards-cloud-demo</a></p></li>
 <li><p>Twitter/GitHub: <a href="https://twitter.com/cpsievert"><span class="citation" data-cites="cpsievert">@cpsievert</span></a></p></li>
