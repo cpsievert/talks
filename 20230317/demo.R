@@ -41,9 +41,11 @@ map_quakes <- leaflet(quake_dat) |>
 
 # HTMLWidgets, plotOutput(), etc default to 400px height
 page_fixed(
-  plots[[1]], 
-  plots[[2]], 
-  plots[[3]]
+  plots[[1]]
+)
+
+page_fillable( # fillable container
+  plots[[1]]   # fill item
 )
 
 page_fillable( # fillable container
@@ -55,8 +57,8 @@ page_fillable( # fillable container
 # Same as above
 page_fillable(!!!plots)
 
-
 # NOTE TO SELF: bring up sticky point
+
 
 # ************************************************
 # Cards ----
@@ -65,35 +67,28 @@ page_fillable(!!!plots)
 page_fixed(
   card(
     card_header("Diamonds"),
-    card_body(!!!plots)
-  )
-)
-
-
-page_fillable(
-  card(
-    card_header("Diamonds"),
-    card_body(!!!plots)
-  )
-)
-
-
-page_fillable(   # fillable 
-  theme = bs_theme("border-width" = ".25rem"),
-  card(          # fill + fillable
-    class = "border-primary",
-    card_header("Diamonds"),
-    card_body(   # fill (NOT fillable)
-      class = "border border-danger",
-      !!!plots   # fill
-    )
+    card_body(plots[[1]])
   )
 )
 
 page_fillable(
   card(
     card_header("Diamonds"),
-    card_body_fillable( # fill + fillable
+    card_body(plots[[1]])
+  )
+)
+
+page_fillable(
+  card(
+    card_header("Diamonds"),
+    card_body_fillable(plots[[1]])
+  )
+)
+
+page_fillable(
+  card(
+    card_header("Diamonds"),
+    card_body_fillable(
       !!!plots,
       min_height = 400
     )
@@ -105,8 +100,8 @@ page_fillable(
 page_fixed(
   card(
     full_screen = TRUE,
-    card_header("Diamond carat"),
-    card_body(plots[[2]])
+    card_header("Diamond price"),
+    card_body(plots[[1]])
   ),
   card(
     full_screen = TRUE,
@@ -173,7 +168,8 @@ page_fillable(    # fillable
   layout_sidebar( # fill
     sidebar(bg = "#F1F3F5", !!!filters),
     histograms,
-    plot_counts
+    plot_counts,
+    fillable = TRUE
   ), 
   padding = 0
 )
