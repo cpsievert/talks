@@ -81,14 +81,14 @@ page_fillable(
 page_fillable(
   card(
     card_header("Diamonds"),
-    card_body_fillable(plots[[1]])
+    plots[[1]]
   )
 )
 
 page_fillable(
   card(
     card_header("Diamonds"),
-    card_body_fillable(
+    card_body(
       !!!plots,
       min_height = 400
     )
@@ -101,12 +101,12 @@ page_fixed(
   card(
     full_screen = TRUE,
     card_header("Diamond price"),
-    card_body(plots[[1]])
+    plots[[1]]
   ),
   card(
     full_screen = TRUE,
     card_header("Diamond price"),
-    card_body_fillable(plots[[1]])
+    plots[[1]]
   )
 )
 
@@ -116,7 +116,7 @@ plot_card <- function(x, title) {
     card_header(
       title, class = "bg-dark"
     ),
-    card_body_fillable(x),
+    x,
     full_screen = TRUE
   )
 }
@@ -329,7 +329,7 @@ layout_sidebar(
 
 # Accordions can also render standalone
 accordion(
-  accordion_panel("Section A", lorem::ipsum(3)),
+  accordion_panel("Section A", lorem::ipsum(2)),
   accordion_panel("Section B", lorem::ipsum(3)),
   accordion_panel("Section C", lorem::ipsum(3))
 )
