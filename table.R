@@ -8,7 +8,15 @@ talks <- f[grepl("[0-9]{8}", f)]
 
 # get yaml front matter fields from a given talk
 get_yaml <- function(talk, fields = c("title", "venue", "type", "recording")) {
-  txt <- readLines(file.path(talk, "index.Rmd"))
+  qmd <- file.path(talk, "index.qmd")
+  rmd <- file.path(talk, "index.Rmd")
+  if (file.exists(qmd)) {
+    txt <- readLines(qmd)
+  } else if (file.exists(rmd)) {
+    txt <- readLines(rmd)
+  } else {
+    stop("No index.qmd or index.Rmd found in ", talk)
+  }
   sep <- which(txt == "---")
   front <- txt[seq.int(sep[1] + 1, sep[2] - 1)]
   yml <- yaml::yaml.load(paste(front, collapse = "\n"))
@@ -119,4 +127,3 @@ d %>%
   select(date, title, venue, type, recording) %>%
   datatable(escape = F, options = list(pageLength = 50), rownames = FALSE) %>%
   saveWidget(file = "index.html", title = "Carson's talks")
-

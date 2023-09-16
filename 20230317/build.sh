@@ -1,1 +1,0 @@
-quarto render index.qmd

@@ -1,4 +1,8 @@
 ---
+title: "Towards the next generation of Shiny UI"
+venue: "ShinyConf2023 - R Shiny Conference by Appsilon"
+type: "invited"
+recording: "none"
 format: 
   revealjs:
     theme: [default, custom.scss]
@@ -40,13 +44,13 @@ knitr::opts_hooks$set(as_iframe = function(opts) {
 opts_chunk$set(message = FALSE, echo = TRUE, as_iframe = TRUE)
 ```
 
-# Towards the next generation of Shiny UI {.title-slide background-image="ship.webp" background-size="contain"}
+# Towards the next generation of Shiny UI {.title-slide background-image="main.webp" background-size="contain"}
 
 Carson Sievert  
 Software Engineer, Posit  
 [bit.ly/bslib-dashboard-slides](https://bit.ly/bslib-dashboard-slides)
 
-# Towards the next generation of Shiny UI {.title-slide .title-slide-strike background-image="ship.webp" background-size="contain"}
+# Towards the next generation of Shiny UI {.title-slide .title-slide-strike background-image="main.webp" background-size="contain"}
 
 ::: {style='visibility:hidden;'}
 Carson Sievert
