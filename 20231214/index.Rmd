@@ -1,0 +1,6 @@
+---
+title: "Leveraging Shiny Modules"
+venue: "JnJ Shiny Day"
+type: "invited"
+recording: "TBD"
+---
