@@ -1,0 +1,6 @@
+---
+title: "The miracle of Jupyter Widgets in Shiny for Python"
+venue: "posit::conf(2024)"
+type: "invited"
+recording: "TBD"
+---
