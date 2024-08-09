@@ -1,5 +1,5 @@
 ---
-title: "The miracle of Jupyter Widgets in Shiny for Python"
+title: "Supercharge Your Shiny (for Python) App: Unleashing Jupyter Widgets for Interactivity"
 venue: "posit::conf(2024)"
 type: "invited"
 recording: "TBD"
